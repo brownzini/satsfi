@@ -151,6 +151,24 @@ button.launch-button {
   user-select: none;
 }
 
+#link-initial-button-style {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: 1s;
+
+  color: #FF9800;
+  text-decoration: none;
+}
+
+#link-initial-button-style:hover {
+  color: white;
+}
+
 button.launch-button:hover {
   color: white;
   background-color: #cf7d0273;
@@ -338,9 +356,27 @@ img#cellImage {
   user-select: none;
 }
 
+#link-paper-button-style {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: 1s;
+
+  color: #45abdb;
+  text-decoration: none;
+}
+
 #paperButton:hover {
   color:white;
   background-color: #45abdb;
+}
+
+#link-paper-button-style:hover {
+  color: white;
 }
 /* [ LIGHTNING AREA ] */
 .lightning-area {

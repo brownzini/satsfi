@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Image from 'next/image';
 
 import SvgModel from "@/utils/svg";
@@ -23,7 +24,12 @@ export default function Home() {
             </div>
             <div className="button-area-satsfi flex">
               <button className="launch-button">
-                INICIAR
+                <Link
+                  id="link-initial-button-style"
+                  href="/"
+                >
+                  Iniciar
+                </Link>
               </button>
             </div>
           </div>
@@ -107,11 +113,20 @@ export default function Home() {
           <div className="descriptionArea flex fd">
             <div className="titleArea wh100">
               <h2>Como usar ?</h2>
-              <h3> 1° - Abra a pagina inicial <br />
-               2° - Crie seu hub de acordo com suas preferências de configuração <br /> 
-               3° - Importe o hub com a chave gerada e gerêncie suas doações <br /> 
-               4° - Utilizar </h3>
-              <button id="paperButton">Ler paper</button>
+              <h3>
+                1° - Abra a pagina inicial <br />
+                2° - Crie seu hub de acordo com suas preferências de configuração <br />
+                3° - Importe o hub com a chave gerada e gerêncie suas doações <br />
+                4° - Utilizar
+              </h3>
+              <button id="paperButton">
+                <Link
+                  id="link-paper-button-style"
+                  href="/"
+                >
+                  Ler paper
+                </Link>
+              </button>
             </div>
           </div>
         </div>
