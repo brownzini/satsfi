@@ -21,6 +21,7 @@ body {
   overflow-x: hidden;
   background-color: transparent;
   height: 100vh;
+  scroll-behavior: smooth;
 }
 
 main {
@@ -55,6 +56,7 @@ main {
 }
 
 .description-area {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,11 +65,14 @@ main {
 }
 
 h2.description-title {
+  width: 100%;
+
+  color: white;
   font-size: 5rem;
   font-family: 'Inter';
   font-weight: bold;
-  color: white;
   line-height: 4.3rem;
+  
   margin-bottom: 3%;
 }
 
@@ -101,7 +106,7 @@ p.subTitle {
   height: 25%;
 }
 
-.svg-satsfi {
+.button-area-satsfi {
   width: 50%;
   height: 25%;
 }
@@ -313,6 +318,7 @@ img#cellImage {
   font-family: 'Open sans';
   font-weight: lighter;
 }
+
 #paperButton {
   width: 50%;
   height: 100%;
@@ -329,6 +335,7 @@ img#cellImage {
   border: 2px solid #45abdb;
 
   cursor: pointer;
+  user-select: none;
 }
 
 #paperButton:hover {
@@ -379,4 +386,186 @@ img#cellImage {
   font-size: 2rem;
   font-weight: 300;
   font-family: 'Inter';
+}
+
+@media only screen and (min-height: 900px) {
+  .initialArea .description-area h2.description-title {
+    font-size: 7rem;
+    line-height: 5.7rem;
+  }
+  h1.logo-title {
+    font-size: 7rem;
+  }
+  .cardHead h2 {
+    font-size: 3rem;
+  }
+  .cardFooter h2 {
+    font-size: 1.6rem;
+  }
+  .wrappedArea  {
+    padding-left: 7%;
+  }
+  .titleArea {
+    padding-right: 0;
+  }
+  .titleArea h2 {
+    font-size: 4rem;
+  }
+  .titleArea h3 {
+    width: 75%;
+    font-size: 1.9rem;
+  }
+  #paperButton {
+    height: 20%;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  h2.description-title {
+    width: 100%;
+    font-size: 3rem;
+    line-height: 2.5rem;
+  }
+  .button-area-satsfi {
+    width: 70%;
+
+  }
+  .card-privacy  {
+    width: 50%;
+  }
+  .card-ai  {
+    width: 50%;
+  }
+  .card-fee  {
+    width: 50%;
+  }
+
+  .wrappedArea {
+    flex-direction: column;
+  }
+
+  img#cellImage {
+    width: 50%;
+    height: auto;
+  }
+
+  .titleArea {
+    justify-content: center;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .descriptionArea h3 {
+    text-align: center;
+  }
+
+  #paperButton {
+    width: 100%;
+    height: 25%;
+  }
+
+  .faq-area {
+    height: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+}
+
+@media only screen and (max-width: 700px) {
+  .initialArea  {
+    flex-direction: column;
+  }
+
+  .description-area {
+    padding: 0%;
+  }
+
+  .initial .initialArea .description-area h2.description-title {
+    width: 75%;
+    font-size: 2rem;
+    line-height: 2rem;
+  }
+
+  p.subTitle {
+    width: 75%;
+    font-size: 1rem;
+  }
+  
+  .button-area-satsfi {
+    width: 64%;
+  }
+  
+  button.launch-button {
+    width: 100%;
+  }
+
+  /* [ TOPIC ] */
+
+  .topic {
+    width: 100%;
+    flex-direction: column;  
+  }
+
+  .topic .card-privacy {
+    width: 100%;
+    height: 30%;
+  }
+
+  .topic .card-ai {
+    width: 100%;
+    height: 30%;
+  }
+
+  .topic .card-fee {
+    width: 100%;
+    height: 30%;
+  }
+
+  .topic .cardBody {
+    height: 30%;
+  }
+
+  .topic .cardHead h2 {
+    font-size: 1rem;
+  }
+
+  .topic .cardFooter h2 {
+    font-size: 0.91rem;
+    height: 100%;
+  }
+  .wrappedArea {
+    flex-direction: column;
+  }
+  .titleArea {
+    justify-content: center;
+    align-items: center;
+    padding-left: 10%;
+  }
+  .descriptionArea h2 {
+    font-size: 2rem;
+  }
+
+  .descriptionArea h3 {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  #paperButton {
+    width: 100%;
+    height: 20%;
+  }
+
+  /* [LIghtning Area] */
+  .lightning-area {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  .lightning-area h2{
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
 }

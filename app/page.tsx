@@ -10,7 +10,7 @@ export default function Home() {
 
           <div className="description-area">
             <h2 className="description-title">
-              Receba doações <br />com <span className="trueMoney">dinheiro</span> de verdade
+              Receba doações <br />com <span className="trueMoney">dinheiro</span><br /> de verdade
             </h2>
             <p className="subTitle">
               Tenha suas doações recebidas em <span className="trueMoney">satoshis</span> de uma forma que seus doadores não precisem cair em doxxing
@@ -21,7 +21,7 @@ export default function Home() {
             <div className="satsfi-title-area flex">
               <h1 className="logo-title"> SatsFI </h1>
             </div>
-            <div className="svg-satsfi flex">
+            <div className="button-area-satsfi flex">
               <button className="launch-button">
                 INICIAR
               </button>
@@ -107,10 +107,10 @@ export default function Home() {
           <div className="descriptionArea flex fd">
             <div className="titleArea wh100">
               <h2>Como usar ?</h2>
-              <h3> 1° - Abra a pagina inicial <br /> </h3>
-              <h3> 2° - Crie seu hub de acordo com suas preferências de configuração <br /> </h3>
-              <h3> 3° - Importe o hub com a chave gerada e gerêncie suas doações <br /> </h3>
-              <h3> 4° - Utilizar </h3>
+              <h3> 1° - Abra a pagina inicial <br />
+               2° - Crie seu hub de acordo com suas preferências de configuração <br /> 
+               3° - Importe o hub com a chave gerada e gerêncie suas doações <br /> 
+               4° - Utilizar </h3>
               <button id="paperButton">Ler paper</button>
             </div>
           </div>
