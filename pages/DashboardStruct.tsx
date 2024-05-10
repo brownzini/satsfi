@@ -1,11 +1,12 @@
 'use client'
 
-import { Container } from "./styles";
+import DashboardArea from "@/components/DashboardArea";
+import Container from "./styles";
 
 export default function DashboardStruct () {
     return (
-        <Container>
-            <h1> kkkkkkkk </h1>
+        <Container className="flex">
+            <DashboardArea />
         </Container>
     );
 }
