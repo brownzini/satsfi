@@ -16,7 +16,7 @@ export const Body = styled.div`
 
 export const Wrapper = styled.div<Prop>`
     width: 93%;
-    height: 93%;
+    height: 84%;
     
     background-color: #F0F2FA;
     border: 1px solid #E2DEF9;

@@ -73,6 +73,7 @@ export const ImportWrapper = styled.div`
     }
 
     cursor: pointer;
+    user-select: none;
 `;
 
 export const CardsContent = styled.div`

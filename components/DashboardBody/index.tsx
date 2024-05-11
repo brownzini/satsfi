@@ -7,6 +7,7 @@ import {
 import Initial from "./Initial";
 import ImportKey from "./ImportKey";
 import Overview from "./Overview";
+import Config from "./Config";
 
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
@@ -20,15 +21,18 @@ export default function DashboardBody() {
         <Body className="flex fd">
             {/* <Initial /> */}
             {/* <ImportKey /> */}
-            <Wrapper styles={
-                conditionBorderRadius(true) + `
+            {/* <Overview /> */}
+            <Wrapper  
+                className="flex" 
+                styles={
+                    conditionBorderRadius(true) + `
                     ${(false) && `
                         border:none;
                         background-color:white;
                     `}
                 `
             }>
-                <Overview />
+                <Config />
             </Wrapper>
         </Body>
     );
