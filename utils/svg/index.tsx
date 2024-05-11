@@ -1,5 +1,5 @@
 'use client'
-import { Svg } from "./styles";
+import { BaseSvg, Svg } from "./styles";
 
 interface Props {
     name: string;
@@ -8,7 +8,7 @@ interface Props {
 }
 export default function SvgModel({ name, width, height }: Props) {
     const brainAiStyle = `
-        .st0{fill:#FFFFFF;stroke:#FFFFFF;stroke-width:10;stroke-miterlimit:10;}
+        .st0{fill:#FFFFFF;stroke:#FFFFFF;strokeWidth:10;stroke-miterlimit:10;}
         .st1{fill:#206494;}
         .st2{fill:#76D3E8;}
     `;
@@ -24,6 +24,20 @@ export default function SvgModel({ name, width, height }: Props) {
         .st8{fill:#C6C9CC;}
     `;
     switch (name) {
+        case 'satoshi':
+            return <svg
+                width={width}
+                height={height}
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM8.69253 8.74209L16.3304 10.8053L16.6668 9.34348L9.02893 7.2803L8.69253 8.74209ZM14.2194 5.69235L13.8127 7.46639L12.3649 7.07388L12.7717 5.29984L14.2194 5.69235ZM11.2272 18.7L11.6352 16.9263L10.1872 16.535L9.77913 18.3087L11.2272 18.7ZM15.6482 13.7661L8.01124 11.6995L8.34708 10.2376L15.984 12.3042L15.6482 13.7661ZM7.33193 14.6559L14.9696 16.7197L15.3059 15.2579L7.66823 13.1941L7.33193 14.6559Z" fill="#FFCA41"
+                />
+            </svg>
         case 'brain-ai':
             return (
                 <Svg
@@ -107,15 +121,42 @@ export default function SvgModel({ name, width, height }: Props) {
                 </Svg>)
         case 'fee':
             return (
-                <Svg 
-                    width={width} 
-                    height={height} 
-                    viewBox="0 0 30 30" 
-                    id="Layer_1" 
+                <Svg
+                    width={width}
+                    height={height}
+                    viewBox="0 0 30 30"
+                    id="Layer_1"
                     version="1.1"
                 >
                     <path className="st2" d="M23,3H7C6.4,3,6,3.4,6,4v22l3-2l3,2l3-2l3,2l3-2l3,2V4C24,3.4,23.6,3,23,3z M20,20h-4v-4h4V20z M20,13H10v-2h10  V13z M20,9H10V7h10V9z" />
                 </Svg>)
+        case 'export':
+            return (
+                <svg
+                    width={width}
+                    height={height}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M12 5L11.2929 4.29289L12 3.58579L12.7071 4.29289L12 5ZM13 14C13 14.5523 12.5523 15 12 15C11.4477 15 11 14.5523 11 14L13 14ZM6.29289 9.29289L11.2929 4.29289L12.7071 5.70711L7.70711 10.7071L6.29289 9.29289ZM12.7071 4.29289L17.7071 9.29289L16.2929 10.7071L11.2929 5.70711L12.7071 4.29289ZM13 5L13 14L11 14L11 5L13 5Z" fill="#5DBF5B" />
+                    <path d="M5 16L5 17C5 18.1046 5.89543 19 7 19L17 19C18.1046 19 19 18.1046 19 17V16" stroke="#5DBF5B" strokeWidth="2" />
+                </svg>
+            )
+        case 'delete':
+            return <BaseSvg 
+                     width={width}
+                     height={height} 
+                     viewBox="0 0 24 24" 
+                     fill="none" 
+                     xmlns="http://www.w3.org/2000/svg"
+                   >
+                    <path d="M10 12V17" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M14 12V17" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M4 7H20" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                   </BaseSvg>
         default: return (
             <Svg
                 id="satoshiSvg"

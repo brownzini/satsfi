@@ -14,7 +14,7 @@ export default function DashboardHeader() {
                 <Logo>SatsFI</Logo>
             </WrapperLogoArea>
             <OptionsArea className="flex">
-                <OptionArea></OptionArea>
+             
             </OptionsArea>
         </Header>
     );

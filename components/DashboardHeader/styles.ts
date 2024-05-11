@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Header = styled.div`
     width: 100%;
-    height: 16%;
+    height: 10%;
 `;
 
 export const WrapperLogoArea = styled.div`

@@ -17,3 +17,7 @@ export const Svg = styled.svg`
     }
 
 `;
+
+export const BaseSvg = styled.svg`
+    cursor: pointer;
+`;
