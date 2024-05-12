@@ -19,7 +19,7 @@ export const Container = styled.div<ContainerProp>`
     padding-left: 12%;
 `;
 
-export const Title = styled.h2<StyleProp>`    
+export const Title = styled.p<StyleProp>`    
     ${(p) => p.styler};
 `;
 

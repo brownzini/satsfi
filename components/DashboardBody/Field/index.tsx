@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
 import {
     Button,
     Container,
@@ -10,13 +11,14 @@ import {
 } from "./styles";
 
 interface Props {
-    type: "title" | "input" | "toggle" | "slider" | "button";
+    type: "title" | "input" | "toggle" | "slider" | "button" | "color";
     styler?: string;
     text?: string;
     center: string;
     signal?:string;
     durationMin?:string;
     durationMax?:string;
+    handleClick?: () => void;
 }
 
 export default function Field({
@@ -27,10 +29,11 @@ export default function Field({
     signal,
     durationMin = "1",
     durationMax = "100",
+    handleClick,
 }: Props) {
+    const [value, setValue] = useState<number>(1);
     const [amount, setAmount] = useState<string>('1,200');
     const [checked, setChecked] = useState<boolean>(true);
-    const [value, setValue] = useState<number>(1);
 
     const isPercentField = (text === 'Volume do alerta' || text === 'Duração dos donates');
     const tratedSginal = (signal) ? signal : '';
@@ -38,7 +41,7 @@ export default function Field({
     const handleChange = () => {
         setChecked(!checked);
     };
-    
+
     const renderingJSX = (type: string) => {
         if (!styler) return;
         switch (type) {
@@ -80,7 +83,10 @@ export default function Field({
                         />
                        </SliderContainer>
             default:
-                return <Title styler={styler}>
+                return <Title 
+                         styler={styler}
+                         onClick={handleClick}
+                        >
                           {text}{(isPercentField) ? `: ${value+tratedSginal}` : ''}
                        </Title>
         }

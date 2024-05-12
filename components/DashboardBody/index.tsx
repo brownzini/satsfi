@@ -8,6 +8,7 @@ import Initial from "./Initial";
 import ImportKey from "./ImportKey";
 import Overview from "./Overview";
 import Config from "./Config";
+import CustomizeDonation from "./CustomizeDonation";
 
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
@@ -22,6 +23,7 @@ export default function DashboardBody() {
             {/* <Initial /> */}
             {/* <ImportKey /> */}
             {/* <Overview /> */}
+            {/* <Config /> */}
             <Wrapper  
                 className="flex" 
                 styles={
@@ -32,7 +34,7 @@ export default function DashboardBody() {
                     `}
                 `
             }>
-                <Config />
+                <CustomizeDonation />
             </Wrapper>
         </Body>
     );

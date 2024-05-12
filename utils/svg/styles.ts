@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface Prop {
+    rotate: string;
+}
+
 export const Svg = styled.svg`
     
     animation: svgFloat 1.4s ease infinite;
@@ -19,5 +23,15 @@ export const Svg = styled.svg`
 `;
 
 export const BaseSvg = styled.svg`
+    cursor: pointer;
+`;
+
+export const ArrowSvg = styled.svg<Prop>`
+    transition: 0.30s;
+    transform: rotate(${(p) => p.rotate});
+    cursor:pointer;
+`;
+
+export const AddSvg = styled.svg`
     cursor: pointer;
 `;

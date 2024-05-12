@@ -1,12 +1,24 @@
 'use client'
-import { BaseSvg, Svg } from "./styles";
+import { AddSvg, ArrowSvg, BaseSvg, Svg } from "./styles";
 
 interface Props {
+    id?: string;
     name: string;
     width?: string;
     height?: string;
+    color?: string;
+    rotate?: string;
+    setFunction?: () => void;
 }
-export default function SvgModel({ name, width, height }: Props) {
+export default function SvgModel({
+    id,
+    name,
+    width,
+    height,
+    color,
+    rotate,
+    setFunction,
+}: Props) {
     const brainAiStyle = `
         .st0{fill:#FFFFFF;stroke:#FFFFFF;strokeWidth:10;stroke-miterlimit:10;}
         .st1{fill:#206494;}
@@ -35,7 +47,7 @@ export default function SvgModel({ name, width, height }: Props) {
                 <path
                     fillRule="evenodd"
                     clipRule="evenodd"
-                    d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM8.69253 8.74209L16.3304 10.8053L16.6668 9.34348L9.02893 7.2803L8.69253 8.74209ZM14.2194 5.69235L13.8127 7.46639L12.3649 7.07388L12.7717 5.29984L14.2194 5.69235ZM11.2272 18.7L11.6352 16.9263L10.1872 16.535L9.77913 18.3087L11.2272 18.7ZM15.6482 13.7661L8.01124 11.6995L8.34708 10.2376L15.984 12.3042L15.6482 13.7661ZM7.33193 14.6559L14.9696 16.7197L15.3059 15.2579L7.66823 13.1941L7.33193 14.6559Z" fill="#FFCA41"
+                    d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM8.69253 8.74209L16.3304 10.8053L16.6668 9.34348L9.02893 7.2803L8.69253 8.74209ZM14.2194 5.69235L13.8127 7.46639L12.3649 7.07388L12.7717 5.29984L14.2194 5.69235ZM11.2272 18.7L11.6352 16.9263L10.1872 16.535L9.77913 18.3087L11.2272 18.7ZM15.6482 13.7661L8.01124 11.6995L8.34708 10.2376L15.984 12.3042L15.6482 13.7661ZM7.33193 14.6559L14.9696 16.7197L15.3059 15.2579L7.66823 13.1941L7.33193 14.6559Z" fill={(color) ? color : "#FFCA41"}
                 />
             </svg>
         case 'brain-ai':
@@ -144,19 +156,91 @@ export default function SvgModel({ name, width, height }: Props) {
                 </svg>
             )
         case 'delete':
+            return <BaseSvg
+                width={width}
+                height={height}
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={setFunction}
+            >
+                <path d="M10 12V17" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M14 12V17" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 7H20" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </BaseSvg>
+        case 'add':
+            return <AddSvg
+                width={width}
+                height={height}
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={setFunction}
+            >
+                <path opacity="0.5" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" fill="#1C274C" />
+                <path d="M12.75 9C12.75 8.58579 12.4142 8.25 12 8.25C11.5858 8.25 11.25 8.58579 11.25 9L11.25 11.25H9C8.58579 11.25 8.25 11.5858 8.25 12C8.25 12.4142 8.58579 12.75 9 12.75H11.25V15C11.25 15.4142 11.5858 15.75 12 15.75C12.4142 15.75 12.75 15.4142 12.75 15L12.75 12.75H15C15.4142 12.75 15.75 12.4142 15.75 12C15.75 11.5858 15.4142 11.25 15 11.25H12.75V9Z" fill="white" />
+            </AddSvg>
+        case 'arrow':
+            return <ArrowSvg
+                width={width}
+                height={height}
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                rotate={(rotate) ? rotate : '0'}
+                onClick={setFunction}
+            >
+                <path d="M7 10L12 15L17 10" stroke="#3C5774" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </ArrowSvg>
+        case 'play':
+            return <BaseSvg
+                width={width}
+                height={height}
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path d="M21.4086 9.35258C23.5305 10.5065 23.5305 13.4935 21.4086 14.6474L8.59662 21.6145C6.53435 22.736 4 21.2763 4 18.9671L4 5.0329C4 2.72368 6.53435 1.26402 8.59661 2.38548L21.4086 9.35258Z" fill="#1C274C" />
+            </BaseSvg>
+        case 'audio':
+            return <svg
+                fill="#1b69d7"
+                width={width}
+                height={height}
+                viewBox="0 0 24 24"
+                id="music-lyric-2"
+                data-name="Flat Color"
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon flat-color">
+                <path
+                    id="primary"
+                    d="M12,13a2,2,0,0,1,2-2h2a1,1,0,0,0,1-1V4a2,2,0,0,0-2-2H4A2,2,0,0,0,2,4V18a2,2,0,0,0,2,2h7a1,1,0,0,0,1-1Z"
+                    fill="#3C5774">
+                </path>
+                <path
+                    id="secondary"
+                    d="M22,16a1,1,0,0,1-2,0,2,2,0,0,0-1-1.78V19a3,3,0,1,1-2-2.82V13a1,1,0,0,1,1-1A3.91,3.91,0,0,1,22,16ZM10,11a1,1,0,0,0-1-1H5a1,1,0,0,0,0,2H9A1,1,0,0,0,10,11ZM9,15a1,1,0,0,0-1-1H5a1,1,0,0,0,0,2H8A1,1,0,0,0,9,15Z"
+                    fill="#a14fb6">
+                </path>
+            </svg>
+        case 'confirm':
             return <BaseSvg 
-                     width={width}
-                     height={height} 
-                     viewBox="0 0 24 24" 
-                     fill="none" 
-                     xmlns="http://www.w3.org/2000/svg"
+                      width={width}
+                      height={height} 
+                      viewBox="0 -0.5 17 17" 
+                      version="1.1" 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      className="si-glyph si-glyph-checked"
                    >
-                    <path d="M10 12V17" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M14 12V17" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M4 7H20" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#FF8585" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                   </BaseSvg>
+                    <title>1228</title>
+                    <defs></defs>
+                   <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                    <path d="M3.432,6.189 C3.824,5.798 4.455,5.798 4.847,6.189 L6.968,8.31 L13.147,2.131 C13.531,1.747 14.157,1.753 14.548,2.144 L16.67,4.266 C17.06,4.657 17.066,5.284 16.684,5.666 L7.662,14.687 C7.278,15.07 6.651,15.064 6.261,14.673 L1.311,9.723 C0.92,9.333 0.92,8.7 1.311,8.31 L3.432,6.189 Z" fill="#74f6b5" className="si-glyph-fill">
+                    </path>
+                   </g>
+                  </BaseSvg>
         default: return (
             <Svg
                 id="satoshiSvg"
