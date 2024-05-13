@@ -2,6 +2,7 @@ import {
     Button,
     Container,
     Input,
+    Select,
     SliderContainer,
     Switch,
     Title,
@@ -9,7 +10,7 @@ import {
 } from "./styles";
 
 interface Props {
-    type: "title" | "input" | "toggle" | "slider" | "button" | "color";
+    type: "title" | "input" | "toggle" | "slider" | "button" | "color" | "options";
     styler?: string;
     text?: string;
     center: string;
@@ -31,6 +32,8 @@ interface Props {
 
     handleClick?: () => void;
     onClick?: () => void;
+
+    disabled?:boolean;
 }
 
 export default function Field({
@@ -51,6 +54,7 @@ export default function Field({
     setChecked,
     handleClick,
     onClick,
+    disabled,
 }: Props) {
     const handleChange = () => {
         if ((checked !== undefined) && (setChecked)) {
@@ -93,6 +97,7 @@ export default function Field({
                     placeholder={(placeholder) ? placeholder : ''}
                     onChange={(e) => inputTypeFormater(e.target.value)}
                     onClick={(onClick) ? onClick : voidFunction}
+                    disabled={(disabled) ? disabled : false}
                 />
             case 'toggle':
                 return (
@@ -124,6 +129,15 @@ export default function Field({
                         onChange={(e) => handleChangeSlider(e.target.value)}
                     />
                 </SliderContainer>
+            case 'options':
+                return <Select>
+                          <option value="dog">Dog</option>
+                          <option value="cat">Cat</option>
+                          <option value="hamster">Hamster</option>
+                          <option value="parrot">Parrot</option>
+                          <option value="spider">Spider</option>
+                          <option value="goldfish">Goldfish</option>
+                        </Select>
             default:
                 return <Title
                           styler={styler}

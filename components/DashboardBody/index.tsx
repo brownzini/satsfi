@@ -9,6 +9,7 @@ import ImportKey from "./ImportKey";
 import Overview from "./Overview";
 import Config from "./Config";
 import Survey from "./Survey";
+import Test from "./Test";
 
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
@@ -25,6 +26,7 @@ export default function DashboardBody() {
             {/* <Overview /> */}
             {/* <Config /> */}
             {/* <Survey /> */}
+            {/* <Test /> */}
             <Wrapper  
                 className="flex" 
                 styles={
@@ -35,7 +37,6 @@ export default function DashboardBody() {
                     `}
                 `
             }>
-                <Config />
             </Wrapper>
         </Body>
     );
