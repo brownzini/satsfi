@@ -12,7 +12,7 @@ import {
 } from "./styles";
 
 interface Props {
-    day: "Today" | "Weekly" | "Monthly";
+    day: string;
     amount: string;
     hasExport: boolean;
 }

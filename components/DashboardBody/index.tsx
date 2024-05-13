@@ -8,7 +8,6 @@ import Initial from "./Initial";
 import ImportKey from "./ImportKey";
 import Overview from "./Overview";
 import Config from "./Config";
-import CustomizeDonation from "./CustomizeDonation";
 import Survey from "./Survey";
 
 export default function DashboardBody() {
@@ -25,7 +24,6 @@ export default function DashboardBody() {
             {/* <ImportKey /> */}
             {/* <Overview /> */}
             {/* <Config /> */}
-            {/* <CustomizeDonation /> */}
             {/* <Survey /> */}
             <Wrapper  
                 className="flex" 
@@ -37,7 +35,7 @@ export default function DashboardBody() {
                     `}
                 `
             }>
-                <ImportKey />
+                <Overview />
             </Wrapper>
         </Body>
     );

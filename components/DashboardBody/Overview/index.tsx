@@ -22,8 +22,6 @@ import {
 
 import dynamic from "next/dynamic";
 
-
-
 const Chart = dynamic(() => import('react-apexcharts'), {
     ssr: false
 });
@@ -108,8 +106,8 @@ export default function Overview() {
 
                 <CardsContent>
                     <CardsWrapper className="flex">
-                        <Card day="Today" amount="1,2k" hasExport />
-                        <Card day="Weekly" amount="2,5k" hasExport={false} />
+                        <Card day="Hoje" amount="1,2k" hasExport />
+                        <Card day="Semanal" amount="2,5k" hasExport={false} />
                         <MonthlyCard className="flex fd">
                             <MonthlyCardHeader className="flex">
                                 <MonthlyCardTitle> Mensal </MonthlyCardTitle>

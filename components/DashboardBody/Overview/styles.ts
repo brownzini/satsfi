@@ -27,10 +27,22 @@ export const ImportContainer = styled.div`
 `;
 
 export const SvgIconInImportArea = styled.div`
-    width: 10%;
+    width: 12%;
     height: 100%;
 
     color: #FF8585;
+
+    border: 2px solid #FF8585;
+    border-radius: 3px;
+
+    padding-right: 1%;
+
+    transition: 0.4s;
+
+    &:hover {
+        background-color: #fffbfc;
+    }
+
     cursor: pointer;
 `;
 
@@ -46,8 +58,6 @@ export const CleanAllContainer = styled.div`
     font-weight: 300;
     font-family: 'Roboto';
     font-style: italic;
-
-    padding-left: 7%;
 `;
 
 export const ImportWrapper = styled.div`
@@ -89,7 +99,7 @@ export const CardsWrapper = styled.div`
     height: 100%;
     gap: 10px;
     
-    padding: 5%;
+    padding: 2%;
 `;
 
 /* [Monthly Area] */
