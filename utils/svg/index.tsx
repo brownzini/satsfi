@@ -24,16 +24,10 @@ export default function SvgModel({
         .st1{fill:#206494;}
         .st2{fill:#76D3E8;}
     `;
-    const feeStyle = `
-        .st0{fill:#FD6A7E;}
-        .st1{fill:#17B978;}
-        .st2{fill:#8797EE;}
-        .st3{fill:#41A6F9;}
-        .st4{fill:#37E0FF;}
-        .st5{fill:#2FD9B9;}
-        .st6{fill:#F498BD;}
-        .st7{fill:#FFDF1D;}
-        .st8{fill:#C6C9CC;}
+    const surveyStyle = `
+        .hatch_een{fill:#265AA5;}
+        .hatch_twee{fill:#FFC5BB;}
+        .st0{fill:#333B3A;}
     `;
     switch (name) {
         case 'satoshi':
@@ -226,21 +220,49 @@ export default function SvgModel({
                 </path>
             </svg>
         case 'confirm':
-            return <BaseSvg 
-                      width={width}
-                      height={height} 
-                      viewBox="0 -0.5 17 17" 
-                      version="1.1" 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      className="si-glyph si-glyph-checked"
-                   >
-                    <title>1228</title>
-                    <defs></defs>
-                   <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+            return <BaseSvg
+                width={width}
+                height={height}
+                viewBox="0 -0.5 17 17"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                className="si-glyph si-glyph-checked"
+            >
+                <title>1228</title>
+                <defs></defs>
+                <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                     <path d="M3.432,6.189 C3.824,5.798 4.455,5.798 4.847,6.189 L6.968,8.31 L13.147,2.131 C13.531,1.747 14.157,1.753 14.548,2.144 L16.67,4.266 C17.06,4.657 17.066,5.284 16.684,5.666 L7.662,14.687 C7.278,15.07 6.651,15.064 6.261,14.673 L1.311,9.723 C0.92,9.333 0.92,8.7 1.311,8.31 L3.432,6.189 Z" fill="#74f6b5" className="si-glyph-fill">
                     </path>
-                   </g>
-                  </BaseSvg>
+                </g>
+            </BaseSvg>
+        case 'addSurvey':
+            return <svg 
+                      id="Uploaded to svgrepo.com" 
+                      width={width}
+                      height={height}
+                      version="1.1" 
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                   >
+                    <style type="text/css">
+                        {surveyStyle}
+                    </style>
+                    <g>
+                    <path 
+                        className="hatch_twee" 
+                        d="M26.516,21l3-3H30v0.93L27.93,21H26.516z M21,15.93l3-3V12h-0.484L21,14.516V15.93z M24,23.516l-3,3V27
+                          h0.93L24,24.93V23.516z M17.516,18L15,20.516V21h0.93l3-3H17.516z M21,22.516v1.414L26.93,18h-1.414L21,22.516z M18.516,21h1.414
+                          L24,16.93v-1.414L18.516,21z"
+                    />
+                    <path 
+                        className="hatch_een" 
+                        d="M30,17h-5v-5c0-0.552-0.448-1-1-1h-1V2c0-0.552-0.448-1-1-1H8C7.696,1,7.409,1.138,7.219,1.375l-4,5
+                           C3.077,6.553,3,6.773,3,7v23c0,0.552,0.448,1,1,1h18c0.552,0,1-0.448,1-1v-2h1c0.552,0,1-0.448,1-1v-5h5c0.552,0,1-0.448,1-1v-3
+                           C31,17.448,30.552,17,30,17z M8,2v5H4L8,2z M22,30H4V8h4c0.552,0,1-0.448,1-1V2h13v9h-1c-0.552,0-1,0.448-1,1v5h-5
+                           c-0.552,0-1,0.448-1,1v3c0,0.552,0.448,1,1,1h5v5c0,0.552,0.448,1,1,1h1V30z M30,21h-6v6h-3v-6h-6v-3h6v-6h3v6h6V21z"
+                    />
+                    </g>
+                   </svg>
         default: return (
             <Svg
                 id="satoshiSvg"
