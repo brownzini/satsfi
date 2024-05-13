@@ -346,7 +346,7 @@ export default function Survey() {
                                     }
                                 </OptionsList>
                             </OptionsWrapper>
-                            <SaveButtoArea>
+                            <SaveButtoArea className="flex">
                                 <BackButton onClick={handleClickSurvey}>VOLTAR</BackButton>
                                 <CreateButton onClick={handleCreate}>CRIAR</CreateButton>
                             </SaveButtoArea>

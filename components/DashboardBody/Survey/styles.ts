@@ -145,6 +145,8 @@ export const Text = styled.p`
     font-family: 'Inter';
     font-weight: bold;
     font-size: 1.4rem;
+
+    user-select: none;
 `;
 
 export const OptionSvgArea = styled.div`
@@ -161,7 +163,9 @@ export const OptionSvgArea = styled.div`
 export const OptionsList = styled.div`
     width: 100%;
     height: 100%;
-    max-height: 81%;
+    max-height: 70%;
+
+    user-select: none;
 
     display: flex;
     flex-direction: column;
@@ -236,20 +240,22 @@ export const Input = styled.input`
 
 export const SaveButtoArea = styled.div`
     width: 70%;
-    height: 34%;
-
-    padding-top: 4%;
+    height: 10%;
 
     display: flex;
     justify-content: center;
     align-items: flex-start;
+
+    padding-bottom: 3%;
+
+    user-select: none;
 
     gap: 5px;
 `;
 
 export const CreateButton = styled.button`
     width: 100%;
-    height: 50%;
+    height: 100%;
 
     color:white;
     font-family: 'Inter';
@@ -272,7 +278,7 @@ export const CreateButton = styled.button`
 
 export const BackButton = styled.button`
     width: 100%;
-    height: 50%;
+    height: 100%;
 
     color:white;
     font-family: 'Inter';

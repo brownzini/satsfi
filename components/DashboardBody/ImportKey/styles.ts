@@ -52,6 +52,8 @@ export const Input = styled.input`
     border-top-left-radius: 5px;
 
     padding-left: 5%;
+
+    outline: none;
 `;
 
 export const Button = styled.button`
@@ -76,4 +78,11 @@ export const Button = styled.button`
     }
 
     cursor: pointer;
+`;
+
+export const MessageError = styled.h2`
+    color: #FF8585;
+    font-size: 1.4rem;
+    font-family: 'Roboto';
+    font-style: italic;
 `;
