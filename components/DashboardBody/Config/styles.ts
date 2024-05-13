@@ -32,3 +32,30 @@ export const Setups = styled.div`
 
     background-color: white;
 `;
+
+export const DescriptionArea = styled.div`
+    width: 100%;
+    height: 15%;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    
+    position: relative;
+`;
+
+export const PercentArea = styled.div`
+    width: 100%;
+    height: 50%;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+`;
+
+export const VolumeTitle = styled.p`
+    color: #746B6B;
+    font-size: 1rem;
+    font-family: 'Inter';
+    font-weight: bold;
+`;

@@ -29,13 +29,13 @@ export default function DashboardBody() {
                 className="flex" 
                 styles={
                     conditionBorderRadius(true) + `
-                    ${(true) && `
+                    ${(false) && `
                         border:none;
                         background-color:white;
                     `}
                 `
             }>
-                <Overview />
+                <Config />
             </Wrapper>
         </Body>
     );

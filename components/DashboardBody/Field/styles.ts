@@ -15,8 +15,6 @@ export const Container = styled.div<ContainerProp>`
     display: flex;
     ${(p) => p.center}
     align-items: center;
-
-    padding-left: 12%;
 `;
 
 export const Title = styled.p<StyleProp>`    

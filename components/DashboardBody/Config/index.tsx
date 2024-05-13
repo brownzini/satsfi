@@ -2,12 +2,38 @@ import { useState } from "react";
 import {
     Amounts,
     Container,
+    DescriptionArea,
+    PercentArea,
     Setups,
+    VolumeTitle,
     WrapperContainer,
 } from "./styles";
 import Field from "../Field";
 
 export default function Config() {
+    const [minAmount, setMinAmount] = useState<string>('');
+    const [allowDonate, setAllowDonate] = useState<boolean>(false);
+    const [donationVolume, setDonationVolume] = useState<number>(1);
+    const [durationDonate, setDurationDonate] = useState<number>(1);
+
+    const [haveError, setHaveError] = useState<boolean>(false);
+
+    const validationField = () => {
+        if(minAmount === '') {
+            setMinAmount('Preencha o campo');
+            setHaveError(true);
+        } else if(parseInt(minAmount.replace(/[,.]/g, "")) < 1000 ) {
+            setMinAmount('Valor minimo é de 1,000 sats');
+            setHaveError(true);
+        } else {
+            console.log('sucesso');
+        }
+    }
+
+    const hiddeError = () => {
+        setHaveError(false);
+    }
+
     return (
         <Container className="flex">
             <WrapperContainer className="flex">
@@ -21,7 +47,8 @@ export default function Config() {
                         `}
                         text="Mínimo de satoshi por donate"
                         styler={`
-                            color: #3C5774;
+                            transition: 0.5s ease;
+                            color: ${(!haveError) ? '#3C5774': 'red'};
                             font-size: 1.2rem;
                             font-family: "Inter";
                             font-weight: bold;
@@ -32,6 +59,7 @@ export default function Config() {
                         center={`
                             width: 100%;
                             height: 10%;
+                            padding-left: 12%;
                         `}
                         styler={`
                             width: 70%;
@@ -39,13 +67,21 @@ export default function Config() {
 
                             border-radius: 5px;
 
-                            color: #6a5212;
+                            color: ${(!haveError) ? '#6a5212': 'red'};
                             font-family: "Roboto";
                             font-weight: 400;
                             font-size: 1.2rem;
 
-                            padding-left: 10%;
+                            transition: 0.5s ease;
+
+                            padding-left: 5%;
+                            outline:none;
                         `}
+                         inputType="price"
+                         inputValue={minAmount}
+                         setInputValue={setMinAmount}
+                         placeholder="Minimo de 1,000 Sats"
+                         onClick={hiddeError}
                     />
                     <br />
                     <Field
@@ -74,6 +110,8 @@ export default function Config() {
                         styler={`
                     
                         `}
+                        checked={allowDonate}
+                        setChecked={setAllowDonate}
                     />
                     <br />
                     <br />
@@ -83,6 +121,7 @@ export default function Config() {
                             width: 100%;
                             height: 20%;
                             justify-content: flex-start;
+                            padding-left: 12%;
                            
                         `}
                         text="Salvar"
@@ -106,25 +145,31 @@ export default function Config() {
 
                             cursor:pointer;
                         `}
+                        onClick={validationField}
                     />
                 </Amounts>
                 <Setups className="flex fd">
-                    <Field
-                        type="title"
-                        signal="%"
-                        center={`
-                            height: 10%;
-                            justify-content: flex-start;
-                            padding-left: 12%;
-                        `}
-                        text="Volume do alerta"
-                        styler={`
-                            color: #3C5774;
-                            font-size: 1.2rem;
-                            font-family: "Inter";
-                            font-weight: bold;
-                        `}
-                    />
+                    <DescriptionArea>
+                        <Field
+                            type="title"
+                            center={`
+                                height: 10%;
+                                justify-content: flex-start;
+                                padding: 0;
+                                padding-left: 12%;
+                            `}
+                            text="Volume do alerta:"
+                            styler={`
+                                color: #3C5774;
+                                font-size: 1.2rem;
+                                font-family: "Inter";
+                                font-weight: bold;
+                            `}
+                        />
+                        <PercentArea>
+                            <VolumeTitle>{donationVolume}%</VolumeTitle>
+                        </PercentArea>
+                    </DescriptionArea>
                     <Field
                         type="slider"
                         center={`
@@ -134,85 +179,52 @@ export default function Config() {
                         `}
                         styler={`
                           
-                        `}
-                    />
-                    <br />
-                    <Field
-                        type="title"
-                        signal="s"
-                        text="Duração dos donates"
-                        center={`
-                            height: 10%;
-                            justify-content: flex-start;
-                            padding-left: 12%;
-                        `}
-                        styler={`
-                            color: #3C5774;
-                            font-size: 1.2rem;
-                            font-family: "Inter";
-                            font-weight: bold;
-                        `}
-                    />
-                    <Field
-                        type="slider"
-                        center={`
-                            height: 10%;
-                            justify-content: flex-start;
-                            padding-left: 12%;
                         `}
                         durationMin="1"
-                        durationMax="15"
-                        styler={`
-                          
-                        `}
+                        durationMax="100"
+                        value={donationVolume}
+                        setValue={setDonationVolume}
                     />
-               
+                    <br />
+                    <DescriptionArea>
+                        <Field
+                            type="title"
+                            text="Duração dos donates:"
+                            center={`
+                                height: 10%;
+                                justify-content: flex-start;
+                                padding-left: 12%;
+                            `}
+                            styler={`
+                                color: #3C5774;
+                                font-size: 1.2rem;
+                                font-family: "Inter";
+                                font-weight: bold;
+                            `}
+                        />
+                        <PercentArea>
+                            <VolumeTitle>{durationDonate}s</VolumeTitle>
+                        </PercentArea>
+                    </DescriptionArea>
                     <Field
-                        type="title"
-                        text="Estilizar por quantia"
+                        type="slider"
                         center={`
                             height: 10%;
                             justify-content: flex-start;
                             padding-left: 12%;
                         `}
                         styler={`
-                            width:70%;
-                            color: #3C5774;
-                            font-size: 1.4rem;
-                            font-family: "Inter";
-                            font-weight: bold;
+                          
                         `}
-                    />                    
-                    <Field
-                        type="button"
-                        center={`
-                            width: 100%;
-                            height: 20%;
-                            justify-content: flex-start;
-                           
-                        `}
-                        text="Alterar"
-                        styler={`
-                            width: 70%;
-                            height: 70%;
-                            color: white;
-                            font-size: 1.4rem;
-                            font-family: 'Poppins';
-                            font-weight: bold;
-
-                            border: none;
-                            border-radius: 5px;
-                            background-color: #3B1170;
-
-                            transition: 1s;
-
-                            &:hover {
-                                background-color: #8140cf;
-                            }
-
-                            cursor:pointer;
-                        `}
+                         durationMin="1"
+                         durationMax="15"
+                         value={durationDonate}
+                         setValue={setDurationDonate}
                     />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                 </Setups>
             </WrapperContainer>
         </Container>

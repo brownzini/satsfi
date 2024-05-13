@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
     Button,
     Container,
@@ -15,13 +13,13 @@ interface Props {
     styler?: string;
     text?: string;
     center: string;
-    signal?: string;
 
     value?: number;
     setValue?: (param:number) => void;
     durationMin?: string;
     durationMax?: string;
 
+    maxPrice?: number;
     maxLength?: number;
     inputType?: "price" | "text";
     inputValue?: string;
@@ -40,7 +38,6 @@ export default function Field({
     styler,
     text,
     center,
-    signal,
     value,
     setValue,
     durationMin = "1",
@@ -54,11 +51,7 @@ export default function Field({
     setChecked,
     handleClick,
     onClick,
-    
 }: Props) {
-    const isPercentField = (text === 'Volume do alerta' || text === 'Duração dos donates');
-    const tratedSginal = (signal) ? signal : '';
-
     const handleChange = () => {
         if ((checked !== undefined) && (setChecked)) {
             setChecked(!checked);
@@ -115,7 +108,7 @@ export default function Field({
             case 'button':
                 return <Button
                     styler={styler}
-                    onClick={() => console.log(text)}
+                    onClick={onClick}
                 >
                     {text}
                 </Button>
@@ -133,11 +126,11 @@ export default function Field({
                 </SliderContainer>
             default:
                 return <Title
-                    styler={styler}
-                    onClick={handleClick}
-                >
-                    {text}{(isPercentField) ? `: ${value + tratedSginal}` : ''}
-                </Title>
+                          styler={styler}
+                          onClick={handleClick}
+                        >
+                          {text}
+                        </Title>
         }
     }
 
