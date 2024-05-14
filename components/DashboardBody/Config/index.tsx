@@ -13,16 +13,17 @@ import Field from "../Field";
 export default function Config() {
     const [minAmount, setMinAmount] = useState<string>('');
     const [allowDonate, setAllowDonate] = useState<boolean>(false);
-    const [donationVolume, setDonationVolume] = useState<number>(1);
-    const [durationDonate, setDurationDonate] = useState<number>(1);
+    const [donationVolume, setDonationVolume] = useState<number>(100);
+    const [durationDonate, setDurationDonate] = useState<number>(15);
 
     const [haveError, setHaveError] = useState<boolean>(false);
 
     const validationField = () => {
-        if(minAmount === '') {
+        const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
+        if(minAmount === '' || Number.isNaN(priceFiltered)) {
             setMinAmount('Preencha o campo');
             setHaveError(true);
-        } else if(parseInt(minAmount.replace(/[,.]/g, "")) < 1000 ) {
+        } else if(priceFiltered < 1000 ) {
             setMinAmount('Valor minimo é de 1,000 sats');
             setHaveError(true);
         } else {

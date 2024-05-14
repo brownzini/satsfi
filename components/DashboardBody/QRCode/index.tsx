@@ -24,7 +24,7 @@ import html2canvas from "html2canvas";
 export default function QRCodeScreen() {
     const [bgColor, setBgColor] = useState<string>('#240C42');
     const [fontColor, setFontColor] = useState<string>('#ffffff');
-    const [handle, setHandle] = useState<string>('ban');
+    const [handle, setHandle] = useState<string>('Bananada');
 
     const divRef = useRef(null);
 
@@ -112,11 +112,11 @@ export default function QRCodeScreen() {
 
                                 border-radius: 5px;
 
-                                color: #515151;
+                                color: #240C42;
                                 font-family: "Roboto";
-                                font-weight: 400;
+                                font-weight: 300;
                                 font-size: 1.2rem;
-
+                                font-style: italic;
                                 transition: 0.5s ease;
 
                                 padding-left: 5%;
@@ -145,7 +145,7 @@ export default function QRCodeScreen() {
                         fontcolor={fontColor}
                         fontSize="1rem"
                     >
-                        <HeaderText>{'satsfi.com/' + handle}</HeaderText>
+                        <HeaderText>{'satsfi.com/' +'\n'+handle}</HeaderText>
                     </HeaderArea>
                     <BodyArea
                         id="body-area" 

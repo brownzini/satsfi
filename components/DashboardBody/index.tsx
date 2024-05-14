@@ -12,6 +12,7 @@ import Survey from "./Survey";
 import Test from "./Test";
 import TrackDonate from "./TrackDonate";
 import QRCode from "./QRCode";
+import Call from "./Call";
 
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
@@ -30,6 +31,8 @@ export default function DashboardBody() {
             {/* <Survey /> */}
             {/* <Test /> */}
             {/* <TrackDonate /> */}
+            {/* <QRCode /> */}
+            {/* <Call /> */}
             <Wrapper  
                 className="flex" 
                 styles={
@@ -40,7 +43,6 @@ export default function DashboardBody() {
                     `}
                 `
             }>
-                <QRCode />
             </Wrapper>
         </Body>
     );

@@ -14,6 +14,7 @@ import {
     InputArea,
     InputWrapper,
     LeftSideArea,
+    MessageErrorArea,
     OptionSvgArea,
     OptionsList,
     OptionsWrapper,
@@ -43,28 +44,33 @@ interface OptionsProps {
 
 export default function Survey() {
 
-    const [surveyCreated, setSurveyCreated] = useState<boolean>(false);
-    const [surveyTitle, setSurveyTitle] = useState<string>('');
     const [surveyStatus, setSurveyStatus] = useState<boolean>(true);
     const [minCreateSurvey, setMinCreateSurvey] = useState<string>('');
+    const [surveyTime, setSurveyTime] = useState<number>(1);
+        
+    const [surveyCreated, setSurveyCreated] = useState<boolean>(false);
+
+    const [surveyTitle, setSurveyTitle] = useState<string>('');
+    const [options, setOptions] = useState<OptionsProps[]>([]);
     const [minToVote, setMinToVote] = useState<string>('');
 
-    const [surveyTime, setSurveyTime] = useState<number>(1);
-
-    const [options, setOptions] = useState<OptionsProps[]>([]);
-
+    const [errorTitle, setErrorTitle] = useState<boolean>(false);
     const [errorMinCreate, setErrorMinCreate] = useState<boolean>(false);
     const [errorMinToVote, setErrorMinToVote] = useState<boolean>(false);
+    const [errorOptions, setErrorOptions] = useState<boolean>(false);
 
     const handleClickSurvey = () => {
         setSurveyCreated(!surveyCreated);
     }
 
+    // [Options Crud]
+
     const addOption = () => {
         if (options.length < 7) {
+            const id = String(options.length + 1);
             setOptions(prevOptions => [
                 ...prevOptions,
-                { id: String(prevOptions.length + 1), name: '', votes: '0' }
+                { id: id, name: 'Opção '+id, votes: '0' }
             ]);
         }
     };
@@ -81,12 +87,80 @@ export default function Survey() {
         setOptions(prevOptions => prevOptions.filter(option => option.id !== id));
     };
 
-    const handleSave = () => {
-        setErrorMinCreate(true);
+    // Right Side
+    const createValidation = () => {
+        const priceFiltered = parseInt(minCreateSurvey.replace(/[,.]/g, ""));
+
+        if (Number.isNaN(priceFiltered)) {
+            setMinCreateSurvey('Preencha o campo');
+            setErrorMinCreate(true);
+            return false;
+        } else if (priceFiltered < 2500) {
+            setMinCreateSurvey('Minimo é de 2,500 sats');
+            setErrorMinCreate(true);
+            return false;
+        } else {
+            return true;
+        }
     }
 
+    // Right Side
+    const handleSave = () => {
+        if (createValidation()) {
+            console.log('Salva no banco de dados kkkkk')
+        }
+    }
+
+    // Left Side
+    const titleValidation = () => {
+        if (surveyTitle === '') {
+            setErrorTitle(true);
+            return false;
+        } else {
+            setErrorTitle(false);
+            return true;
+        }
+    }
+
+    const voteValidation = () => {
+        const priceFiltered = parseInt(minToVote.replace(/[,.]/g, ""));
+
+        if (Number.isNaN(priceFiltered)) {
+            setMinToVote('Preencha o campo');
+            setErrorMinToVote(true);
+            return false;
+        } else if (priceFiltered < 37) {
+            setMinToVote('Minimo é de 37 sats');
+            setErrorMinToVote(true);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    const optionsValidation = () => {
+
+        if(options.length < 2) {
+           setOptions([]);
+           setErrorOptions(true);
+           setTimeout(() => {
+              setErrorOptions(false);
+           }, 4000);
+           return false;
+        } else {
+            return true;
+        }
+    }
+
+    // Left Side
     const handleCreate = () => {
-        setErrorMinToVote(true);
+        const isTitleOk    = titleValidation();
+        const isVotationOk = voteValidation();
+        const isOptionsOk  = optionsValidation();
+        
+        if (isTitleOk && isVotationOk && isOptionsOk) {
+            console.log('Salva no banco de dados kkkkk')
+        }
     }
 
     const removeMinCreateError = () => {
@@ -95,6 +169,20 @@ export default function Survey() {
 
     const removeMinToVoteError = () => {
         setErrorMinToVote(false);
+    }
+
+    const removeErrorTitle = () => {
+        setErrorTitle(false);
+    }
+
+    const handleReset = () => {
+        setSurveyCreated(false);
+        setSurveyTitle('');
+        setOptions([]);
+        setMinToVote('');
+        setErrorTitle(false);
+        setErrorMinToVote(false);
+        setErrorOptions(false);
     }
 
     return (
@@ -152,6 +240,8 @@ export default function Survey() {
                     center={`
                             width: 100%;
                             height: 10%;
+                            justify-content: flex-start;
+                            padding-left: 12%;
                     `}
                     styler={`
                             width: 70%;
@@ -212,13 +302,14 @@ export default function Survey() {
                     </TimerArea>
                 </DurationArea>
                 <SaveArea className="flex">
-                  <SaveButton onClick={handleSave}>SALVAR</SaveButton>
+                    <SaveButton onClick={handleSave}>SALVAR</SaveButton>
                 </SaveArea>
             </ControlArea>
             <GenerationArea className="flex">
                 {(surveyCreated) ? (
                     <GenerationWrapper className="flex">
                         <LeftSideArea>
+                            <br />
                             <Field
                                 type="title"
                                 center={`
@@ -228,7 +319,7 @@ export default function Survey() {
                                 `}
                                 text="Titulo: "
                                 styler={`
-                                    color: #3C5774;
+                                    color: ${!errorTitle ? '#3C5774' : 'red'};
                                     font-size: 1.6rem;
                                     font-family: "Inter";
                                     font-weight: bold;
@@ -239,6 +330,8 @@ export default function Survey() {
                                 center={`
                                     width: 100%;
                                     height: 10%;
+                                    justify-content: flex-start;
+                                    padding-left: 12%;
                                 `}
                                 styler={`
                                     width: 75%;
@@ -246,18 +339,19 @@ export default function Survey() {
 
                                     border-radius: 5px;
 
-                                    color: #6a5212;
+                                    color: ${!errorTitle ? '#6a5212' : 'red'};
                                     font-family: "Roboto";
                                     font-weight: 400;
                                     font-size: 1.2rem;
 
                                     padding-left: 10%;
                                 `}
-                                maxLength={100}
+                                maxLength={50}
                                 inputType="text"
-                                placeholder="Até 25 carac..."
+                                placeholder="Até 50 carac..."
                                 inputValue={surveyTitle}
                                 setInputValue={setSurveyTitle}
+                                onClick={removeErrorTitle}
                             />
                             <br />
                             <Field
@@ -282,6 +376,8 @@ export default function Survey() {
                                 center={`
                                     width: 100%;
                                     height: 10%;
+                                    justify-content: flex-start;
+                                    padding-left: 12%;
                                 `}
                                 styler={`
                                     width: 75%;
@@ -300,7 +396,7 @@ export default function Survey() {
                                 inputType="price"
                                 inputValue={minToVote}
                                 setInputValue={setMinToVote}
-                                placeholder="Min 10,000 ..."
+                                placeholder="Min 37 sats"
                                 onClick={removeMinToVoteError}
                             />
                         </LeftSideArea>
@@ -320,7 +416,7 @@ export default function Survey() {
                                     </OptionSvgArea>
                                 </DescriptionArea>
                                 <OptionsList>
-                                    {options.length > 0 &&
+                                    {options.length > 0 ? (
                                         options.map((option, index) => (
                                             <InputWrapper
                                                 key={index}
@@ -329,7 +425,7 @@ export default function Survey() {
                                                 <InputArea>
                                                     <Input
                                                         type="text"
-                                                        placeholder={'Opção ' + (index + 1)}
+                                                        placeholder={'Digitar opção '}
                                                         value={option.name}
                                                         onChange={(e) => handleChange(index, e.target.value, 30)}
                                                     />
@@ -343,11 +439,16 @@ export default function Survey() {
                                                 </RemoveArea>
                                             </InputWrapper>
                                         ))
+                                        ) : (
+                                            <MessageErrorArea className="flex">  
+                                                <h2> {(errorOptions) && `É necessário criar pelo menos 2 opções`} </h2>
+                                            </MessageErrorArea>
+                                        )
                                     }
                                 </OptionsList>
                             </OptionsWrapper>
                             <SaveButtoArea className="flex">
-                                <BackButton onClick={handleClickSurvey}>VOLTAR</BackButton>
+                                <BackButton onClick={handleReset}>VOLTAR</BackButton>
                                 <CreateButton onClick={handleCreate}>CRIAR</CreateButton>
                             </SaveButtoArea>
                         </RightSideArea>

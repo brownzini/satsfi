@@ -91,14 +91,14 @@ export default function Field({
         switch (type) {
             case 'input':
                 return <Input
-                    type="text"
-                    value={(inputValue) ? inputValue : ''}
-                    styler={styler}
-                    placeholder={(placeholder) ? placeholder : ''}
-                    onChange={(e) => inputTypeFormater(e.target.value)}
-                    onClick={(onClick) ? onClick : voidFunction}
-                    disabled={(disabled) ? disabled : false}
-                />
+                          type="text"
+                          value={(inputValue) ? inputValue : ''}
+                          styler={styler}
+                          placeholder={(placeholder) ? placeholder : ''}
+                          onChange={(e) => inputTypeFormater(e.target.value)}
+                          onClick={(onClick) ? onClick : voidFunction}
+                          disabled={(disabled) ? disabled : false}
+                        />
             case 'toggle':
                 return (
                     <Switch>

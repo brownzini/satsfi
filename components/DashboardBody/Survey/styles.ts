@@ -360,3 +360,15 @@ export const Button = styled.button`
 
     cursor: pointer;
 `;
+
+export const MessageErrorArea = styled.div`
+    width: 100%;
+    height: 100%;
+
+    color: #FF8585;
+    font-weight: 300;
+    font-style:italic;
+    font-family: 'Roboto';
+
+    text-align: left;
+`;
