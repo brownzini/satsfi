@@ -10,6 +10,7 @@ import Overview from "./Overview";
 import Config from "./Config";
 import Survey from "./Survey";
 import Test from "./Test";
+import TrackDonate from "./TrackDonate";
 
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
@@ -27,6 +28,7 @@ export default function DashboardBody() {
             {/* <Config /> */}
             {/* <Survey /> */}
             {/* <Test /> */}
+            {/* <TrackDonate /> */}
             <Wrapper  
                 className="flex" 
                 styles={
