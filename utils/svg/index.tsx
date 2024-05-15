@@ -264,25 +264,35 @@ export default function SvgModel({
                 </g>
             </svg>
         case 'playIcon':
-            return <svg 
-               width={width} 
-               height={height}
-               viewBox="0 0 24 24" 
-               fill="none" 
-               xmlns="http://www.w3.org/2000/svg"
+            return <svg
+                width={width}
+                height={height}
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
             >
                 <path d="M21.4086 9.35258C23.5305 10.5065 23.5305 13.4935 21.4086 14.6474L8.59662 21.6145C6.53435 22.736 4 21.2763 4 18.9671L4 5.0329C4 2.72368 6.53435 1.26402 8.59661 2.38548L21.4086 9.35258Z" fill="white" />
             </svg>
-        case 'popup': 
-            return  <BaseSvg 
-                      fill="#000000" 
+        case 'popup':
+            return <BaseSvg
+                fill="#000000"
+                width={width}
+                height={height}
+                viewBox="-2 0 19 19"
+                xmlns="http://www.w3.org/2000/svg"
+                className="cf-icon-svg">
+                <path d="M14.267 3.793v7.996a.477.477 0 0 1-.475.475h-2.356v2.472a.476.476 0 0 1-.475.475H1.208a.476.476 0 0 1-.475-.475V6.74a.476.476 0 0 1 .475-.475h2.356V3.793a.476.476 0 0 1 .475-.475h9.753a.476.476 0 0 1 .475.475zm-3.94 8.471H4.04a.477.477 0 0 1-.475-.475V8.626H1.84v5.476h8.487zm2.832-6.585H4.672v5.476h8.487z" />
+            </BaseSvg>
+        case 'add2':
+            return <svg 
                       width={width} 
-                      height={height}
-                      viewBox="-2 0 19 19" 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      className="cf-icon-svg">
-                            <path d="M14.267 3.793v7.996a.477.477 0 0 1-.475.475h-2.356v2.472a.476.476 0 0 1-.475.475H1.208a.476.476 0 0 1-.475-.475V6.74a.476.476 0 0 1 .475-.475h2.356V3.793a.476.476 0 0 1 .475-.475h9.753a.476.476 0 0 1 .475.475zm-3.94 8.471H4.04a.477.477 0 0 1-.475-.475V8.626H1.84v5.476h8.487zm2.832-6.585H4.672v5.476h8.487z"/>
-                    </BaseSvg>
+                      height={height} 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg"
+                   >
+                        <path fillRule="evenodd" clipRule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill="#5E9AA8" />
+                   </svg>
         default: return (
             <Svg
                 id="satoshiSvg"

@@ -13,6 +13,7 @@ import Test from "./Test";
 import TrackDonate from "./TrackDonate";
 import QRCode from "./QRCode";
 import Call from "./Call";
+import GenerateKey from "./GenerateKey";
 
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
@@ -43,6 +44,7 @@ export default function DashboardBody() {
                     `}
                 `
             }>
+              <GenerateKey />
             </Wrapper>
         </Body>
     );
