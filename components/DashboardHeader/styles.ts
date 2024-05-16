@@ -20,6 +20,10 @@ export const Logo = styled.h2`
     font-size: 2rem;
     font-family: 'Inter';
     font-weight: bold;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 3rem;
+    }
 `;
 
 export const OptionsArea = styled.div`

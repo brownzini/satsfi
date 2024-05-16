@@ -8,6 +8,8 @@ export const Container = styled.div`
 
     background-color: white;
     box-shadow: 0px 4px 5px 2px rgb(0 0 0 / 14%);
+
+    max-height: 160px;
 `;
 
 /* [Header] */
@@ -23,6 +25,9 @@ export const TitleHeader = styled.h2`
     font-weight: bolder;
     font-size: 1.4rem;
 
+    @media only screen and (min-width: 1600px) {
+        font-size: 2rem;
+    }
 `;
 
 /* [BODY] */
@@ -48,6 +53,10 @@ export const CardAmountContainer = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
+
+    @media only screen and (min-width: 1600px) {
+        font-size: 2rem;
+    }
 
     color:#FAD40F;
     font-family: 'Inter';
@@ -82,6 +91,10 @@ export const ExportTitleArea = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
+
+    @media only screen and (min-width: 1600px) {
+        font-size: 1.4rem;
+    }
 
     cursor: pointer;
     user-select: none;

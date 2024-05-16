@@ -6,10 +6,14 @@ interface Prop {
     fontSize:string;
 }
 
+interface BorderProp {
+    styler:string;
+}
+
 export const Content = styled.div`
     width: 88%;
     height: 84%;
-    gap: 30px;
+    gap: 0px;
 `;
 
 export const ControlArea = styled.div`
@@ -26,6 +30,16 @@ export const ImageArea = styled.div`
     height: 100%;
     background-color: transparent;
     max-width: 300px;
+
+    @media only screen and (max-width: 1920px) {
+        min-width: 340px;
+    }
+    @media only screen and (max-width: 1600px) {
+        min-width: 300px;
+    }
+    @media only screen and (max-width: 1366px) {
+        width: 100px;
+    }
 `;
 
 export const ColorsArea = styled.div`
@@ -83,7 +97,7 @@ export const FontSizeArea = styled.div`
     align-items: center;
 `;
 
-export const CardWrapper = styled.div`
+export const CardWrapper = styled.div<BorderProp>`
     width: 100%;
     height: 100%;
 
@@ -96,7 +110,15 @@ export const CardWrapper = styled.div`
     background-color: #240C42;
     border-radius: 5px;
 
-    border: 3px solid #240C42;
+    border: 3px solid ${(p) => p.styler};
+
+    @media only screen and (min-width: 2560px) {
+        height: 75%;
+    }
+
+    @media only screen and (max-width: 1920px) {
+        width: 88%;
+    }
 
     padding: 0%;
     margin: 0;
@@ -112,12 +134,40 @@ export const HeaderArea = styled.div<Prop>`
 
     color: ${(p) => p.fontcolor};
     font-size: ${(p) => p.fontSize};
+
+    @media only screen and (min-width: 2560px) {
+        align-items: center;
+        max-height: 160px;
+        font-size: 1.2rem;
+    }
+    @media only screen and (max-width: 1920px) {
+        font-size: 1.4rem;
+        padding: 7%;
+    }
 `;
 export const HeaderText = styled.h2`
     width: 100%;
 
     text-align: center;
     word-wrap: break-word;
+
+    @media only screen and (min-width: 2560px) {
+        padding: 10%;
+    }
+
+    @media only screen and (max-width: 1920px) {
+        padding: 10%;
+        font-size: 1.6rem;
+    }
+
+    @media only screen and (max-width: 1600px) {
+        padding: 3%;
+        font-size: 1.4rem;
+    }
+
+    @media only screen and (max-width: 1370px) {
+        font-size: 1.2rem;
+    }
 `;
 export const BodyArea = styled.div`
     width: 100%;
@@ -140,17 +190,34 @@ export const FooterArea = styled.div<Prop>`
 
     color: ${(p) => p.fontcolor};
     font-size: ${(p) => p.fontSize};
+
+    @media only screen and (min-width: 2560px) {
+        align-items: center;
+    }
+
+    @media only screen and (max-width: 1920px) {
+        font-size: 1.4rem;
+        padding: 7%;
+    }
 `;
 export const FooterText = styled.h2`
     width: 100%;
-
+    @media only screen and (min-width: 2560px) {
+        font-size: 2rem;
+    }
+    @media only screen and (max-width: 1920px) {
+        font-size: 1.6rem;
+    }
+    @media only screen and (max-width: 1600px) {
+        font-size: 1.4rem;
+    }
     text-align: center;
     word-wrap: break-word;
 `;
 
 export const ButtonArea = styled.div`
     width: 100%;
-    height: 70%;
+    height: 100%;
 
     display: flex;
     justify-content: flex-start;
@@ -158,6 +225,10 @@ export const ButtonArea = styled.div`
 
     padding-left: 12%;
     margin-bottom: 5%;
+
+    @media only screen and (max-width: 1600px) {
+        margin-bottom: 2%;
+    }
 `;
 
 export const Button = styled.button`
@@ -179,6 +250,22 @@ export const Button = styled.button`
 
     &:hover {
         background-color: #1E0A37;
+    }
+
+    @media only screen and (min-width: 2560px) {
+        font-size: 2.5rem;
+        border-radius: 10px;
+        height: 70%;
+    }
+
+    @media only screen and (max-width: 1920px) {
+        font-size: 2rem;
+        border-radius: 10px;
+        height: 70%;
+    }
+
+    @media only screen and (max-width: 1600px) {
+        font-size: 1.4rem;
     }
 
     cursor: pointer;

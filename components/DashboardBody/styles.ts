@@ -10,6 +10,8 @@ export const Body = styled.div`
     
     background-color: white;
 
+    transition: 1s ease;
+    
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
 `;

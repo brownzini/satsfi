@@ -23,7 +23,12 @@ export const VoiceArea = styled.div`
 export const ButtonArea = styled.div`
     width: 77%;
     height: 14%;
+    
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     gap: 10px;
+        
     margin-top: 3%;
 
     border-radius: 5px;
@@ -44,6 +49,13 @@ export const MessageButton = styled.button`
     background-color: #3B1170;
 
     transition: 1s;
+
+    max-width: 200px;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 1.4rem;
+        padding-right:0%;
+    }
 
     &:hover {
         background-color: #8140cf;

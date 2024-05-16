@@ -64,6 +64,18 @@ export default function QRCodeScreen() {
                             font-size: 1.6rem;
                             font-family: "Inter";
                             font-weight: bold;
+
+                            @media only screen and (min-width: 2560px) {
+                                font-size: 3rem;
+                            }
+
+                            @media only screen and (max-width: 1920px) {
+                                font-size: 2.5rem;
+                            }
+
+                            @media only screen and (max-width: 1600px) {
+                                font-size: 1.6rem;
+                            }
                         `}
                 />
                 <br />
@@ -88,6 +100,10 @@ export default function QRCodeScreen() {
                             height: 100%;
                             justify-content: flex-start;
                             padding-left: 12%;
+
+                            @media only screen and (min-width: 2560px) {
+                                height: 30%;
+                            }
                         `}
                         text="ID da live"
                         styler={`
@@ -96,6 +112,18 @@ export default function QRCodeScreen() {
                             font-size: 1.6rem;
                             font-family: "Inter";
                             font-weight: bold;
+
+                            @media only screen and (min-width: 2560px) {
+                                font-size: 3rem;
+                            }
+
+                            @media only screen and (max-width: 1920px) {
+                                font-size: 2.5rem;
+                            }
+
+                            @media only screen and (max-width: 1600px) {
+                                font-size: 1.6rem;
+                            }
                         `}
                     />
                     <Field
@@ -104,12 +132,29 @@ export default function QRCodeScreen() {
                                 width: 100%;
                                 height: 100%;
                                 padding-left: 12%;
+
+                                @media only screen and (min-width: 2560px) {
+                                    height: 50%;
+                                }
                             `}
                         styler={`
                                 width: 100%;
                                 height: 100%;
                                 max-width: 340px;
 
+                                @media only screen and (min-width: 2560px) {
+                                    height: 70%;
+                                    font-size: 2rem;
+                                }
+
+                                @media only screen and (max-width: 1920px) {
+                                    font-size: 2rem;
+                                }
+
+                                @media only screen and (max-width: 1600px) {
+                                    font-size: 1.6rem;
+                                }
+                                
                                 border-radius: 5px;
 
                                 color: #240C42;
@@ -121,6 +166,7 @@ export default function QRCodeScreen() {
 
                                 padding-left: 5%;
                                 outline:none;
+
                             `}
                         disabled
                         inputType="text"
@@ -138,7 +184,10 @@ export default function QRCodeScreen() {
                 ref={divRef}
                 className="flex fd"
             >
-                <CardWrapper className="flex fd">
+                <CardWrapper 
+                    className="flex fd"
+                    styler={bgColor}
+                >
                     <HeaderArea
                         className="flex"
                         bgcolor={bgColor}

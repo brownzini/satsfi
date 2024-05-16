@@ -1,0 +1,74 @@
+import React from "react";
+
+interface MessageContextValue {
+    message:string;
+    setMessage: (msg: string) => void;
+    status: boolean;
+    setStatus: (param: boolean) => void;
+    isSucess: boolean;
+    setIsSucess: (param: boolean) => void;
+    dispatchMessage: (msg: string, type:boolean) => void;
+}
+
+interface Props {
+    children: React.ReactNode;
+}
+
+const listInitial: MessageContextValue = {
+    message: 'Salvo com sucesso!!',
+    setMessage: param => {},
+    status: false,
+    setStatus: param => { },
+    isSucess: false,
+    setIsSucess: param => {},
+    dispatchMessage: (msg, type) => {},
+};
+
+const MessageContext = React.createContext<MessageContextValue>(listInitial);
+
+export function MessageProvider({ children }: Props) {
+
+    const [status, setStatus] = React.useState<boolean>(false);
+    const [message, setMessage] = React.useState<string>('Salvo com sucesso!!');
+    const [isSucess, setIsSucess] = React.useState<boolean>(false); 
+
+    const dispatchMessage = (msg:string, type:boolean) => {
+        if(!status) {
+           setIsSucess(type);
+           setMessage(msg);
+           setStatus(true);
+           setTimeout(() => {
+               setStatus(false); 
+           }, 2500);
+        }
+    }
+
+    return (
+        <MessageContext.Provider value={{ 
+            status, setStatus,
+            message, setMessage,
+            isSucess, setIsSucess,
+            dispatchMessage,
+        }}>
+            {children}
+        </MessageContext.Provider>
+    );
+}
+
+export function useMessage() {
+    const context = React.useContext(MessageContext);
+
+    const { 
+        status, setStatus,
+        message, setMessage,
+        isSucess, setIsSucess,
+        dispatchMessage, 
+    } = context;
+
+    return { 
+            status, setStatus,
+            message, setMessage,
+            isSucess, setIsSucess,
+            dispatchMessage,
+    };
+}

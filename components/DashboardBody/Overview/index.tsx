@@ -55,7 +55,7 @@ export default function Overview() {
           size: 0,
         },
         title: {
-          text: 'Suas movimentações',
+          text: 'Doações durante o mês',
           align: 'left' as any
         },
         grid: {

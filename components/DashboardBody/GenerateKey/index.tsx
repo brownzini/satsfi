@@ -10,7 +10,6 @@ import {
 //Components
 import Field from "../Field";
 import { v4 as uuidv4 } from 'uuid';
-
 import SvgModel from "@/utils/svg";
 
 export default function GenerateKey() {
@@ -112,6 +111,10 @@ export default function GenerateKey() {
                             font-weight: bold;
                             word-wrap: break-word;
                             max-width: 70%;
+
+                            @media only screen and (min-width: 2560px) {
+                                font-size: 3rem;
+                            }
                 `}
             />
             <Field
@@ -137,6 +140,10 @@ export default function GenerateKey() {
 
                             padding-left: 3%;
                             outline:none;
+
+                            @media only screen and (min-width: 2560px) {
+                                font-size: 2rem;
+                            }
                 `}
                 maxLength={30}
                 placeholder="Ex: satsfi.com/BananaTV"
@@ -160,32 +167,40 @@ export default function GenerateKey() {
                         font-size: 1.6rem;
                         font-family: "Inter";
                         font-weight: bold;
+
+                        @media only screen and (min-width: 2560px) {
+                            font-size: 3rem;
+                        }
                 `}
             />
             <Field
                 type="input"
                 center={`   
-                                width: 100%;
-                                height: 10%;
-                                padding-left: 12%;
-                            `}
+                    width: 100%;
+                    height: 10%;
+                    padding-left: 12%;
+                `}
                 styler={`
-                                width: 100%;
-                                height: 100%;
-                                max-width:520px;
+                    width: 100%;
+                    height: 100%;
+                    max-width:520px;
 
-                                border-radius: 5px;
+                    border-radius: 5px;
 
-                                color: ${(!addressError) ? '#240C42' : 'red'};
-                                font-family: "Roboto";
-                                font-weight: 300;
-                                font-size: 1.2rem;
-                                font-style: italic;
-                                transition: 0.5s ease;
+                    color: ${(!addressError) ? '#240C42' : 'red'};
+                    font-family: "Roboto";
+                    font-weight: 300;
+                    font-size: 1.2rem;
+                    font-style: italic;
+                    transition: 0.5s ease;
 
-                                padding-left: 3%;
-                                outline:none;
-                            `}
+                    @media only screen and (min-width: 2560px) {
+                        font-size: 2rem;
+                    }
+
+                    padding-left: 3%;
+                    outline:none;
+                `}
                 maxLength={400}
                 placeholder="Seu endereço de receber da sua carteira lightning"
                 inputType="text"
@@ -198,46 +213,54 @@ export default function GenerateKey() {
                 type="title"
                 text="Chave do seu hub:  "
                 center={`
-                        height: 10%;
-                        justify-content: flex-start;
-                        padding-left: 12%;
-                    `}
+                    height: 10%;
+                    justify-content: flex-start;
+                    padding-left: 12%;
+                `}
                 styler={`
-                        color: ${(!keyHubError) ? '#3C5774' : 'red'};
-                        transition: 0.5s;
-                        font-size: 1.6rem;
-                        font-family: "Inter";
-                        font-weight: bold;
-                    `}
+                    color: ${(!keyHubError) ? '#3C5774' : 'red'};
+                    transition: 0.5s;
+                    font-size: 1.6rem;
+                    font-family: "Inter";
+                    font-weight: bold;
+
+                    @media only screen and (min-width: 2560px) {
+                        font-size: 3rem;
+                    }
+                `}
             />
             <GenerationArea className="flex">
                 <Field
                     type="input"
                     center={`   
-                                width: 100%;
-                                height: 100%;
-                                padding-left: 12%;
-                            `}
+                        width: 100%;
+                        height: 100%;
+                        padding-left: 12%;
+                    `}
                     styler={`
-                                width: 100%;
-                                height: 100%;
+                        width: 100%;
+                        height: 100%;
 
-                                border-radius: 5px;
+                        border-radius: 5px;
 
-                                color: ${(!keyHubError) ? '#240C42' : 'red'};
-                                font-family: "Roboto";
-                                font-weight: 300;
-                                font-size: 1.2rem;
-                                font-style: italic;
-                                transition: 0.5s ease;
+                        color: ${(!keyHubError) ? '#240C42' : 'red'};
+                        font-family: "Roboto";
+                        font-weight: 300;
+                        font-size: 1.2rem;
+                        font-style: italic;
+                        transition: 0.5s ease;
 
-                                caret-color: transparent;               
+                        caret-color: transparent;               
 
-                                padding-left: 3%;
-                                outline:none;
+                        padding-left: 3%;
+                        outline:none;
 
-                                cursor: pointer;
-                            `}
+                        @media only screen and (min-width: 2560px) {
+                            font-size: 2rem;
+                        }
+
+                        cursor: pointer;
+                    `}
                     maxLength={300}
                     inputType="text"
                     inputValue={keyHub}
@@ -262,50 +285,58 @@ export default function GenerateKey() {
                 type="title"
                 text="[ ! ] AVISO: Não compartilhe sua chave com ninguém"
                 center={`
-                        height: 10%;
-                        justify-content: flex-start;
-                        padding-left: 12%;
-                    `}
+                    height: 10%;
+                    justify-content: flex-start;
+                    padding-left: 12%;
+                `}
                 styler={`
-                        color: #0D72AB;
-                        transition: 0.5s;
-                        font-size: 1rem;
-                        font-family: "Inter";
-                        font-weight: bold;
-                    `}
+                    color: #0D72AB;
+                    transition: 0.5s;
+                    font-size: 1rem;
+                    font-family: "Inter";
+                    font-weight: bold;
+
+                    @media only screen and (min-width: 2560px) {
+                        font-size: 2rem;
+                    }
+                `}
             />
             <br />
             <Field
                 type="button"
                 center={`
-                            width: 100%;
-                            height: 20%;
-                            justify-content: flex-start;
-                            align-items: center;
-                            padding-left: 12%;
-                           
-                        `}
+                    width: 100%;
+                    height: 20%;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding-left: 12%;
+                    
+                `}
                 text="Salvar"
                 styler={`
-                            width: 20%;
-                            height: 70%;
-                            color: white;
-                            font-size: 1.4rem;
-                            font-family: 'Poppins';
-                            font-weight: bold;
+                    width: 20%;
+                    height: 70%;
+                    color: white;
+                    font-size: 1.4rem;
+                    font-family: 'Poppins';
+                    font-weight: bold;
 
-                            border: none;
-                            border-radius: 5px;
-                            background-color: #07CCA1;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: #07CCA1;
 
-                            transition: 1s;
+                    transition: 1s;
 
-                            &:hover {
-                                background-color: #11977a;
-                            }
+                    &:hover {
+                        background-color: #11977a;
+                    }
 
-                            cursor:pointer;
-                        `}
+                    @media only screen and (min-width: 2560px) {
+                        font-size: 2rem;
+                    }
+
+                    cursor:pointer;
+                `}
                 onClick={handleClick}
             />
         </Content>

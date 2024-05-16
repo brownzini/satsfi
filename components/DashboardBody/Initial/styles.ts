@@ -24,6 +24,11 @@ export const HeadTitle = styled.h1`
     font-size: 2rem;
     font-family: 'Inter';
     font-weight: bolder;
+
+    @media only screen and (min-height: 900px) {
+        text-align: center;
+        font-size: 3rem;
+    }
 `;
 
 export const Body = styled.div`
@@ -49,6 +54,10 @@ export const Button = styled.button<Prop>`
     font-family: 'Inter';
     font-weight: bolder;
     text-align: center;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 2rem;
+    }
 
     cursor: pointer;
     user-select: none;

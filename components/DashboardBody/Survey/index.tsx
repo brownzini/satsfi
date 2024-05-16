@@ -1,4 +1,5 @@
 import {
+    AmountVotesText,
     BackButton,
     Button,
     ButtonArea,
@@ -30,11 +31,14 @@ import {
     TimerArea,
     Title,
     TitleArea,
+    WinnerText,
 } from "./styles";
 
 import Field from "../Field";
 import SvgModel from "@/utils/svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMessage } from "@/contexts/useMessage";
+import TimerComponent from "./TimerComponent";
 
 interface OptionsProps {
     id: string;
@@ -42,12 +46,17 @@ interface OptionsProps {
     votes: string;
 }
 
+interface TimerProps {
+    minute: number;
+    second: number;
+}
+
 export default function Survey() {
 
     const [surveyStatus, setSurveyStatus] = useState<boolean>(true);
     const [minCreateSurvey, setMinCreateSurvey] = useState<string>('');
     const [surveyTime, setSurveyTime] = useState<number>(1);
-        
+
     const [surveyCreated, setSurveyCreated] = useState<boolean>(false);
 
     const [surveyTitle, setSurveyTitle] = useState<string>('');
@@ -59,18 +68,32 @@ export default function Survey() {
     const [errorMinToVote, setErrorMinToVote] = useState<boolean>(false);
     const [errorOptions, setErrorOptions] = useState<boolean>(false);
 
+    const [SurveyTimer, setSurveyTimer] = useState<TimerProps>({ minute: 0, second: 0 });
+    const [isSurveyCreated, setIsSurveyCreated] = useState<boolean>(false);
+    const [SurveyTimerStatus, setSurveyTimerStatus] = useState<boolean>(false);
+    const [isFinished, setIsFinished] = useState<boolean>(false);
+    const [winnerOption, setWinnerOption] = useState<string>('');
+    const [changeTitle, setChangeTitle] = useState<boolean>(false);
+
+    const { dispatchMessage } = useMessage();
+
     const handleClickSurvey = () => {
-        setSurveyCreated(!surveyCreated);
+        if (!isSurveyCreated) {
+            setSurveyCreated(!surveyCreated);
+        } else {
+            setChangeTitle(false);
+            setIsSurveyCreated(false);
+            handleReset();
+        }
     }
 
     // [Options Crud]
-
     const addOption = () => {
         if (options.length < 7) {
             const id = String(options.length + 1);
             setOptions(prevOptions => [
                 ...prevOptions,
-                { id: id, name: 'Opção '+id, votes: '0' }
+                { id: id, name: 'Opção ' + id, votes: '0' }
             ]);
         }
     };
@@ -107,21 +130,11 @@ export default function Survey() {
     // Right Side
     const handleSave = () => {
         if (createValidation()) {
-            console.log('Salva no banco de dados kkkkk')
+            dispatchMessage('Salvo com sucesso!!', true);
         }
     }
 
     // Left Side
-    const titleValidation = () => {
-        if (surveyTitle === '') {
-            setErrorTitle(true);
-            return false;
-        } else {
-            setErrorTitle(false);
-            return true;
-        }
-    }
-
     const voteValidation = () => {
         const priceFiltered = parseInt(minToVote.replace(/[,.]/g, ""));
 
@@ -139,27 +152,35 @@ export default function Survey() {
     }
 
     const optionsValidation = () => {
-
-        if(options.length < 2) {
-           setOptions([]);
-           setErrorOptions(true);
-           setTimeout(() => {
-              setErrorOptions(false);
-           }, 4000);
-           return false;
+        if (options.length < 2) {
+            setOptions([]);
+            setErrorOptions(true);
+            setTimeout(() => {
+                setErrorOptions(false);
+            }, 4000);
+            return false;
         } else {
             return true;
         }
     }
 
     // Left Side
+    const defineTime = () => {
+        const now = new Date();
+        setSurveyTimer({ minute: now.getMinutes()+surveyTime, second: now.getSeconds() });
+    }
+
     const handleCreate = () => {
-        const isTitleOk    = titleValidation();
         const isVotationOk = voteValidation();
-        const isOptionsOk  = optionsValidation();
-        
-        if (isTitleOk && isVotationOk && isOptionsOk) {
-            console.log('Salva no banco de dados kkkkk')
+        const isOptionsOk = optionsValidation();
+
+        if (isVotationOk && isOptionsOk) {
+            defineTime();
+            setSurveyCreated(false);
+            setIsSurveyCreated(true);
+            setSurveyTimerStatus(true);
+            dispatchMessage('Enquete criada com sucesso!!', true);
+            setChangeTitle(true);
         }
     }
 
@@ -176,35 +197,80 @@ export default function Survey() {
     }
 
     const handleReset = () => {
-        setSurveyCreated(false);
-        setSurveyTitle('');
-        setOptions([]);
-        setMinToVote('');
-        setErrorTitle(false);
-        setErrorMinToVote(false);
-        setErrorOptions(false);
+          setSurveyCreated(false);
+          setSurveyTitle('');
+          setOptions([]);
+          setMinToVote('');
+          setErrorTitle(false);
+          setErrorMinToVote(false);
+          setErrorOptions(false);
+          setIsFinished(false);
+          setSurveyTimerStatus(false);
+          setWinnerOption('');
+          setSurveyTimer({minute:0, second:0});
     }
+
+    const timerRendering = () => {
+        return SurveyTimerStatus ? (
+            <TimerComponent
+                data={SurveyTimer}
+                endTime={endTime}
+            />
+        ) : ( 
+          <>
+            <WinnerText>{winnerOption+': 70% dos votos'}</WinnerText>
+            <AmountVotesText> 50k satohis </AmountVotesText>
+          </> );
+    }
+
+    const endTime = () => {
+        setIsFinished(true);
+    }
+
+    const titleAreaRendering = () => {
+        return (!changeTitle) ? 'Enquete expira em' : 'Vencedor da enquete'
+    }
+
+    const findMaxVotesOption = () => {
+        return options.reduce((maxOption, currentOption) => {
+            return parseInt(currentOption.votes) > parseInt(maxOption.votes) ? currentOption : maxOption;
+        }, options[0]);
+    };
+
+    useEffect(() => {
+       if(isFinished) {
+          setSurveyTimerStatus(false);
+          setTimeout(() => {
+              const option = findMaxVotesOption();
+              setWinnerOption(option.name);
+          }, 500);
+       }
+    },[isFinished]);
 
     return (
         <Container className="flex">
             <ControlArea
                 className="flex fd"
                 styler={(!surveyCreated) ? '100%' : '75%'}
-            >
+            ><br />
                 <Field
                     type="title"
                     center={`
-                                height: 16%;
-                                justify-content: flex-start;
-                                padding-left: 12%;
-                            `}
+                        height: 16%;
+                        justify-content: flex-start;
+                        padding-left: 12%;
+                    `}
                     text="Permitir que criem enquetes: "
                     styler={`
-                                color: #3C5774;
-                                font-size: 1.4rem;
-                                font-family: "Inter";
-                                font-weight: bold;
-                            `}
+                        color: #3C5774;
+                        font-size: 1.4rem;
+                        font-family: "Inter";
+                        font-weight: bold;
+
+                        @media only screen and (min-height: 900px) {
+                            font-size: 2rem;
+                        }
+                    `}
                 />
                 <Field
                     type="toggle"
@@ -221,7 +287,7 @@ export default function Survey() {
                 <Field
                     type="title"
                     center={`
-                                height: 14%;
+                                height: 16%;
                                 justify-content: flex-start;
                                 padding-left: 12%;
                             `}
@@ -233,6 +299,10 @@ export default function Survey() {
                                 font-family: "Inter";
                                 font-weight: bold;
                                 word-wrap: break-word;
+
+                                @media only screen and (min-height: 900px) {
+                                    font-size: 2rem;
+                                }
                             `}
                 />
                 <Field
@@ -254,6 +324,10 @@ export default function Survey() {
                             font-family: "Roboto";
                             font-weight: 400;
                             font-size: 1.2rem;
+                            
+                            @media only screen and (min-height: 900px) {
+                                font-size: 1.6rem;
+                            }
 
                             outline:none;
 
@@ -269,17 +343,25 @@ export default function Survey() {
                 <Field
                     type="title"
                     center={`
-                                height: 10%;
-                                justify-content: flex-start;
-                                padding-left: 12%;
-                            `}
+                        height: 10%;
+                        justify-content: flex-start;
+                        padding-left: 12%;
+                    `}
                     text="Duração da enquete: "
                     styler={`
-                                color: #3C5774;
-                                font-size: 1.4rem;
-                                font-family: "Inter";
-                                font-weight: bold;
-                            `}
+                        color: #3C5774;
+                        font-size: 1.4rem;
+                        font-family: "Inter";
+                        font-weight: bold;
+
+                        @media only screen and (max-width: 1200px) {
+                            font-size: 1.4rem;
+                        }
+
+                        @media only screen and (min-height: 900px) {
+                            font-size: 2.5rem;
+                        }
+                    `}
                 />
                 <DurationArea className="flex">
                     <Field
@@ -295,7 +377,11 @@ export default function Survey() {
                         setValue={setSurveyTime}
                         durationMin="1"
                         durationMax="10"
-                        styler={` `}
+                        styler={` 
+                            @media only screen and (min-width: 2560px) {
+                                height: 25%;
+                            }
+                        `}
                     />
                     <TimerArea>
                         <TimeTitle>{surveyTime} min</TimeTitle>
@@ -310,12 +396,17 @@ export default function Survey() {
                     <GenerationWrapper className="flex">
                         <LeftSideArea>
                             <br />
+                            <br />
                             <Field
                                 type="title"
                                 center={`
                                     height: 15%;
                                     justify-content: flex-start;
                                     padding-left: 12%;
+
+                                    @media only screen and (min-height: 900px) {
+                                        height: 10%;
+                                    }
                                 `}
                                 text="Titulo: "
                                 styler={`
@@ -323,6 +414,10 @@ export default function Survey() {
                                     font-size: 1.6rem;
                                     font-family: "Inter";
                                     font-weight: bold;
+
+                                    @media only screen and (min-height: 900px) {
+                                        font-size: 2rem;
+                                    }
                                 `}
                             />
                             <Field
@@ -332,6 +427,7 @@ export default function Survey() {
                                     height: 10%;
                                     justify-content: flex-start;
                                     padding-left: 12%;
+                                    
                                 `}
                                 styler={`
                                     width: 75%;
@@ -345,6 +441,11 @@ export default function Survey() {
                                     font-size: 1.2rem;
 
                                     padding-left: 10%;
+                                    
+                                    @media only screen and (min-height: 900px) {
+                                        width: 100%;
+                                        font-size: 2rem;
+                                    }
                                 `}
                                 maxLength={50}
                                 inputType="text"
@@ -357,9 +458,17 @@ export default function Survey() {
                             <Field
                                 type="title"
                                 center={`
-                                    height: 20%;
+                                    height: 14%;
                                     justify-content: flex-start;
                                     padding-left: 12%;
+                                    
+                                    @media only screen and (min-height: 900px) {
+                                        height: 12%;
+                                    }
+
+                                    @media only screen and (max-width: 1500px) {
+                                        height: 12%;
+                                    }
                                 `}
                                 text="Mínimo para votar: "
                                 styler={`
@@ -369,6 +478,10 @@ export default function Survey() {
                                     font-family: "Inter";
                                     font-weight: bold;
                                     word-wrap: break-word;
+
+                                    @media only screen and (min-height: 900px) {
+                                        font-size: 1.6rem;
+                                    }
                                 `}
                             />
                             <Field
@@ -392,6 +505,11 @@ export default function Survey() {
                                     font-size: 1.2rem;
 
                                     padding-left: 10%;
+
+                                    @media only screen and (min-height: 900px) {
+                                        width: 100%;
+                                        font-size: 2rem;
+                                    }
                                 `}
                                 inputType="price"
                                 inputValue={minToVote}
@@ -439,11 +557,11 @@ export default function Survey() {
                                                 </RemoveArea>
                                             </InputWrapper>
                                         ))
-                                        ) : (
-                                            <MessageErrorArea className="flex">  
-                                                <h2> {(errorOptions) && `É necessário criar pelo menos 2 opções`} </h2>
-                                            </MessageErrorArea>
-                                        )
+                                    ) : (
+                                        <MessageErrorArea className="flex">
+                                            <h2> {(errorOptions) && `É necessário criar pelo menos 2 opções`} </h2>
+                                        </MessageErrorArea>
+                                    )
                                     }
                                 </OptionsList>
                             </OptionsWrapper>
@@ -456,17 +574,36 @@ export default function Survey() {
                 ) : (
                     <CreateSurveyArea className="flex fd">
                         <TitleArea>
-                            <Title> Nenhuma Enquete criada </Title>
+                            <Title>
+                                {(!isSurveyCreated) ? 'Nenhuma Enquete Gerada' : titleAreaRendering()}
+                            </Title>
                         </TitleArea>
-                        <SvgArea>
-                            <SvgModel
-                                name="addSurvey"
-                                width="100%"
-                                height="50%"
-                            />
+                        <SvgArea className="flex fd">
+                            {(!isSurveyCreated) ? (
+                                <SvgModel
+                                    name="addSurvey"
+                                    width="100%"
+                                    height="50%"
+                                />
+                            ) : timerRendering()}
                         </SvgArea>
                         <ButtonArea>
-                            <Button onClick={handleClickSurvey}> Gerar Enquete </Button>
+                            <Button
+                                styler={(!isSurveyCreated) ? `
+                                    background-color: #3B1170;
+                                    &:hover {
+                                        background-color: #1E0A37;
+                                    }
+                                ` : `
+                                    background-color: #606D6A;
+                                    &:hover {
+                                        background-color: #606D6A;
+                                    }
+                                `}
+                                onClick={handleClickSurvey}
+                            >
+                                {(!isSurveyCreated) ? 'Gerar nova Enquete' : 'Finalizar Enquete'}
+                            </Button>
                         </ButtonArea>
                     </CreateSurveyArea>
                 )}

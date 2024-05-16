@@ -21,6 +21,10 @@ export const Title = styled.h2`
     font-size: 2rem;
     font-family: 'Inter';
     font-weight: bolder;
+    
+    @media only screen and (min-width: 1366px) {
+        font-size: 3.7rem;
+    }
 `;
 
 export const InputArea = styled.div`
@@ -51,6 +55,14 @@ export const Input = styled.input`
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
 
+    @media only screen and (max-width: 1600px) {
+        font-size: 2rem;
+    }
+
+    @media only screen and (min-height: 900px) {
+        font-size: 3rem;
+    }
+
     padding-left: 5%;
 
     outline: none;
@@ -71,6 +83,14 @@ export const Button = styled.button`
     font-family: 'Roboto';
 
     transition: 0.75s ease;
+
+    @media only screen and (max-width: 1600px) {
+        font-size: 2rem;
+    }
+
+    @media only screen and (min-height: 900px) {
+        font-size: 2.5rem;
+    }
 
     &:hover {
         color: white;

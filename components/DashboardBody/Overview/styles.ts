@@ -33,11 +33,15 @@ export const SvgIconInImportArea = styled.div`
     color: #FF8585;
 
     border: 2px solid #FF8585;
-    border-radius: 3px;
+    border-radius: 5px;
 
     padding-right: 1%;
 
     transition: 0.4s;
+
+    @media only screen and (min-width: 1600px) {
+        font-size: 2rem;
+    }
 
     &:hover {
         background-color: #fffbfc;
@@ -76,6 +80,18 @@ export const ImportWrapper = styled.div`
     font-family: 'Open sans';
     font-weight: bold;
 
+    @media only screen and (min-width: 1600px) {
+        font-size: 2rem;
+    }
+
+    @media only screen and (min-height: 900px) {
+        font-size: 2rem;
+    }
+
+    @media only screen and (min-height: 768px) {
+        font-size: 1.6rem;
+    }
+    
     transition: 1s ease;
 
     &:hover {
@@ -112,6 +128,9 @@ export const MonthlyCard = styled.div`
 
     background-color: white;
     box-shadow: 0px 4px 5px 2px rgb(0 0 0 / 14%);
+
+    max-height: 160px;
+    max-width: 400px;
 `;
 
 export const MonthlyCardHeader = styled.div`
@@ -134,6 +153,11 @@ export const MonthlyCardTitle = styled.h2`
 export const MonthlyCardBody = styled.div`
     width: 100%;
     height: 40%;
+
+    
+    @media only screen and (min-width: 1600px) {
+        padding-left: 10%;
+    }
 `;
 
 export const MonthlyCardBodySvgArea = styled.div`

@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
 interface Prop {
+    styler: string;
+}
+
+interface ButtonProp {
     styler:string;
 }
 
@@ -58,6 +62,10 @@ export const TimeTitle = styled.p`
     font-family: 'Open sans';
     font-weight: 500;
     font-style: italic;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 1.6rem;
+    }
 `;
 
 export const SaveArea = styled.div`
@@ -76,6 +84,10 @@ export const SaveButton = styled.button`
     font-family: 'Inter';
     font-weight: bold;
     font-size: 1rem;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 2rem;
+    }
 
     border:none;
     border-radius: 4px;
@@ -145,6 +157,10 @@ export const Text = styled.p`
     font-family: 'Inter';
     font-weight: bold;
     font-size: 1.4rem;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 2rem;
+    }
 
     user-select: none;
 `;
@@ -236,10 +252,14 @@ export const Input = styled.input`
     border-bottom-left-radius: 5px;
 
     outline: none;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 2rem;
+    }
 `;
 
 export const SaveButtoArea = styled.div`
-    width: 70%;
+    width: 100%;
     height: 10%;
 
     display: flex;
@@ -247,6 +267,8 @@ export const SaveButtoArea = styled.div`
     align-items: flex-start;
 
     padding-bottom: 3%;
+
+    max-width: 84%;
 
     user-select: none;
 
@@ -268,6 +290,10 @@ export const CreateButton = styled.button`
     background-color: #3B1170;
 
     transition: 1s;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 1.6rem;
+    }
 
     &:hover {
         background-color: #8140cf;
@@ -292,8 +318,12 @@ export const BackButton = styled.button`
 
     background-color: #A6B2AF;
 
+    @media only screen and (min-height: 900px) {
+        font-size: 1.6rem;
+    }
+
     &:hover {
-        background-color: #606D6A;
+        background-color: #78807e;
     }
 
     cursor:pointer;
@@ -339,7 +369,7 @@ export const ButtonArea = styled.div`
     align-items: flex-start;
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<ButtonProp>`
     width: 50%;
     height: 70%;
 
@@ -350,12 +380,12 @@ export const Button = styled.button`
     font-family: 'Inter';
     font-weight: bold;
     
-    background-color: #3B1170;
+    ${(p) => p.styler};
 
     transition: 0.70s;
 
-    &:hover {
-        background-color: #1E0A37;
+    @media only screen and (min-height: 900px) {
+        font-size: 2rem;
     }
 
     cursor: pointer;
@@ -371,4 +401,18 @@ export const MessageErrorArea = styled.div`
     font-family: 'Roboto';
 
     text-align: left;
+`;
+
+export const WinnerText = styled.h3`
+    font-size: 1.6rem;
+    font-family: 'Open sans';
+    font-family: 700;
+    color: #3BC32F;
+`;
+
+export const AmountVotesText = styled.h3`
+    font-size: 1.6rem;
+    font-family: 'Roboto';
+    font-weight: bold;
+    color: #F4B000;
 `;

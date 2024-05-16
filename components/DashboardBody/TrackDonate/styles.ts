@@ -25,7 +25,6 @@ export const DonationCard = styled.div`
     width: 100%;
     height: 100%;
 
-    
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -49,7 +48,7 @@ export const DonationCard = styled.div`
     &::-moz-scrollbar-thumb {
         background: #888;
     }
-    
+
     gap: 30px;
 `;
 
@@ -64,6 +63,10 @@ export const WrapperDonationCard = styled.div`
 export const Header = styled.div`
     width: 100%;
     height: 16%;
+
+    @media only screen and (min-height: 900px) {
+        padding-top: 4%;
+    }
 
     display: flex;
     justify-content: space-between;
@@ -87,6 +90,10 @@ export const NameTitle = styled.h3`
     font-weight: bold;
     font-style: italic;
     font-size: 1.24rem;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 1.4rem;
+    }
 `;
 
 export const AmountArea = styled.div`
@@ -120,6 +127,10 @@ export const PriceTitle = styled.h3`
     font-weight: bold;
     font-style: italic;
     font-size: 1.6rem;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 1.4rem;
+    }
 `;
 
 export const Body = styled.div`
@@ -138,6 +149,8 @@ export const DescriptionArea = styled.div`
     padding-top: 2%;
     padding-bottom: 2%;
     border-radius: 7px;
+
+    max-height: 300px;
 
     background-color: #FAFAF0;
 `;

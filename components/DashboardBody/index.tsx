@@ -15,6 +15,11 @@ import QRCode from "./QRCode";
 import Call from "./Call";
 import GenerateKey from "./GenerateKey";
 
+//Components
+import SvgModel from "@/utils/svg";
+import MessageArea from "./MessageArea";
+import { MessageProvider } from "@/contexts/useMessage";
+
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
         (condition)
@@ -24,6 +29,7 @@ export default function DashboardBody() {
                border-bottom-right-radius: 7px;
              `;
     return (
+        <MessageProvider>
         <Body className="flex fd">
             {/* <Initial /> */}
             {/* <ImportKey /> */}
@@ -34,6 +40,8 @@ export default function DashboardBody() {
             {/* <TrackDonate /> */}
             {/* <QRCode /> */}
             {/* <Call /> */}
+            {/* <GenerateKey /> */}
+            <MessageArea />
             <Wrapper  
                 className="flex" 
                 styles={
@@ -44,8 +52,9 @@ export default function DashboardBody() {
                     `}
                 `
             }>
-              <GenerateKey />
+                 <Survey />
             </Wrapper>
         </Body>
+        </MessageProvider>
     );
 }

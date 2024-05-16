@@ -45,6 +45,10 @@ export default function Config() {
                             height: 10%;
                             justify-content: flex-start;
                             padding-left: 12%;
+
+                            @media only screen and (min-height: 900px) {
+                                height: 20%;
+                            }
                         `}
                         text="Mínimo de satoshi por donate"
                         styler={`
@@ -53,6 +57,10 @@ export default function Config() {
                             font-size: 1.2rem;
                             font-family: "Inter";
                             font-weight: bold;
+
+                            @media only screen and (min-height: 900px) {
+                                font-size: 2rem;
+                            }
                         `}
                     />
                     <Field
@@ -77,6 +85,10 @@ export default function Config() {
 
                             padding-left: 5%;
                             outline:none;
+
+                            @media only screen and (min-height: 900px) {
+                                font-size: 1.6rem;
+                            }
                         `}
                          inputType="price"
                          inputValue={minAmount}
@@ -98,6 +110,10 @@ export default function Config() {
                             font-size: 1.2rem;
                             font-family: "Inter";
                             font-weight: bold;
+
+                            @media only screen and (min-height: 900px) {
+                                font-size: 2rem;
+                            }
                         `}
                     />
                     <Field
@@ -144,6 +160,10 @@ export default function Config() {
                                 background-color: #11977a;
                             }
 
+                            @media only screen and (min-height: 900px) {
+                                font-size: 2rem;
+                            }
+
                             cursor:pointer;
                         `}
                         onClick={validationField}
@@ -165,6 +185,14 @@ export default function Config() {
                                 font-size: 1.2rem;
                                 font-family: "Inter";
                                 font-weight: bold;
+
+                                @media only screen and (min-height: 900px) {
+                                    font-size: 2rem;
+                                }
+
+                                @media only screen and (max-width: 1599px) {
+                                    font-size: 1.6rem;
+                                }
                             `}
                         />
                         <PercentArea>
@@ -201,6 +229,14 @@ export default function Config() {
                                 font-size: 1.2rem;
                                 font-family: "Inter";
                                 font-weight: bold;
+
+                                @media only screen and (min-height: 900px) {
+                                    font-size: 2rem;
+                                }
+
+                                @media only screen and (max-width: 1599px) {
+                                    font-size: 1.6rem;
+                                }
                             `}
                         />
                         <PercentArea>

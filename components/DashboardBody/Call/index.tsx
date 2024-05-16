@@ -54,12 +54,20 @@ export default function Call() {
                                 height: 10%;
                                 justify-content: flex-start;
                                 padding-left: 12%;
+
+                                @media only screen and (min-height: 900px) {
+                                    height: 16%;
+                                }
                             `}
                     styler={`
                                 color: #3C5774;
                                 font-size: 1.2rem;
                                 font-family: "Inter";
                                 font-weight: bold;
+
+                                @media only screen and (min-height: 900px) {
+                                    font-size: 2rem;
+                                }
                             `}
                 />
                 <Field
@@ -91,6 +99,10 @@ export default function Call() {
                         font-size: 1.2rem;
                         font-family: "Inter";
                         font-weight: bold;
+
+                        @media only screen and (min-height: 900px) {
+                            font-size: 2rem;
+                        }
                     `}
                 />
                 <Field
@@ -115,6 +127,10 @@ export default function Call() {
 
                         padding-left: 5%;
                         outline:none;
+
+                        @media only screen and (min-height: 900px) {
+                            font-size: 1.6rem;
+                        }
                     `}
                     inputType="price"
                     inputValue={minAmount}
@@ -131,12 +147,20 @@ export default function Call() {
                                 height: 10%;
                                 justify-content: flex-start;
                                 padding-left: 25%;
+
+                                @media only screen and (min-height: 900px) {
+                                    height: 20%;
+                                }
                             `}
                     styler={`
                                 color: #3C5774;
                                 font-size: 1.2rem;
                                 font-family: "Inter";
                                 font-weight: bold;
+
+                                @media only screen and (min-height: 900px) {
+                                    font-size: 2rem;
+                                }
                             `}
                 />
                 <Field
@@ -165,6 +189,10 @@ export default function Call() {
 
                             cursor: pointer;
                             user-select:none;
+
+                            @media only screen and (min-height: 900px) {
+                                font-size: 1.6rem;
+                            }
                         `}
                     inputType="price"
                     inputValue={link}
@@ -202,6 +230,10 @@ export default function Call() {
                             }
 
                             cursor:pointer;
+
+                            @media only screen and (min-height: 900px) {
+                                font-size: 3rem;
+                            }
                         `}
                     onClick={handleSave}
                 />

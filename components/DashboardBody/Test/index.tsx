@@ -5,8 +5,6 @@ import {
     Container,
     ControlArea,
     MessageButton,
-    OptionArea,
-    VoiceArea
 } from "./style";
 import SvgModel from "@/utils/svg";
 
@@ -37,11 +35,16 @@ export default function Test() {
                             `}
                     text="Audio nas mensagens:"
                     styler={`
-                                color: #3C5774;
-                                font-size: 1.4rem;
-                                font-family: "Inter";
-                                font-weight: bold;
-                            `}
+                        color: #3C5774;
+                        font-size: 1.4rem;
+                        font-family: "Inter";
+                        font-weight: bold;
+
+                        @media only screen and (min-height: 900px) {
+                            font-size: 2.5rem;
+                            padding-right:0%;
+                        }
+                    `}
                 />
                 <Field
                     type="toggle"
@@ -50,7 +53,9 @@ export default function Test() {
                             justify-content: flex-start;
                             padding-left: 12%;
                         `}
-                    styler={` `}
+                    styler={` 
+
+                    `}
                     checked={surveyStatus}
                     setChecked={setSurveyStatus}
                 />
@@ -58,17 +63,22 @@ export default function Test() {
                 <Field
                     type="title"
                     center={`
-                                height: 16%;
-                                justify-content: flex-start;
-                                padding-left: 12%;
-                            `}
+                        height: 16%;
+                        justify-content: flex-start;
+                        padding-left: 12%;
+                    `}
                     text="Link do widget:"
                     styler={`
-                                color: #3C5774;
-                                font-size: 1.4rem;
-                                font-family: "Inter";
-                                font-weight: bold;
-                            `}
+                        color: #3C5774;
+                        font-size: 1.4rem;
+                        font-family: "Inter";
+                        font-weight: bold;
+
+                        @media only screen and (min-height: 900px) {
+                            font-size: 2.5rem;
+                            padding-right:0%;
+                        }
+                    `}
                 />
                 <Field
                     type="input"
@@ -91,6 +101,11 @@ export default function Test() {
 
                             padding-left: 1%;
 
+                            @media only screen and (min-height: 900px) {
+                                font-size: 2rem;
+                                padding-right:0%;
+                            }
+
                             outline:none;
                             user-select: none;
 
@@ -100,7 +115,7 @@ export default function Test() {
                     inputValue={widgetLink}
                     onClick={copyTextToClipboard}
                 />
-                <ButtonArea className="flex">
+                <ButtonArea>
                     <MessageButton className="flex">
                         <SvgModel
                             name="playIcon"

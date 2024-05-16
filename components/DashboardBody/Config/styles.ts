@@ -58,4 +58,12 @@ export const VolumeTitle = styled.p`
     font-size: 1rem;
     font-family: 'Inter';
     font-weight: bold;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 2rem;
+    }
+
+    @media only screen and (max-width: 1599px) {
+        font-size: 1.6rem;
+    }
 `;
