@@ -22,7 +22,7 @@ import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
 
 export default function QRCodeScreen() {
-    const [bgColor, setBgColor] = useState<string>('#240C42');
+    const [bgColor, setBgColor] = useState<string>('#ff8800');
     const [fontColor, setFontColor] = useState<string>('#ffffff');
     const [handle, setHandle] = useState<string>('Bananada');
 

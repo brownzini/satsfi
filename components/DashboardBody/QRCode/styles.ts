@@ -14,6 +14,10 @@ export const Content = styled.div`
     width: 88%;
     height: 84%;
     gap: 0px;
+
+    @media only screen and (min-width: 1600px) {
+        gap: 30px;
+    }
 `;
 
 export const ControlArea = styled.div`
@@ -65,6 +69,10 @@ export const Input = styled.input`
     border-radius: 5px;
     box-shadow: 0px 0px 4px 0px rgb(0 0 0 / 48%);
     
+    @media only screen and (max-width: 1600px) {
+        max-width: 70px;
+    }
+
     &::-webkit-color-swatch-wrapper {
         padding: 0;
         border-radius: 5px;
@@ -156,7 +164,6 @@ export const HeaderText = styled.h2`
     }
 
     @media only screen and (max-width: 1920px) {
-        padding: 10%;
         font-size: 1.6rem;
     }
 
