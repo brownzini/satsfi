@@ -7,7 +7,7 @@ interface MessageContextValue {
     setStatus: (param: boolean) => void;
     isSucess: boolean;
     setIsSucess: (param: boolean) => void;
-    dispatchMessage: (msg: string, type:boolean) => void;
+    dispatchMessage: (msg: string, type:boolean, time?:number) => void;
 }
 
 interface Props {
@@ -21,7 +21,7 @@ const listInitial: MessageContextValue = {
     setStatus: param => { },
     isSucess: false,
     setIsSucess: param => {},
-    dispatchMessage: (msg, type) => {},
+    dispatchMessage: (msg, type, time) => {},
 };
 
 const MessageContext = React.createContext<MessageContextValue>(listInitial);
@@ -32,15 +32,13 @@ export function MessageProvider({ children }: Props) {
     const [message, setMessage] = React.useState<string>('Salvo com sucesso!!');
     const [isSucess, setIsSucess] = React.useState<boolean>(false); 
 
-    const dispatchMessage = (msg:string, type:boolean) => {
-        if(!status) {
-           setIsSucess(type);
-           setMessage(msg);
-           setStatus(true);
-           setTimeout(() => {
-               setStatus(false); 
-           }, 2500);
-        }
+    const dispatchMessage = (msg:string, type:boolean, time:number = 4000) => {
+          setIsSucess(type);
+          setMessage(msg);
+          setStatus(true);
+          setTimeout(() => {
+              setStatus(false); 
+          }, time);
     }
 
     return (

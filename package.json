@@ -9,9 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/file-saver": "^2.0.7",
     "apexcharts": "^3.49.0",
+    "csv-parser": "^3.0.0",
+    "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
+    "json2csv": "^6.0.0-alpha.2",
     "next": "14.2.3",
+    "papaparse": "^5.4.1",
     "qrcode": "^1.5.3",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
@@ -21,7 +26,9 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/json2csv": "^5.0.7",
     "@types/node": "^20",
+    "@types/papaparse": "^5.3.14",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",

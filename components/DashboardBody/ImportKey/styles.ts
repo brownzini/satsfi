@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface Prop {
+    styler:string;
+}
+
 export const Container = styled.div`
     width: 100%;
     height: 100%;
@@ -39,11 +43,11 @@ export const InputArea = styled.div`
     gap: 5px;
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<Prop>`
     width: 75%;
     height: 50%;
 
-    color: #0B4786;
+    color: ${(p) => (p.styler !== 'red') ? '#0B4786' : 'red'};
     font-family: 'Roboto';
     font-weight: 400;
     font-size: 1.2rem;
@@ -51,7 +55,7 @@ export const Input = styled.input`
     
     background-color: #F0F2FA;
 
-    border: 2px solid #E2DEF9;
+    border: 2px solid ${(p) => p.styler};
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
 

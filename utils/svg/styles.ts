@@ -35,3 +35,19 @@ export const ArrowSvg = styled.svg<Prop>`
 export const AddSvg = styled.svg`
     cursor: pointer;
 `;
+
+export const LoadingSvg = styled.svg`
+
+    animation: Loading 1s ease infinite;
+
+    @keyframes Loading {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+        
+            transform: rotate(360deg);
+        }
+    }
+
+`;

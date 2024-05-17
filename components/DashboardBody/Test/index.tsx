@@ -1,25 +1,32 @@
 import { useState } from "react";
-import Field from "../Field";
+
 import {
     ButtonArea,
     Container,
     ControlArea,
     MessageButton,
 } from "./style";
+
+//Components
+import Field from "../Field";
+
 import SvgModel from "@/utils/svg";
+import { useMessage } from "@/contexts/useMessage";
 
 export default function Test() {
     const widgetLink = 'https://www.teste.com';
     const [surveyStatus, setSurveyStatus] = useState<boolean>(false);
+
+    const { dispatchMessage } = useMessage();
 
     function copyTextToClipboard() {
         if (!navigator.clipboard) {
             return;
         }
         navigator.clipboard.writeText(widgetLink).then(function () {
-            alert('Link copiado com sucesso!');
+            dispatchMessage('Link copiado com sucesso!', true, 2000);
         }, function (err) {
-            console.error('Erro ao copiar o texto: ', err);
+            dispatchMessage('Erro ao copiar o texto: ', false), 2000;
         });
     }
 

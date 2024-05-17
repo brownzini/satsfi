@@ -16,6 +16,7 @@ import {
     InputWrapper,
     LeftSideArea,
     MessageErrorArea,
+    NoVotesText,
     OptionSvgArea,
     OptionsList,
     OptionsWrapper,
@@ -31,6 +32,7 @@ import {
     TimerArea,
     Title,
     TitleArea,
+    TrophyArea,
     WinnerText,
 } from "./styles";
 
@@ -72,8 +74,10 @@ export default function Survey() {
     const [isSurveyCreated, setIsSurveyCreated] = useState<boolean>(false);
     const [SurveyTimerStatus, setSurveyTimerStatus] = useState<boolean>(false);
     const [isFinished, setIsFinished] = useState<boolean>(false);
+
     const [winnerOption, setWinnerOption] = useState<string>('');
     const [changeTitle, setChangeTitle] = useState<boolean>(false);
+    const [maxVotes, setMaxVotes] = useState<number>(0);
 
     const { dispatchMessage } = useMessage();
 
@@ -81,8 +85,6 @@ export default function Survey() {
         if (!isSurveyCreated) {
             setSurveyCreated(!surveyCreated);
         } else {
-            setChangeTitle(false);
-            setIsSurveyCreated(false);
             handleReset();
         }
     }
@@ -130,6 +132,7 @@ export default function Survey() {
     // Right Side
     const handleSave = () => {
         if (createValidation()) {
+            console.log('clicou')
             dispatchMessage('Salvo com sucesso!!', true);
         }
     }
@@ -171,6 +174,7 @@ export default function Survey() {
     }
 
     const handleCreate = () => {
+       
         const isVotationOk = voteValidation();
         const isOptionsOk = optionsValidation();
 
@@ -180,8 +184,8 @@ export default function Survey() {
             setIsSurveyCreated(true);
             setSurveyTimerStatus(true);
             dispatchMessage('Enquete criada com sucesso!!', true);
-            setChangeTitle(true);
         }
+
     }
 
     const removeMinCreateError = () => {
@@ -197,6 +201,9 @@ export default function Survey() {
     }
 
     const handleReset = () => {
+          setChangeTitle(false);
+          setIsSurveyCreated(false);
+          setMaxVotes(0);
           setSurveyCreated(false);
           setSurveyTitle('');
           setOptions([]);
@@ -210,21 +217,46 @@ export default function Survey() {
           setSurveyTimer({minute:0, second:0});
     }
 
+    const winnerFilter = (type:string) => {
+        switch (type) {
+            case 'name':
+                return options[0].name+': 0% dos votos';
+            case 'amount':
+                return '0 satohis';
+        }
+    }
+
     const timerRendering = () => {
         return SurveyTimerStatus ? (
             <TimerComponent
                 data={SurveyTimer}
                 endTime={endTime}
             />
-        ) : ( 
+        ) : 
           <>
-            <WinnerText>{winnerOption+': 70% dos votos'}</WinnerText>
-            <AmountVotesText> 50k satohis </AmountVotesText>
-          </> );
+            <TrophyArea className="flex">
+                <SvgModel 
+                    name="trophy" 
+                    width="100%" 
+                    height="100%" 
+                />
+            </TrophyArea>
+            <br />
+            <WinnerText>
+                {(winnerOption !== '') ? winnerOption+': 70% dos votos' : winnerFilter('name')}
+            </WinnerText>
+            <br />
+            <AmountVotesText> 
+                {(winnerOption !== '') ? '50k satohis' : winnerFilter('amount') }
+            </AmountVotesText>
+            <br />
+            <br />
+          </>
     }
 
     const endTime = () => {
         setIsFinished(true);
+        findMaxVotesOption();
     }
 
     const titleAreaRendering = () => {
@@ -232,18 +264,18 @@ export default function Survey() {
     }
 
     const findMaxVotesOption = () => {
-        return options.reduce((maxOption, currentOption) => {
-            return parseInt(currentOption.votes) > parseInt(maxOption.votes) ? currentOption : maxOption;
-        }, options[0]);
+        for (const option of options) {
+          if (parseInt(option.votes) > maxVotes) {
+              setWinnerOption(option.name);
+              setMaxVotes(parseInt(option.votes));
+          }
+        }
     };
 
     useEffect(() => {
        if(isFinished) {
-          setSurveyTimerStatus(false);
-          setTimeout(() => {
-              const option = findMaxVotesOption();
-              setWinnerOption(option.name);
-          }, 500);
+           setSurveyTimerStatus(false);
+           setChangeTitle(true);
        }
     },[isFinished]);
 
@@ -387,7 +419,7 @@ export default function Survey() {
                         <TimeTitle>{surveyTime} min</TimeTitle>
                     </TimerArea>
                 </DurationArea>
-                <SaveArea className="flex">
+                <SaveArea>
                     <SaveButton onClick={handleSave}>SALVAR</SaveButton>
                 </SaveArea>
             </ControlArea>
@@ -578,7 +610,7 @@ export default function Survey() {
                                 {(!isSurveyCreated) ? 'Nenhuma Enquete Gerada' : titleAreaRendering()}
                             </Title>
                         </TitleArea>
-                        <SvgArea className="flex fd">
+                        <SvgArea className="flex fd"> 
                             {(!isSurveyCreated) ? (
                                 <SvgModel
                                     name="addSurvey"
@@ -586,7 +618,7 @@ export default function Survey() {
                                     height="50%"
                                 />
                             ) : timerRendering()}
-                        </SvgArea>
+                        </SvgArea> 
                         <ButtonArea>
                             <Button
                                 styler={(!isSurveyCreated) ? `

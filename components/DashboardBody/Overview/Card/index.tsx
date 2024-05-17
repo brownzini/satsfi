@@ -7,9 +7,9 @@ import {
     Container,
     ExportSvgArea,
     ExportTitleArea,
-    SvgContainer,
     TitleHeader,
 } from "./styles";
+import CSVConverter from "../Export";
 
 interface Props {
     day: string;
@@ -29,19 +29,13 @@ export default function Card({
                 <TitleHeader>{day}</TitleHeader>
             </CardHeader>
             <CardBody className="flex">
-                <SvgContainer>
-                    <SvgModel
-                        name="satoshi"
-                        width="50%"
-                        height="100%"
-                    />
-                </SvgContainer>
                 <CardAmountContainer>
                     <h2>{amount}</h2>
                 </CardAmountContainer>
             </CardBody>
             {hasExport && (
                 <CardFooter className="flex">
+                    <ExportTitleArea>
                     <ExportSvgArea>
                         <SvgModel
                             name="export"
@@ -49,8 +43,7 @@ export default function Card({
                             height="50%"
                         />
                     </ExportSvgArea>
-                    <ExportTitleArea>
-                        <h3>exportar</h3>
+                        <CSVConverter />
                     </ExportTitleArea>
                 </CardFooter>
             )}

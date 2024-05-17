@@ -36,12 +36,14 @@ export const SvgIconInImportArea = styled.div`
     border-radius: 5px;
 
     padding-right: 1%;
-
     transition: 0.4s;
 
     @media only screen and (min-width: 1600px) {
         font-size: 2rem;
     }
+
+    font-size: 1.2rem;
+    font-weight: 500;
 
     &:hover {
         background-color: #fffbfc;
@@ -88,7 +90,8 @@ export const ImportWrapper = styled.div`
         font-size: 2rem;
     }
 
-    @media only screen and (min-height: 768px) {
+    @media only screen and (min-height: 699px) {
+        max-width: 257px;
         font-size: 1.6rem;
     }
     
@@ -153,20 +156,21 @@ export const MonthlyCardTitle = styled.h2`
 export const MonthlyCardBody = styled.div`
     width: 100%;
     height: 40%;
-
-    
-    @media only screen and (min-width: 1600px) {
-        padding-left: 10%;
-    }
 `;
 
 export const MonthlyCardBodySvgArea = styled.div`
-    width: 61%;
+    width: 57%;
     height: 100%;
 
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
+
+    padding-left: 0%;
+
+    @media only screen and (min-width: 1600px) {
+       padding-left: 20%;
+    }
 
 `;
 
@@ -175,8 +179,13 @@ export const MonthlyCardBodyTitleArea = styled.div`
     height: 100%;
 
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
+`;
+
+export const MonthlyCardBodyArea = styled.div`
+    width: 100%;
+    height: 100%;
 `;
 
 export const MonthlyCardBodyTitle = styled.h2`
@@ -184,19 +193,25 @@ export const MonthlyCardBodyTitle = styled.h2`
     font-weight: bold;
     font-size: 2rem;
     color: #FAD40F;
+
+    @media only screen and (min-width: 1600px) {
+        font-size: 3rem;
+    }
 `;
 
 export const ChartContainer = styled.div`
     width: 100%;
-    height: 70%;
+    height: 100%;
     background-color: #F0F2FA;
 `;
 
 export const ChartWrapper = styled.div`
-    width: 75%;
+    width: 64%;
     height: 75%;
     background-color: white;
 
     border-radius: 7px;
     box-shadow: 0px 4px 5px 2px rgb(0 0 0 / 14%);
+
+    max-width: 1150px;
 `;

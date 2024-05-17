@@ -9,8 +9,9 @@ import {
 
 //Components
 import Field from "../Field";
-import { v4 as uuidv4 } from 'uuid';
 import SvgModel from "@/utils/svg";
+import { v4 as uuidv4 } from 'uuid';
+import { useMessage } from "@/contexts/useMessage";
 
 export default function GenerateKey() {
     const [handle, setHandle] = useState<string>('');
@@ -20,6 +21,8 @@ export default function GenerateKey() {
     const [handleError, setHandleError] = useState<boolean>(false);
     const [keyHubError, setKeyHubError] = useState<boolean>(false);
     const [addressError, setAddressError] = useState<boolean>(false);
+
+    const { dispatchMessage } = useMessage();
 
     function generateCode() {
         if(keyHub === 'Gere a chave primeiro') normalizeKeyHub();
@@ -34,9 +37,9 @@ export default function GenerateKey() {
             return;
         }
         navigator.clipboard.writeText(keyHub).then(function () {
-            alert('Link copiado com sucesso!');
+            dispatchMessage('Link copiado com sucesso!', true, 2000);
         }, function (err) {
-            console.error('Erro ao copiar o texto: ', err);
+            dispatchMessage('Erro ao copiar o texto', true, 2000);
         });
     }
 
@@ -62,7 +65,7 @@ export default function GenerateKey() {
         if(handle !== 'Nome Inválido' && keyHub !== 'Gere a chave primeiro' && lightningAddress !== 'Preencha o campo' && 
            handle !== '' && keyHub !== '' && lightningAddress !== '') {
            resetAllFields();
-           console.log('ta salvo kkkkk');
+           dispatchMessage('[SUCESSO]: Seu hub foi criado com sucesso !!', true);
         }
     }
 

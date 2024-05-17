@@ -1,10 +1,14 @@
 import { useState } from "react";
-import Field from "../Field";
 import {
     Content,
     ControlArea,
     LinkArea
 } from "./styles";
+
+//Components
+import Field from "../Field";
+
+import { useMessage } from "@/contexts/useMessage";
 
 export default function Call() {
     const [allow, setAllow] = useState<boolean>(false);
@@ -12,6 +16,8 @@ export default function Call() {
     const [haveError, setHaveError] = useState<boolean>(false);
 
     const link = 'https://www.google.com';
+
+    const { dispatchMessage } = useMessage();
 
     const hiddeError = () => {
         setHaveError(false);
@@ -29,7 +35,7 @@ export default function Call() {
             setMinAmount('Minimo é de 12,000 sats');
             setHaveError(true);
         } else {
-            console.log('sucesso');
+            dispatchMessage('[SUCESSO]: Alterações realizadas', true, 3000);
         }
     }
 
@@ -38,9 +44,9 @@ export default function Call() {
             return;
         }
         navigator.clipboard.writeText(link).then(function () {
-            alert('Link copiado com sucesso!');
+            dispatchMessage('Link copiado com sucesso!', true, 2000);
         }, function (err) {
-            console.error('Erro ao copiar o texto: ', err);
+            dispatchMessage('Erro ao copiar o texto', false, 2000);
         });
     }
 

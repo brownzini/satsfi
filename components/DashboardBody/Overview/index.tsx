@@ -1,5 +1,10 @@
-import SvgModel from "@/utils/svg";
-import Card from "./Card";
+import dynamic from "next/dynamic";
+
+import {
+    useEffect,
+    useState
+} from "react";
+
 import {
     CardsContainer,
     CardsContent,
@@ -12,7 +17,7 @@ import {
     ImportWrapper,
     MonthlyCard,
     MonthlyCardBody,
-    MonthlyCardBodySvgArea,
+    MonthlyCardBodyArea,
     MonthlyCardBodyTitle,
     MonthlyCardBodyTitleArea,
     MonthlyCardHeader,
@@ -20,76 +25,297 @@ import {
     SvgIconInImportArea,
 } from "./styles";
 
-import dynamic from "next/dynamic";
+//Components
+import Card from "./Card";
+import CSVImporter from "./Import";
+
+import SvgModel from "@/utils/svg";
+import { useMessage } from "@/contexts/useMessage";
+
+interface SeriesProps {
+    name: string;
+    data: any[];
+}
+
+interface DonationProps {
+    date: any;
+    value: string;
+}
 
 const Chart = dynamic(() => import('react-apexcharts'), {
     ssr: false
 });
 
-
 export default function Overview() {
-    const series  = [{
+    const defaultSeries = [{
         name: 'Satoshis',
-        data: [30,40,23, 210]
-      }]
+        data: []
+    }];
 
-      const options = {
+    const [options, setOptions] = useState<any>({
         chart: {
-          type: 'area' as any,
-          stacked: false,
-          height: 350,
-          zoom: {
-            type: 'x',
-            enabled: true,
-            autoScaleYaxis: true
-          } as any,
-          toolbar: {
-            autoSelected: 'zoom'
-          }  as any
+            type: 'area' as any,
+            stacked: false,
+            zoom: {
+                type: 'x',
+                enabled: true,
+                autoScaleYaxis: true
+            } as any,
+            toolbar: {
+                autoSelected: 'zoom'
+            } as any
         },
         colors: ["#FAD40F"],
         dataLabels: {
-          enabled: false
+            enabled: false
         },
         markers: {
-          size: 0,
+            size: 0,
         },
         title: {
-          text: 'Doações durante o mês',
-          align: 'left' as any
+            text: 'Doações durante o mês',
+            align: 'left' as any
         },
         grid: {
             show: false
-          },
+        },
         fill: {
-          type: 'gradient',
-          gradient: {
-            shadeIntensity: 1,
-            inverseColors: false,
-            opacityFrom: 0.5,
-            opacityTo: 0,
-            stops: [0, 90, 100]
-          },
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                inverseColors: false,
+                opacityFrom: 0.5,
+                opacityTo: 0,
+                stops: [0]
+            },
         },
         xaxis: {
-          type: 'datetime' as any,
-          categories: ['2024-05-05', '2024-05-07', '2024-05-11', '2024-05-12'],
+            type: 'datetime' as any,
+            categories: [],
         },
-    
+
+    });
+    const [series, setSeries] = useState<SeriesProps[]>(defaultSeries);
+
+    const [donates, setDonates] = useState<DonationProps[]>([]);
+
+    const [monthAmount, setMonthAmount] = useState<string>('0');
+    const [totalAmount, setTotalAmount] = useState<string>('0');
+
+    const { status } = useMessage();
+
+    const handleRemove = () => {
+        setOptions((prevOptions: any) => ({
+            ...prevOptions,
+            xaxis: {
+                ...prevOptions.xaxis,
+                categories: [],
+            },
+        }));
+        setSeries([{
+            name: 'Satoshis',
+            data: []
+        }]);
+        setDonates([]);
+        setMonthAmount('0');
+        setTotalAmount('0');
     }
+
+    const handleImport = () => {
+
+        // if(!status) dispatchMessage('[SUCESSO]: Dados importados', true);
+    }
+
+    // const organizingData = () => {
+    //     const donatesPerDay: any = {};
+
+    //     donates.forEach((item: any) => {
+    //         const { date, value } = item;
+    //         if (!donatesPerDay[date]) {
+    //             donatesPerDay[date] = 0;
+    //         }
+    //         donatesPerDay[date] += parseInt(value);
+    //     });
+
+    //     const collectionOrdered = Object.entries(donatesPerDay).sort((a, b) => {
+    //         const dateA: any = new Date(a[0]);
+    //         const dateB: any = new Date(b[0]);
+    //         return dateA - dateB;
+    //     });
+
+    //     const completedDonates = collectionOrdered.reverse();
+
+
+    //     const categories = completedDonates.map(([date, _]) => date);
+    //     const series = collectionOrdered.map(([, value]) => Number(value));
+
+    //     setOptions((prevOptions: any) => ({
+    //         ...prevOptions,
+    //         xaxis: {
+    //             ...prevOptions.xaxis,
+    //             categories: categories,
+    //         },
+    //     }));
+    //     setSeries(prevSeriesData => [{ name: 'Satoshis', data: series }]);
+
+    //     const monthResultAmount = filterAmount(getValuesByMonth(donates).toString());
+    //     const totalResultAmount = filterAmount(calculateTotalValue(donates).toString());
+
+    //     if(monthResultAmount) {
+    //        setMonthAmount(monthResultAmount);
+    //     }
+
+    //     if(totalResultAmount) {
+    //        setTotalAmount((totalResultAmount).toString());
+    //     }
+
+    // }   
+
+    const filterAmount = (value: string) => {
+        const integerAmount = parseInt(value);
+
+        if (integerAmount < 1000) {
+            return value;
+        }
+
+        if (integerAmount >= 1000 && integerAmount < 10000) {
+            return (integerAmount / 1000) + 'K';
+        }
+
+        if (integerAmount >= 10000 && integerAmount < 100000) {
+            return (integerAmount / 1000) + 'K';
+        }
+
+        //1 milhão - 10 milhões
+        if (integerAmount >= 100000 && integerAmount < 1000000) {
+            return (integerAmount / 1000) + 'K';
+        }
+
+        //1 milhão - 10 milhões
+        if (integerAmount >= 1000000 && integerAmount < 10000000) {
+            return (integerAmount / 1000000) + 'M';
+        }
+
+        //10 milhão - 100 milhões
+        if (integerAmount >= 10000000 && integerAmount < 100000000) {
+            return (integerAmount / 1000000) + 'M';
+        }
+
+        //100 milhão - 1 Bilhão
+        if (integerAmount >= 100000000 && integerAmount < 1000000000) {
+            return (integerAmount / 1000000) + 'M';
+        }
+
+        //1 Bilhão - 10 Bilhões
+        if (integerAmount >= 1000000000 && integerAmount < 10000000000) {
+            return (integerAmount / 1000000) + 'B';
+        }
+
+        //10 Bilhões - 100 Bilhões
+        if (integerAmount >= 10000000000 && integerAmount < 100000000000) {
+            return (integerAmount / 1000000) + 'B';
+        }
+
+        //100 Bilhões - 1 Trilhão
+        if (integerAmount >= 100000000000 && integerAmount < 1000000000000) {
+            return (integerAmount / 1000000) + 'B';
+        }
+
+    }
+
+    const getValuesByMonth = (donates: any[]) => {
+        const sumByMonth: { [key: string]: number } = {};
+
+        for (const donate of donates) {
+            const [year, month] = donate.date.split('-').slice(0, 2);
+            const key = `${year}-${month}`;
+
+            if (!sumByMonth[key]) {
+                sumByMonth[key] = 0;
+            }
+            sumByMonth[key] += Number(donate.value);
+        }
+
+        const now = new Date();
+        const month = (now.getMonth() + 1 < 10) ? '0' + (now.getMonth() + 1) : now.getMonth() + 1;
+        const year = now.getFullYear().toString();
+
+        const monthValue = sumByMonth[year + '-' + month];
+
+        if (monthValue) {
+            return monthValue;
+        } else {
+            return 0;
+        }
+    };
+
+    const calculateTotalValue = (donates: any) => {
+        let sum = 0;
+        for (const donate of donates) {
+            sum += Number(donate.value);
+        }
+        return sum;
+    };
+
+    useEffect(() => {
+        const organizingData = () => {
+            const donatesPerDay: any = {};
+
+            donates.forEach((item: any) => {
+                const { date, value } = item;
+                if (!donatesPerDay[date]) {
+                    donatesPerDay[date] = 0;
+                }
+                donatesPerDay[date] += parseInt(value);
+            });
+
+            const collectionOrdered = Object.entries(donatesPerDay).sort((a, b) => {
+                const dateA: any = new Date(a[0]);
+                const dateB: any = new Date(b[0]);
+                return dateA - dateB;
+            });
+
+            const completedDonates = collectionOrdered.reverse();
+
+
+            const categories = completedDonates.map(([date, _]) => date);
+            const series = collectionOrdered.map(([, value]) => Number(value));
+
+            setOptions((prevOptions: any) => ({
+                ...prevOptions,
+                xaxis: {
+                    ...prevOptions.xaxis,
+                    categories: categories,
+                },
+            }));
+            setSeries(prevSeriesData => [{ name: 'Satoshis', data: series }]);
+
+            const monthResultAmount = filterAmount(getValuesByMonth(donates).toString());
+            const totalResultAmount = filterAmount(calculateTotalValue(donates).toString());
+
+            if (monthResultAmount) {
+                setMonthAmount(monthResultAmount);
+            }
+
+            if (totalResultAmount) {
+                setTotalAmount((totalResultAmount).toString());
+            }
+
+        }
+        if (donates.length > 0) organizingData();
+    }, [donates]);
 
     return (
         <Container className="flex fd">
-
             <CardsContainer className="flex fd">
                 <ImportContainer>
-                    <CleanAllContainer> 
-                        <SvgIconInImportArea 
+                    <CleanAllContainer>
+                        <SvgIconInImportArea
                             className="flex"
-                            onClick={() => console.log('remove tudo')}
+                            onClick={handleRemove}
                         >
-                            <SvgModel 
-                                name="delete" 
+                            <SvgModel
+                                name="delete"
                                 width="50%"
                                 height="50%"
                             />
@@ -98,30 +324,32 @@ export default function Overview() {
                     </CleanAllContainer>
                     <ImportWrapper
                         className="flex"
-                        onClick={() => console.log('importar')}
+                        onClick={handleImport}
                     >
-                        importar
+                        {(!status)
+                            ? <CSVImporter setDonates={setDonates} />
+                            : <SvgModel
+                                name="loading"
+                                width="25%"
+                                height="25%"
+                            />
+                        }
                     </ImportWrapper>
                 </ImportContainer>
 
                 <CardsContent>
                     <CardsWrapper className="flex">
-                        <Card day="Hoje" amount="1,2k" hasExport />
-                        <Card day="Semanal" amount="2,5k" hasExport={false} />
+                        <Card day="Hoje" amount="0" hasExport />
+                        <Card day="Mensal" amount={monthAmount} hasExport={false} />
                         <MonthlyCard className="flex fd">
                             <MonthlyCardHeader className="flex">
-                                <MonthlyCardTitle> Mensal </MonthlyCardTitle>
+                                <MonthlyCardTitle> Total </MonthlyCardTitle>
                             </MonthlyCardHeader>
                             <MonthlyCardBody className="flex">
-                                <MonthlyCardBodySvgArea>
-                                    <SvgModel
-                                        name="satoshi"
-                                        width="75%"
-                                        height="100%"
-                                    />
-                                </MonthlyCardBodySvgArea>
-                                <MonthlyCardBodyTitleArea>
-                                    <MonthlyCardBodyTitle>1,2k</MonthlyCardBodyTitle>
+                                <MonthlyCardBodyTitleArea className="flex">
+                                    <MonthlyCardBodyArea className="flex">
+                                        <MonthlyCardBodyTitle>{totalAmount} sats</MonthlyCardBodyTitle>
+                                    </MonthlyCardBodyArea>
                                 </MonthlyCardBodyTitleArea>
                             </MonthlyCardBody>
                         </MonthlyCard>
@@ -129,7 +357,10 @@ export default function Overview() {
                 </CardsContent>
             </CardsContainer>
 
-            <ChartContainer id="chart" className="flex">
+            <ChartContainer
+                id="chart"
+                className="flex"
+            >
                 <ChartWrapper>
                     <Chart
                         type="area"

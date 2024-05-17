@@ -8,7 +8,11 @@ import {
     VolumeTitle,
     WrapperContainer,
 } from "./styles";
+
+//Components
 import Field from "../Field";
+
+import { useMessage } from "@/contexts/useMessage";
 
 export default function Config() {
     const [minAmount, setMinAmount] = useState<string>('');
@@ -17,6 +21,8 @@ export default function Config() {
     const [durationDonate, setDurationDonate] = useState<number>(15);
 
     const [haveError, setHaveError] = useState<boolean>(false);
+
+    const { dispatchMessage } = useMessage();
 
     const validationField = () => {
         const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
@@ -27,7 +33,7 @@ export default function Config() {
             setMinAmount('Valor minimo é de 1,000 sats');
             setHaveError(true);
         } else {
-            console.log('sucesso');
+            dispatchMessage('[SUCESSO]: Alterações salvas', true, 3000);
         }
     }
 

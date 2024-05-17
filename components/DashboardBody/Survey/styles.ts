@@ -5,7 +5,7 @@ interface Prop {
 }
 
 interface ButtonProp {
-    styler:string;
+    styler: string;
 }
 
 export const Container = styled.div`
@@ -69,11 +69,14 @@ export const TimeTitle = styled.p`
 `;
 
 export const SaveArea = styled.div`
-    width: 100%;
+    width: 70%;
     height: 20%;
 
-    padding-left: 12%;
-    padding-right: 12%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    margin-right: 5%;
 `;
 
 export const SaveButton = styled.button`
@@ -358,6 +361,10 @@ export const Title = styled.h1`
     font-size: 2rem;
     font-family: 'Roboto';
     font-weight: bold;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 3rem;
+    }
 `;
 
 export const ButtonArea = styled.div`
@@ -404,10 +411,20 @@ export const MessageErrorArea = styled.div`
 `;
 
 export const WinnerText = styled.h3`
-    font-size: 1.6rem;
+    max-width: 70%;
+ 
+    color: #464bd8;
+    font-size: 1.2rem;
     font-family: 'Open sans';
-    font-family: 700;
-    color: #3BC32F;
+    font-weight: 500;
+
+    text-align: center;
+    word-wrap: break-word;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 2.4rem;
+    }
+
 `;
 
 export const AmountVotesText = styled.h3`
@@ -415,4 +432,20 @@ export const AmountVotesText = styled.h3`
     font-family: 'Roboto';
     font-weight: bold;
     color: #F4B000;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 2rem;
+    }
+`;
+
+export const NoVotesText = styled.h2`
+    color: #3C5774;
+    font-family: 'Open sans';
+    font-size: 1.4rem;
+    font-weight: bold;
+`;
+
+export const TrophyArea = styled.div`
+    width: 50%;
+    height: 50%;
 `;

@@ -8,6 +8,7 @@ import {
     Title,
     TitleArea,
 } from "./styles";
+import { useMessage } from "@/contexts/useMessage";
 
 interface ErrorProps {
     status:boolean;
@@ -20,15 +21,20 @@ export default function ImportKey() {
     const [error, setError] = useState<ErrorProps>({
         status: false, message: ''
     });
+
+    const { dispatchMessage } = useMessage();
+
     const handleImport = () => {
      
         if(key === "banana") {
-            setError({status:true, message: '[ERRO]: Chave não encontrada'}); 
+            setError({status:true, message: '[ERRO]: Chave não encontrada'});
+            dispatchMessage('[ERRO]: Chave não encontrada', false);
         }
         if (key !== "") {
 
         } else {
           setError({status:true, message: '[ERRO]: Campo vazio. Preencha corretamente'});
+          dispatchMessage('[ERRO]: Campo vazio. Preencha corretamente', false);
         }
     }
 
@@ -42,14 +48,12 @@ export default function ImportKey() {
                     type="text"
                     value={key}
                     placeholder="Copie e cole sua chave aqui..."
+                    styler={(error.status) ? 'red' : '#E2DEF9'}
                     onChange={(e) => setKey(e.target.value)}
                     onClick={() => setError({status: false, message: error.message})}
                 />
                 <Button onClick={handleImport}> Importar </Button>
             </InputArea>
-            {(error.status) && <MessageError>
-                {error.message}
-            </MessageError>}
         </Container>
     );
 }

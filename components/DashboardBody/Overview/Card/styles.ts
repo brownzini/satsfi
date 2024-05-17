@@ -51,7 +51,7 @@ export const CardAmountContainer = styled.div`
     height: 100%;
 
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
 
     @media only screen and (min-width: 1600px) {
@@ -76,7 +76,7 @@ export const ExportSvgArea = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
+    margin-left: 12%;
     cursor: pointer;
 `;
 
@@ -89,7 +89,7 @@ export const ExportTitleArea = styled.div`
     font-family: 'Roboto';
 
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-;
     align-items: center;
 
     @media only screen and (min-width: 1600px) {

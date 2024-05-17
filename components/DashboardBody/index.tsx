@@ -52,7 +52,7 @@ export default function DashboardBody() {
                     `}
                 `
             }>
-                 <Survey />
+                 <QRCode />
             </Wrapper>
         </Body>
         </MessageProvider>
