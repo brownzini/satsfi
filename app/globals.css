@@ -179,6 +179,13 @@ input:checked + .slider:before {
   border-radius: 50px;
 }
 
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  word-wrap: break-word;
+}
+
+
 #body-area svg {
   width: 84%;
 }

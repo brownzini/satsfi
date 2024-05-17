@@ -1,12 +1,16 @@
 'use client'
 
-import DashboardArea from "@/components/DashboardArea";
 import Container from "./styles";
 
-export default function DashboardStruct () {
+import DashboardArea from "@/components/DashboardArea";
+import { MessageProvider } from "@/contexts/useMessage";
+
+export default function DashboardStruct() {
     return (
         <Container className="flex">
-            <DashboardArea />
+            <MessageProvider>
+                <DashboardArea />
+            </MessageProvider>
         </Container>
     );
 }

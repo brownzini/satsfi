@@ -18,7 +18,6 @@ import GenerateKey from "./GenerateKey";
 //Components
 import SvgModel from "@/utils/svg";
 import MessageArea from "./MessageArea";
-import { MessageProvider } from "@/contexts/useMessage";
 
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
@@ -29,7 +28,6 @@ export default function DashboardBody() {
                border-bottom-right-radius: 7px;
              `;
     return (
-        <MessageProvider>
         <Body className="flex fd">
             {/* <Initial /> */}
             {/* <ImportKey /> */}
@@ -52,9 +50,8 @@ export default function DashboardBody() {
                     `}
                 `
             }>
-                 <QRCode />
+                 <iframe width="560" height="315" src="https://www.twitch.tv/blackmasksongoku" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </Wrapper>
         </Body>
-        </MessageProvider>
     );
 }

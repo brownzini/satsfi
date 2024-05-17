@@ -23,6 +23,7 @@ export const Svg = styled.svg`
 `;
 
 export const BaseSvg = styled.svg`
+    transition: 0.25s ease;
     cursor: pointer;
 `;
 
