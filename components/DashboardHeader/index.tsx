@@ -29,8 +29,8 @@ type ScreenProp = {
 
 export default function DashboardHeader() {
     const [screens, setScreens] = useState<ScreenProp>({
-        overview: { status: false, name: 'Visão Geral' },
-        config: { status: true, name: 'Configurar Donate' },
+        overview: { status: true, name: 'Visão Geral' },
+        config: { status: false, name: 'Configurar Donate' },
         survey: { status: false, name: 'Enquete' },
         test: { status: false, name: 'Testar' },
         trackDonate: { status: false, name: 'Acompanhar Doações' },

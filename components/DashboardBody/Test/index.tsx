@@ -15,15 +15,27 @@ import { useMessage } from "@/contexts/useMessage";
 
 export default function Test() {
     const widgetLink = 'https://www.teste.com';
-    const [surveyStatus, setSurveyStatus] = useState<boolean>(false);
+    const chromakeyLink = 'https://www.chroma.com';
+    const [surveyStatus, setSurveyStatus] = useState<boolean>(true);
 
     const { dispatchMessage } = useMessage();
 
-    function copyTextToClipboard() {
+    function copyWidgetToClipboard() {
         if (!navigator.clipboard) {
             return;
         }
         navigator.clipboard.writeText(widgetLink).then(function () {
+            dispatchMessage('Link copiado com sucesso!', true, 2000);
+        }, function (err) {
+            dispatchMessage('Erro ao copiar o texto: ', false), 2000;
+        });
+    }
+
+    function copyChromaToClipboard() {
+        if (!navigator.clipboard) {
+            return;
+        }
+        navigator.clipboard.writeText(chromakeyLink).then(function () {
             dispatchMessage('Link copiado com sucesso!', true, 2000);
         }, function (err) {
             dispatchMessage('Erro ao copiar o texto: ', false), 2000;
@@ -36,9 +48,28 @@ export default function Test() {
                 <Field
                     type="title"
                     center={`
-                                height: 16%;
+                                height: 10%;
                                 justify-content: flex-start;
                                 padding-left: 12%;
+
+                                @media only screen and (min-width: 2560px) {
+                                    height: 3%;
+                                    align-items: flex-end;
+                                }
+
+                                @media only screen and (min-width: 1920px) {
+                                    height: 3%;
+                                    align-items: flex-end;
+                                }
+
+                                @media only screen and (min-width: 1600px) {
+                                    align-items: flex-end;
+                                }
+
+                                @media only screen and (min-width: 1300px) {
+                                    height: 7%;
+                                    align-items: flex-end;
+                                }
                             `}
                     text="Audio nas mensagens:"
                     styler={`
@@ -66,11 +97,10 @@ export default function Test() {
                     checked={surveyStatus}
                     setChecked={setSurveyStatus}
                 />
-                <br />
                 <Field
                     type="title"
                     center={`
-                        height: 16%;
+                        height: 10%;
                         justify-content: flex-start;
                         padding-left: 12%;
                     `}
@@ -120,7 +150,62 @@ export default function Test() {
                     `}
                     inputType="text"
                     inputValue={widgetLink}
-                    onClick={copyTextToClipboard}
+                    onClick={copyWidgetToClipboard}
+                />
+                <Field
+                    type="title"
+                    center={`
+                        height: 12%;
+                        justify-content: flex-start;
+                        padding-left: 12%;
+                    `}
+                    text="Link do Chroma Key:"
+                    styler={`
+                        color: #3C5774;
+                        font-size: 1.4rem;
+                        font-family: "Inter";
+                        font-weight: bold;
+
+                        @media only screen and (min-height: 900px) {
+                            font-size: 2.5rem;
+                            padding-right:0%;
+                        }
+                    `}
+                />
+                <Field
+                    type="input"
+                    center={`
+                            width: 100%;
+                            height: 10%;
+                            padding-left: 12%;
+                    `}
+                    styler={`
+                            width: 87.1%;
+                            height: 100%;
+
+                            border-radius: 5px;
+
+                            transition: 0.3s;
+                            color: ${true ? '#6a5212' : 'red'};
+                            font-family: "Roboto";
+                            font-weight: 400;
+                            font-size: 1.2rem;
+
+                            padding-left: 1%;
+
+                            @media only screen and (min-height: 900px) {
+                                font-size: 2rem;
+                                padding-right:0%;
+                            }
+
+                            outline:none;
+                            user-select: none;
+
+                            cursor:pointer;
+                    `}
+                    inputType="text"
+                    inputValue={chromakeyLink}
+                    onClick={copyChromaToClipboard}
                 />
                 <ButtonArea>
                     <MessageButton className="flex">

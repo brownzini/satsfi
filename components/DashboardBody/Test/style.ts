@@ -21,7 +21,7 @@ export const VoiceArea = styled.div`
 `;
 
 export const ButtonArea = styled.div`
-    width: 77%;
+    width: 75.81%;
     height: 14%;
     
     display: flex;
@@ -29,8 +29,8 @@ export const ButtonArea = styled.div`
     align-items: center;
     gap: 10px;
         
-    margin-top: 3%;
-
+    margin-top: 1.6%;
+    margin-bottom: 1%;
     border-radius: 5px;
 `;
 
