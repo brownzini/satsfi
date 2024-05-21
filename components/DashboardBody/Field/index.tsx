@@ -22,7 +22,7 @@ interface Props {
 
     maxPrice?: number;
     maxLength?: number;
-    inputType?: "price" | "text";
+    inputType?: "price" | "text" | "nit";
     inputValue?: string;
     placeholder?: string;
     setInputValue?: (param: string) => void;
@@ -74,7 +74,9 @@ export default function Field({
 
     const inputTypeFormater = (param: string) => {
         if (inputType && setInputValue) {
-            if (inputType === 'price') {
+            if(inputType === 'nit') {
+               setInputValue(param.replace(/\D/g, ''));
+            } else if (inputType === 'price') {
                 const isNan = Number.isNaN(parseInt(param));
                 const recievePrice = (isNan) ? '0' : parseInt(param.replace(/[,.]/g, "")).toLocaleString('en-US', { style: 'currency', currency: 'USD' }).replace(/^\$?\s?/g, '');
                 const basePrice = recievePrice.slice(0, -3);

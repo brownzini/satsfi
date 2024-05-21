@@ -14,11 +14,12 @@ import TrackDonate from "./TrackDonate";
 import QRCode from "./QRCode";
 import Call from "./Call";
 import GenerateKey from "./GenerateKey";
+import BlackList from "./BlackList";
+import ChromaKey from "./ChromaKey";
 
 //Components
-import SvgModel from "@/utils/svg";
 import MessageArea from "./MessageArea";
-import BlackList from "./BlackList";
+import SvgModel from "@/utils/svg";
 
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
@@ -51,7 +52,7 @@ export default function DashboardBody() {
                     `}
                 `
             }>
-                <BlackList />
+                <ChromaKey />
             </Wrapper>
         </Body>
     );
