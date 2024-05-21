@@ -18,6 +18,7 @@ import GenerateKey from "./GenerateKey";
 //Components
 import SvgModel from "@/utils/svg";
 import MessageArea from "./MessageArea";
+import BlackList from "./BlackList";
 
 export default function DashboardBody() {
     const conditionBorderRadius = (condition: boolean) =>  
@@ -50,7 +51,7 @@ export default function DashboardBody() {
                     `}
                 `
             }>
-                <Test />
+                <BlackList />
             </Wrapper>
         </Body>
     );

@@ -31,6 +31,7 @@ interface Props {
     setChecked?: (param: boolean) => void;
 
     handleClick?: () => void;
+    onKeyDown?: () => void;
     onClick?: () => void;
 
     disabled?:boolean;
@@ -53,6 +54,7 @@ export default function Field({
     checked,
     setChecked,
     handleClick,
+    onKeyDown,
     onClick,
     disabled,
 }: Props) {
@@ -61,6 +63,14 @@ export default function Field({
             setChecked(!checked);
         }
     };
+
+    function removeEmojis(text:string) {
+        return text.replace(/[\u{1F600}-\u{1F64F}]/gu, '')
+                   .replace(/[\u{1F300}-\u{1F5FF}]/gu, '')
+                   .replace(/[\u{1F680}-\u{1F6FF}]/gu, '')
+                   .replace(/[\u{2600}-\u{26FF}]/gu, '')
+                   .replace(/[\u{2700}-\u{27BF}]/gu, '');
+    }
 
     const inputTypeFormater = (param: string) => {
         if (inputType && setInputValue) {
@@ -71,7 +81,8 @@ export default function Field({
                 setInputValue(basePrice);
             } else {
                 if (maxLength) {
-                    const textFilter = (param.length < maxLength) ? param : param.slice(0, -1);
+                    const text = removeEmojis(param);
+                    const textFilter = (param.length < maxLength) ? text : param.slice(0, -1);
                     setInputValue(textFilter);
                 }
             }
@@ -81,6 +92,12 @@ export default function Field({
     const handleChangeSlider = (param:string) => {
         if(setValue) {
             setValue(parseInt(param));
+        }
+    }
+
+    const handleOnKeyDown = (param: React.KeyboardEvent<HTMLInputElement>) => {
+        if(onKeyDown && param.key === 'Enter') {
+           onKeyDown();
         }
     }
 
@@ -96,6 +113,7 @@ export default function Field({
                           styler={styler}
                           placeholder={(placeholder) ? placeholder : ''}
                           onChange={(e) => inputTypeFormater(e.target.value)}
+                          onKeyDown={handleOnKeyDown}
                           onClick={(onClick) ? onClick : voidFunction}
                           disabled={(disabled) ? disabled : false}
                         />
