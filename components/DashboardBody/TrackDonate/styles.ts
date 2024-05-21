@@ -58,6 +58,7 @@ export const WrapperDonationCard = styled.div`
     background-color: white;
     box-shadow: 0px 6px 5px 3px rgb(0 0 0 / 14%);
     border-radius: 5px;
+    max-width: 700px;
 `;
 
 export const Header = styled.div`
@@ -116,8 +117,9 @@ export const PriceArea = styled.div`
 
     display: flex;
     justify-content: flex-end;
-    align-items: flex-end;
+    align-items: center;
 
+    padding-top: 2%;
     padding-right: 7%;
 `;
 

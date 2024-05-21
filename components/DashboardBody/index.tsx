@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
     Body,
     RenderingContainer,
@@ -20,31 +22,17 @@ import ChromaKey from "./ChromaKey";
 
 //Components
 import MessageArea from "./MessageArea";
+
+//Contexts
 import { useHeader } from "@/contexts/useHeader";
-import { useEffect, useState } from "react";
 
-type FieldScreen = {
-    status: boolean;
-    name: string;
-}
-
-type ScreenProp = {
-    initial: FieldScreen;
-    importKey: FieldScreen;
-    overview: FieldScreen;
-    config: FieldScreen;
-    survey: FieldScreen;
-    test: FieldScreen;
-    trackDonate: FieldScreen;
-    qrCode: FieldScreen;
-    call: FieldScreen;
-    generateKey: FieldScreen;
-    blackList: FieldScreen;
-    chromaKey: FieldScreen;
-}
+//Types
+import { ScreenProp } from "@/utils/types";
+import { useData } from "@/contexts/useData";
 
 export default function DashboardBody() {
 
+    const { data } = useData();
     const { screens } = useHeader();
 
     const [noBorder, setNoBorder] = useState<boolean>(true);
@@ -79,27 +67,24 @@ export default function DashboardBody() {
     const haveBorderInScreen = (screen: string) => setNoBorder((screen === 'initial' || screen === 'importKey'));
 
     useEffect(() => {
-        const getScreen = () =>
-            Object.keys(screens).map((screen) => (screens[screen as keyof ScreenProp].status) ? haveBorderInScreen(screen) : '');
-
-        const overViewDetail = () => {
-            Object.keys(screens).map((screen) => {
-                if (screens[screen as keyof ScreenProp].status) {
-                    const isOverviewScreen = (screen === 'overview');
-                    setOverviewBorderDatail((isOverviewScreen) ?
-                        `     border-left: 1px solid #E2DEF9;
+        Object.keys(screens).map((screen) => (screens[screen as keyof ScreenProp].status) ? haveBorderInScreen(screen) : '');
+        Object.keys(screens).map((screen) => {
+            if (screens[screen as keyof ScreenProp].status) {
+                const isOverviewScreen = (screen === 'overview');
+                setOverviewBorderDatail((isOverviewScreen) ?
+                    `     border-left: 1px solid #E2DEF9;
                         border-right: 1px solid #E2DEF9;
                         border-bottom: 1px solid #E2DEF9;
                   ` : ' border: 1px solid #E2DEF9; ')
-                }
-            })
-        }
-        getScreen();
-        overViewDetail();
+            }
+        })
     }, [screens]);
 
     return (
-        <Body className="flex fd">
+        <Body 
+            className="flex fd"
+            onClick={() => console.log(data)}
+        >
             <MessageArea />
             <Wrapper
                 className="flex"

@@ -1,14 +1,17 @@
 import { useState } from "react";
+
 import {
     Button,
     Container,
     Input,
     InputArea,
-    MessageError,
     Title,
     TitleArea,
 } from "./styles";
+
+//Contexts
 import { useMessage } from "@/contexts/useMessage";
+import { useHeader } from "@/contexts/useHeader";
 
 interface ErrorProps {
     status:boolean;
@@ -19,9 +22,10 @@ export default function ImportKey() {
     const [key, setKey] = useState<string>('');
 
     const [error, setError] = useState<ErrorProps>({
-        status: false, message: ''
+           status: false, message: ''
     });
 
+    const { setActiveScreen } = useHeader();
     const { dispatchMessage } = useMessage();
 
     const handleImport = () => {
@@ -31,7 +35,7 @@ export default function ImportKey() {
             dispatchMessage('[ERRO]: Chave não encontrada', false);
         }
         if (key !== "") {
-
+            setActiveScreen('overview');
         } else {
           setError({status:true, message: '[ERRO]: Campo vazio. Preencha corretamente'});
           dispatchMessage('[ERRO]: Campo vazio. Preencha corretamente', false);

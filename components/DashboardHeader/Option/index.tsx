@@ -1,31 +1,10 @@
 import SvgModel from "@/utils/svg";
 
 import {
-    OptionArea,
     OptionTitle,
     SvgContainer,
     TooltipText
 } from "./styles";
-
-type FieldScreen = {
-    status: boolean;
-    name: string;
-}
-
-type ScreenProp = {
-    initial: FieldScreen;
-    importKey: FieldScreen;
-    overview: FieldScreen;
-    config: FieldScreen;
-    survey: FieldScreen;
-    test: FieldScreen;
-    trackDonate: FieldScreen;
-    qrCode: FieldScreen;
-    call: FieldScreen;
-    generateKey: FieldScreen;
-    blackList: FieldScreen;
-    chromaKey: FieldScreen;
-}
 
 interface Props {
     screen: string;

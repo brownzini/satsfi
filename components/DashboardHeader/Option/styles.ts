@@ -1,27 +1,8 @@
 import styled from 'styled-components';
 
-interface Prop {
-    width: string;
-    last?:string;
-}
-
 interface FontColorProp {
     isselected:string;
 }
-
-export const OptionArea = styled.div<Prop>`
-    width: ${(p) => p.width};
-    height: 100%;
-    
-    border-right: ${(p) => (p.last === 'white') ? 'none' : '7px solid'+p.last};
-    border-top-right-radius: ${(p) => (p.last === 'white') ? '7px' : '0px'};
-    
-    text-align: center;
-
-    transition: 0.5s ease-in;
-
-    cursor: pointer;
-`;
 
 export const OptionTitle = styled.p`
     
@@ -91,7 +72,7 @@ export const TooltipText = styled.span`
     position: absolute;
     top: 100%;
     left: 50%;
-    z-index: 1;
+    z-index: 3;
     margin-left: -60px;
     
     opacity: 0;

@@ -12,19 +12,34 @@ import {
 //Components
 import Field from "../Field";
 
+import { useData } from "@/contexts/useData";
 import { useMessage } from "@/contexts/useMessage";
 
 export default function Config() {
-    const [minAmount, setMinAmount] = useState<string>('');
-    const [allowDonate, setAllowDonate] = useState<boolean>(false);
-    const [donationVolume, setDonationVolume] = useState<number>(100);
-    const [durationDonate, setDurationDonate] = useState<number>(15);
+
+    const { data, updateData } = useData();
+    
+    const [minAmount, setMinAmount] = useState<string>(data.config.minDonate);
+    const [allowDonate, setAllowDonate] = useState<boolean>(data.config.allow);
+    const [donationVolume, setDonationVolume] = useState<number>(data.config.alertVolume);
+    const [durationDonate, setDurationDonate] = useState<number>(data.config.durationAlert);
 
     const [haveError, setHaveError] = useState<boolean>(false);
 
     const { dispatchMessage } = useMessage();
 
+    const notChanged = () => {
+        const validateMinAmount   = (data.config.minDonate ===  minAmount);
+        const validateAllowDonate = (data.config.allow ===  allowDonate);
+        const validateDonationVolume = (data.config.alertVolume === donationVolume);
+        const validateDurationDonate = (data.config.durationAlert === durationDonate);
+
+        return (validateMinAmount && validateAllowDonate && 
+               (validateDonationVolume && validateDurationDonate));
+    }
+
     const validationField = () => {
+        const hasNotChanged = notChanged();
         const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
         if(minAmount === '' || Number.isNaN(priceFiltered)) {
             setMinAmount('Preencha o campo');
@@ -32,8 +47,14 @@ export default function Config() {
         } else if(priceFiltered < 1000 ) {
             setMinAmount('Valor minimo é de 1,000 sats');
             setHaveError(true);
-        } else {
-            dispatchMessage('[SUCESSO]: Alterações salvas', true, 3000);
+        } else if(!hasNotChanged) {
+                  updateData('config', {
+                    allow: allowDonate,
+                    minDonate: minAmount,
+                    alertVolume: donationVolume,
+                    durationAlert: durationDonate,
+                  });
+                  dispatchMessage('[SUCESSO]: Alterações salvas', true, 3000);
         }
     }
 

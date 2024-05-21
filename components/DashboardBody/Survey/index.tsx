@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
     AmountVotesText,
     BackButton,
@@ -16,7 +17,6 @@ import {
     InputWrapper,
     LeftSideArea,
     MessageErrorArea,
-    NoVotesText,
     OptionSvgArea,
     OptionsList,
     OptionsWrapper,
@@ -36,22 +36,18 @@ import {
     WinnerText,
 } from "./styles";
 
+//Components
 import Field from "../Field";
-import SvgModel from "@/utils/svg";
-import { useEffect, useState } from "react";
-import { useMessage } from "@/contexts/useMessage";
 import TimerComponent from "./TimerComponent";
 
-interface OptionsProps {
-    id: string;
-    name: string;
-    votes: string;
-}
+//Contexts
+import { useMessage } from "@/contexts/useMessage";
 
-interface TimerProps {
-    minute: number;
-    second: number;
-}
+//Types
+import { OptionsProps, TimerProps } from "@/utils/types";
+
+//Svg
+import SvgModel from "@/utils/svg";
 
 export default function Survey() {
 

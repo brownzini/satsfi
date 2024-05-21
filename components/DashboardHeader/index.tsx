@@ -1,50 +1,31 @@
+import { useEffect, useState } from "react";
+
 import {
     Header,
     WrapperLogoArea,
     Logo,
     OptionsArea,
-    WrapperOption,
     OptionArea,
 } from "./styles";
 
-import { useHeader } from "@/contexts/useHeader";
+//Component
 import Option from "./Option";
 
-type FieldScreen = {
-    status: boolean;
-    name: string;
-}
+//Contexts
+import { useHeader } from "@/contexts/useHeader";
 
-type ScreenProp = {
-    initial: FieldScreen;
-    importKey: FieldScreen;
-    overview: FieldScreen;
-    config: FieldScreen;
-    survey: FieldScreen;
-    test: FieldScreen;
-    trackDonate: FieldScreen;
-    qrCode: FieldScreen;
-    call: FieldScreen;
-    generateKey: FieldScreen;
-    blackList: FieldScreen;
-    chromaKey: FieldScreen;
-}
+//Types
+import { ScreenProp } from "@/utils/types";
 
 export default function DashboardHeader() {
 
-    const { screens, setScreens } = useHeader();
+    const [screenStatus, setScreenStatus] = useState<boolean>(false);   
 
-    const setActiveScreen = (activeScreen: keyof ScreenProp) => {
-        setScreens(prevScreens => {
-            const updatedScreens: ScreenProp = { ...prevScreens };
-            for (const key in updatedScreens) {
-                if (updatedScreens.hasOwnProperty(key)) {
-                    updatedScreens[key as keyof ScreenProp].status = key === activeScreen;
-                }
-            }
-            return updatedScreens;
-        });
-    };
+    const { screens, setActiveScreen } = useHeader();
+
+    useEffect(() => {
+        setScreenStatus((screens.initial.status || screens.importKey.status));
+    }, [screens]);
 
     return (
         <Header className="flex">
@@ -52,23 +33,24 @@ export default function DashboardHeader() {
                 <Logo>SatsFI</Logo>
             </WrapperLogoArea>
             <OptionsArea className="flex">
-                {Object.keys(screens).map(screen => (screen !== 'initial' && screen !== 'importKey') && (
-                    <OptionArea
-                        key={screen}
-                        className="flex"
-                        width={(screens[screen as keyof ScreenProp].status) ? '50%' : '10%'}
-                        last={(screens[screen as keyof ScreenProp].name) === 'Chroma Key' ? 'white' : '#DADEDE'}
-                        onClick={() => setActiveScreen(screen as keyof ScreenProp)}
-                    >
-                        <Option
-                            screen={screen}
-                            name={screens[screen as keyof ScreenProp].name}
-                            status={screens[screen as keyof ScreenProp].status}
-                        />
-                    </OptionArea>
-                   
-                ))}
-                    </OptionsArea>
+                {(!screenStatus) &&
+                    Object.keys(screens).map(screen => (screen !== 'initial' && screen !== 'importKey') && (
+                        <OptionArea
+                            key={screen}
+                            className="flex"
+                            width={(screens[screen as keyof ScreenProp].status) ? '50%' : '10%'}
+                            last={(screens[screen as keyof ScreenProp].name) === 'Chroma Key' ? 'white' : '#DADEDE'}
+                            onClick={() => setActiveScreen(screen as keyof ScreenProp)}
+                        >
+                            <Option
+                                screen={screen}
+                                name={screens[screen as keyof ScreenProp].name}
+                                status={screens[screen as keyof ScreenProp].status}
+                            />
+                        </OptionArea>
+                    ))
+                }
+            </OptionsArea>
         </Header>
     );
 }

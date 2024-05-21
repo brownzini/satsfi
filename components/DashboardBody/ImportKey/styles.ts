@@ -11,7 +11,7 @@ export const Container = styled.div`
 
 export const TitleArea = styled.div`
     width: 100%;
-    height: 25%;
+    height: 14%;
 
     display: flex;
     justify-content: flex-start;

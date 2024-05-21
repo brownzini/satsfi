@@ -1,28 +1,12 @@
 import React from "react";
 
-type FieldScreen = {
-    status: boolean;
-    name: string;
-}
-
-type ScreenProp = {
-    initial:FieldScreen;
-    importKey:FieldScreen;
-    overview: FieldScreen;
-    config: FieldScreen;
-    survey: FieldScreen;
-    test: FieldScreen;
-    trackDonate: FieldScreen;
-    qrCode: FieldScreen;
-    call: FieldScreen;
-    generateKey: FieldScreen;
-    blackList: FieldScreen;
-    chromaKey: FieldScreen;
-}
+//Types
+import { ScreenProp } from "@/utils/types";
 
 interface HeaderContextValue {
     screens:ScreenProp;
     setScreens: React.Dispatch<React.SetStateAction<ScreenProp>>;
+    setActiveScreen: (activeScreen: keyof ScreenProp) => void;
 }
 
 interface Props {
@@ -45,6 +29,7 @@ const listInitial: HeaderContextValue = {
         chromaKey: { status: false, name: 'Chroma Key' },
     },
     setScreens: param => {},
+    setActiveScreen: param => {},
 };
 
 const HeaderContext = React.createContext<HeaderContextValue>(listInitial);
@@ -66,8 +51,23 @@ export function HeaderProvider({ children }: Props) {
         chromaKey: { status: false, name: 'Chroma Key' },
     });
 
+    const setActiveScreen = (activeScreen: keyof ScreenProp) => {
+        setScreens(prevScreens => {
+            const updatedScreens: ScreenProp = { ...prevScreens };
+            for (const key in updatedScreens) {
+                if (updatedScreens.hasOwnProperty(key)) {
+                    updatedScreens[key as keyof ScreenProp].status = key === activeScreen;
+                }
+            }
+            return updatedScreens;
+        });
+    };
+
     return (
-        <HeaderContext.Provider value={{ screens, setScreens }}>
+        <HeaderContext.Provider value={{ 
+            screens, setScreens,
+            setActiveScreen,
+        }}>
             {children}
         </HeaderContext.Provider>
     );
@@ -75,8 +75,6 @@ export function HeaderProvider({ children }: Props) {
 
 export function useHeader() {
     const context = React.useContext(HeaderContext);
-
-    const { screens, setScreens, } = context;
-
-    return { screens, setScreens, };
+    const { screens, setScreens, setActiveScreen } = context;
+    return { screens, setScreens, setActiveScreen };
 }

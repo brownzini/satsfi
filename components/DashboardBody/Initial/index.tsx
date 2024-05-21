@@ -7,7 +7,15 @@ import {
     HeadTitle
 } from "./styles";
 
+//Contexts
+import { useHeader } from "@/contexts/useHeader";
+
 export default function Initial() {
+    
+    const { setActiveScreen } = useHeader();
+
+    const handleClick = () => setActiveScreen('importKey');
+    
     return (
         <Container className="flex fd">
             <Head className="flex">
@@ -19,12 +27,14 @@ export default function Initial() {
                         styles={`
                             background-color:#9BC9EA;
                             color:white;
-
                             &:hover {
                                 background-color:#1F78B9;
                             }
                         `}
-                    > Import key hub </Button>
+                        onClick={handleClick}
+                    > 
+                      Import key hub 
+                    </Button>
                 </ButtonArea>
                 <ButtonArea>
                     <Button
@@ -37,7 +47,9 @@ export default function Initial() {
                                 background-color:#6B3EA5;
                             }
                         `}
-                    > Create new hub </Button>
+                    > 
+                      Create new hub 
+                    </Button>
                 </ButtonArea>
             </Body>
         </Container>
