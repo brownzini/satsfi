@@ -47,6 +47,7 @@ export default function ImportKey() {
                 <Input
                     type="text"
                     value={key}
+                    name="import-key-input"
                     placeholder="Copie e cole sua chave aqui..."
                     styler={(error.status) ? 'red' : '#E2DEF9'}
                     onChange={(e) => setKey(e.target.value)}

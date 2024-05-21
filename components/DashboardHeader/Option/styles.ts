@@ -9,43 +9,6 @@ interface FontColorProp {
     isselected:string;
 }
 
-export const Header = styled.div`
-    width: 100%;
-    height: 10%;
-`;
-
-export const WrapperLogoArea = styled.div`
-    width: 25%;
-    height: 100%;
-
-    background-color: white;
-
-    border-right: 7px solid #DADEDE;
-    border-top-left-radius: 7px;
-`;
-
-export const Logo = styled.h2`
-    color: #F4B000;
-    font-size: 2rem;
-    font-family: 'Inter';
-    font-weight: bold;
-
-    @media only screen and (min-height: 900px) {
-        font-size: 3rem;
-    }
-`;
-
-export const OptionsArea = styled.div`
-    width: 75%;
-    height: 100%;
-
-    background-color: white;
-
-    border-bottom: 7px solid #DADEDE;
-    border-top-right-radius: 7px;
-    border-bottom-left-radius: 7px;
-`;
-
 export const OptionArea = styled.div<Prop>`
     width: ${(p) => p.width};
     height: 100%;
@@ -58,10 +21,6 @@ export const OptionArea = styled.div<Prop>`
     transition: 0.5s ease-in;
 
     cursor: pointer;
-`;
-export const WrapperOption = styled.div`
-    width: 100%;
-    height: 100%;
 `;
 
 export const OptionTitle = styled.p`
@@ -129,14 +88,12 @@ export const TooltipText = styled.span`
     background-color: #555;
     border-radius: 6px;
     
-    /* Position the tooltip text */
     position: absolute;
     top: 100%;
     left: 50%;
     z-index: 1;
     margin-left: -60px;
     
-    /* Fade in tooltip */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s;

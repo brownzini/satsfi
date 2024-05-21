@@ -56,7 +56,7 @@ export default function Field({
     handleClick,
     onKeyDown,
     onClick,
-    disabled,
+    disabled
 }: Props) {
     const handleChange = () => {
         if ((checked !== undefined) && (setChecked)) {
@@ -74,13 +74,15 @@ export default function Field({
 
     const inputTypeFormater = (param: string) => {
         if (inputType && setInputValue) {
-            if(inputType === 'nit') {
-               setInputValue(param.replace(/\D/g, ''));
+            if(inputType === 'nit' && maxLength) {
+               const text = param.replace(/\D/g, '');
+               const textFilter = (param.length < maxLength) ? text : param.slice(0, -1);
+               setInputValue(textFilter);
             } else if (inputType === 'price') {
-                const isNan = Number.isNaN(parseInt(param));
-                const recievePrice = (isNan) ? '0' : parseInt(param.replace(/[,.]/g, "")).toLocaleString('en-US', { style: 'currency', currency: 'USD' }).replace(/^\$?\s?/g, '');
-                const basePrice = recievePrice.slice(0, -3);
-                setInputValue(basePrice);
+                       const isNan = Number.isNaN(parseInt(param));
+                       const recievePrice = (isNan) ? '0' : parseInt(param.replace(/[,.]/g, "")).toLocaleString('en-US', { style: 'currency', currency: 'USD' }).replace(/^\$?\s?/g, '');
+                       const basePrice = recievePrice.slice(0, -3);
+                       setInputValue(basePrice);
             } else {
                 if (maxLength) {
                     const text = removeEmojis(param);
@@ -110,6 +112,7 @@ export default function Field({
         switch (type) {
             case 'input':
                 return <Input
+                          name="input"
                           type="text"
                           value={(inputValue) ? inputValue : ''}
                           styler={styler}
@@ -123,6 +126,7 @@ export default function Field({
                 return (
                     <Switch>
                         <ToggleInput
+                            name="toggle"
                             type="checkbox"
                             checked={checked}
                             onChange={handleChange}

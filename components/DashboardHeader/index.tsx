@@ -1,43 +1,38 @@
-import { useState } from "react";
 import {
     Header,
     WrapperLogoArea,
     Logo,
     OptionsArea,
+    WrapperOption,
     OptionArea,
-    OptionTitle,
-    SvgContainer,
-    TooltipText,
 } from "./styles";
-import SvgModel from "@/utils/svg";
+
+import { useHeader } from "@/contexts/useHeader";
+import Option from "./Option";
 
 type FieldScreen = {
-     status: boolean;
-     name: string;
+    status: boolean;
+    name: string;
 }
 
 type ScreenProp = {
-     overview: FieldScreen;
-     config: FieldScreen;
-     survey: FieldScreen;
-     test: FieldScreen;
-     trackDonate: FieldScreen;
-     qrCode: FieldScreen;
-     call: FieldScreen;
-     generateKey: FieldScreen;
+    initial: FieldScreen;
+    importKey: FieldScreen;
+    overview: FieldScreen;
+    config: FieldScreen;
+    survey: FieldScreen;
+    test: FieldScreen;
+    trackDonate: FieldScreen;
+    qrCode: FieldScreen;
+    call: FieldScreen;
+    generateKey: FieldScreen;
+    blackList: FieldScreen;
+    chromaKey: FieldScreen;
 }
 
 export default function DashboardHeader() {
-    const [screens, setScreens] = useState<ScreenProp>({
-        overview: { status: true, name: 'Visão Geral' },
-        config: { status: false, name: 'Configurar Donate' },
-        survey: { status: false, name: 'Enquete' },
-        test: { status: false, name: 'Testar' },
-        trackDonate: { status: false, name: 'Acompanhar Doações' },
-        qrCode: { status: false, name: 'QR Code' },
-        call: { status: false, name: 'Chamadas Ao Vivo' },
-        generateKey: { status: false, name: 'Minha Chave' },
-    });
+
+    const { screens, setScreens } = useHeader();
 
     const setActiveScreen = (activeScreen: keyof ScreenProp) => {
         setScreens(prevScreens => {
@@ -57,47 +52,23 @@ export default function DashboardHeader() {
                 <Logo>SatsFI</Logo>
             </WrapperLogoArea>
             <OptionsArea className="flex">
-                {Object.keys(screens).map(screen => (
+                {Object.keys(screens).map(screen => (screen !== 'initial' && screen !== 'importKey') && (
                     <OptionArea
                         key={screen}
                         className="flex"
                         width={(screens[screen as keyof ScreenProp].status) ? '50%' : '10%'}
-                        last={screens[screen as keyof ScreenProp].name === 'Minha Chave' ? 'white' : '#DADEDE'}
+                        last={(screens[screen as keyof ScreenProp].name) === 'Chroma Key' ? 'white' : '#DADEDE'}
                         onClick={() => setActiveScreen(screen as keyof ScreenProp)}
                     >
-                        {(screens[screen as keyof ScreenProp].status) ? (
-                            <SvgContainer
-                                className="flex"
-                                isselected={(screens[screen as keyof ScreenProp].status) ? 'opacity: 1;' : 'opacity: 0.5;'}
-                            >
-                                <SvgModel
-                                    name={screen}
-                                    width="16%"
-                                    height="50%"
-                                />
-
-                                <OptionTitle>
-                                    {screens[screen as keyof ScreenProp].name}
-                                </OptionTitle>
-                            </SvgContainer>
-                        ) : (
-                            <SvgContainer
-                                className="tooltip flex"
-                                isselected={(screens[screen as keyof ScreenProp].status) ? 'opacity: 1;' : 'opacity: 0.5;'}
-                            >
-                                <SvgModel
-                                    name={screen}
-                                    width="75%"
-                                    height="100%"
-                                />
-                                <TooltipText className="tooltiptext">
-                                    {screens[screen as keyof ScreenProp].name}
-                                </TooltipText>
-                            </SvgContainer>
-                        )}
+                        <Option
+                            screen={screen}
+                            name={screens[screen as keyof ScreenProp].name}
+                            status={screens[screen as keyof ScreenProp].status}
+                        />
                     </OptionArea>
+                   
                 ))}
-            </OptionsArea>
+                    </OptionsArea>
         </Header>
     );
 }

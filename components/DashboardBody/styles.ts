@@ -21,7 +21,13 @@ export const Wrapper = styled.div<Prop>`
     height: 84%;
     
     background-color: #F0F2FA;
-    border: 1px solid #E2DEF9;
-
+    
     ${(p) => p.styles};
+
+    border-radius: 3px;
+`;
+
+export const RenderingContainer = styled.div`
+    width: 100%;
+    height:100%;
 `;
