@@ -43,35 +43,46 @@ import TimerComponent from "./TimerComponent";
 //Contexts
 import { useMessage } from "@/contexts/useMessage";
 
-//Types
-import { OptionsProps, TimerProps } from "@/utils/types";
-
 //Svg
 import SvgModel from "@/utils/svg";
 
+//Contexts
+import { useData } from "@/contexts/useData";
+
+//Utils
+import { filterAmount } from "@/utils/priceFormat";
+import { OptionsProps, TimerProps } from "@/utils/types";
+
 export default function Survey() {
 
-    const [surveyStatus, setSurveyStatus] = useState<boolean>(true);
-    const [minCreateSurvey, setMinCreateSurvey] = useState<string>('');
-    const [surveyTime, setSurveyTime] = useState<number>(1);
+    const { data, updateData } = useData();
+
+    const [surveyStatus, setSurveyStatus] = useState<boolean>(data.survey.allow);
+    const [minCreateSurvey, setMinCreateSurvey] = useState<string>(data.survey.minCreateSurvey);
+    const [durationTime, setDurationTime] = useState<number>(data.survey.durationTime);
 
     const [surveyCreated, setSurveyCreated] = useState<boolean>(false);
 
     const [surveyTitle, setSurveyTitle] = useState<string>('');
-    const [options, setOptions] = useState<OptionsProps[]>([]);
+    const [options, setOptions] = useState<OptionsProps[]>(data.survey.options);
     const [minToVote, setMinToVote] = useState<string>('');
-
-    const [errorTitle, setErrorTitle] = useState<boolean>(false);
-    const [errorMinCreate, setErrorMinCreate] = useState<boolean>(false);
-    const [errorMinToVote, setErrorMinToVote] = useState<boolean>(false);
-    const [errorOptions, setErrorOptions] = useState<boolean>(false);
 
     const [SurveyTimer, setSurveyTimer] = useState<TimerProps>({ minute: 0, second: 0 });
     const [isSurveyCreated, setIsSurveyCreated] = useState<boolean>(false);
     const [SurveyTimerStatus, setSurveyTimerStatus] = useState<boolean>(false);
     const [isFinished, setIsFinished] = useState<boolean>(false);
 
-    const [winnerOption, setWinnerOption] = useState<string>('');
+    const [errorTitle, setErrorTitle] = useState<boolean>(false);
+    const [errorMinCreate, setErrorMinCreate] = useState<boolean>(false);
+    const [errorMinToVote, setErrorMinToVote] = useState<boolean>(false);
+    const [errorOptions, setErrorOptions] = useState<boolean>(false);
+
+    const [winnerOption, setWinnerOption] = useState({
+           id:'', 
+           name:'', 
+           percentage: '', 
+           amount: ''
+    });
     const [changeTitle, setChangeTitle] = useState<boolean>(false);
     const [maxVotes, setMaxVotes] = useState<number>(0);
 
@@ -125,11 +136,24 @@ export default function Survey() {
         }
     }
 
+    const notChanged = () => {
+        const validateSurveyStatus   = (data.survey.allow ===  surveyStatus);
+        const validateMinCreate = (data.survey.minCreateSurvey ===  minCreateSurvey);
+        const validateDurationSurvey = (data.survey.durationTime === durationTime);
+        return (validateSurveyStatus && validateMinCreate && validateDurationSurvey);
+    }
+
     // Right Side
     const handleSave = () => {
-        if (createValidation()) {
-            console.log('clicou')
-            dispatchMessage('Salvo com sucesso!!', true);
+        const hasNotChanged = notChanged();
+        if (createValidation() && !hasNotChanged) {
+            updateData('survey', { 
+                allow: surveyStatus,
+                minCreateSurvey: minCreateSurvey,
+                durationTime: durationTime,
+                ...data,
+             });
+            dispatchMessage('[SUCESSO]: Detalhes de Enquete foram salvos', true);
         }
     }
 
@@ -166,7 +190,17 @@ export default function Survey() {
     // Left Side
     const defineTime = () => {
         const now = new Date();
-        setSurveyTimer({ minute: now.getMinutes()+surveyTime, second: now.getSeconds() });
+
+        const completeMinute = now.getMinutes()+durationTime;
+
+        const filterMinute = completeMinute-60;
+        const filterSecond = now.getSeconds()-60;
+
+        setSurveyTimer({ 
+            minute: (filterMinute >= 60) ? filterMinute : completeMinute, 
+            second: (now.getSeconds() >= 60) ? filterSecond : now.getSeconds()
+        });            
+        
     }
 
     const handleCreate = () => {
@@ -209,9 +243,40 @@ export default function Survey() {
           setErrorOptions(false);
           setIsFinished(false);
           setSurveyTimerStatus(false);
-          setWinnerOption('');
+          setWinnerOption({
+            id:'', 
+            name:'', 
+            percentage: '', 
+            amount: ''
+          });
           setSurveyTimer({minute:0, second:0});
     }
+
+    // const calculatePercentages = (options: OptionsProps[]) => {
+    //     const totalVotes = options.reduce((sum, option) => sum + parseInt(option.votes), 0);
+    //     return options.map(option => ({
+    //         ...option,
+    //         percentage: totalVotes === 0 ? 0 : (parseInt(option.votes) / totalVotes) * 100
+    //     }));
+    // };
+
+    const calculatePercentageForOption = (options: OptionsProps[], optionId: string) => {
+        const totalVotes = options.reduce((sum, option) => sum + parseInt(option.votes), 0);
+
+        const chosenOption = options.find(option => option.id === optionId);
+        
+        if (!chosenOption) {
+            return null;
+        }
+
+        const chosenOptionVotes = parseInt(chosenOption.votes);
+        const percentage = totalVotes === 0 ? 0 : (chosenOptionVotes / totalVotes) * 100;
+
+        return {
+            ...chosenOption,
+            percentage: percentage.toFixed(2)
+        };
+    };
 
     const winnerFilter = (type:string) => {
         switch (type) {
@@ -239,11 +304,11 @@ export default function Survey() {
             </TrophyArea>
             <br />
             <WinnerText>
-                {(winnerOption !== '') ? winnerOption+': 70% dos votos' : winnerFilter('name')}
+                {(winnerOption.name !== '') ? winnerOption.name+': '+winnerOption.percentage+'% dos votos' : winnerFilter('name')}
             </WinnerText>
             <br />
             <AmountVotesText> 
-                {(winnerOption !== '') ? '50k satohis' : winnerFilter('amount') }
+                {(winnerOption.name !== '') ? winnerOption.amount+' '+' satohis' : winnerFilter('amount') }
             </AmountVotesText>
             <br />
             <br />
@@ -261,10 +326,17 @@ export default function Survey() {
 
     const findMaxVotesOption = () => {
         for (const option of options) {
-          if (parseInt(option.votes) > maxVotes) {
-              setWinnerOption(option.name);
-              setMaxVotes(parseInt(option.votes));
-          }
+             const filterOption = calculatePercentageForOption(options, option.id);
+             const totalAmount = filterAmount(data.survey.amount);
+             if (parseInt(option.votes) > maxVotes) {
+                 setWinnerOption({
+                    id: option.id, 
+                    name: option.name,
+                    percentage: (filterOption) ? filterOption.percentage : '0%', 
+                    amount: (totalAmount) ? totalAmount : '0',
+                 });
+                 setMaxVotes(parseInt(option.votes));
+             }
         }
     };
 
@@ -274,6 +346,27 @@ export default function Survey() {
            setChangeTitle(true);
        }
     },[isFinished]);
+
+    useEffect(() => {
+        if (data.survey.options.length === 0) {
+            setSurveyCreated(false);
+        } else {
+            const today = new Date();
+            const day = today.getUTCDate();
+            const hour = today.getHours();
+
+            const inTheSameTime = (day === data.survey.endTime.day && hour === data.survey.endTime.hour);
+            
+            setSurveyTimer({ 
+                minute: (inTheSameTime) ? data.survey.endTime.minute : today.getMinutes(), 
+                second: (inTheSameTime) ? data.survey.endTime.second : today.getSeconds(), 
+            });
+            
+            setSurveyCreated(false);
+            setIsSurveyCreated(true);
+            setSurveyTimerStatus(true);
+        }
+    },[]);
 
     return (
         <Container className="flex">
@@ -362,6 +455,7 @@ export default function Survey() {
                             padding-left: 10%;
                     `}
                     inputType="price"
+                    disabled={!surveyStatus}
                     inputValue={minCreateSurvey}
                     placeholder="Minino 2,500 ..."
                     setInputValue={setMinCreateSurvey}
@@ -401,8 +495,8 @@ export default function Survey() {
                             align-items: center;
                             padding-left: 12%;
                         `}
-                        value={surveyTime}
-                        setValue={setSurveyTime}
+                        value={durationTime}
+                        setValue={setDurationTime}
                         durationMin="1"
                         durationMax="10"
                         styler={` 
@@ -410,9 +504,10 @@ export default function Survey() {
                                 height: 25%;
                             }
                         `}
+                        disabled={!surveyStatus}
                     />
                     <TimerArea>
-                        <TimeTitle>{surveyTime} min</TimeTitle>
+                        <TimeTitle>{durationTime} min</TimeTitle>
                     </TimerArea>
                 </DurationArea>
                 <SaveArea>

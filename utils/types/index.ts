@@ -20,6 +20,8 @@ export type ScreenProp = {
 
 
 export interface TimerProps {
+    day?: number;
+    hour?: number;
     minute: number;
     second: number;
 }
@@ -34,19 +36,27 @@ export interface ConfigProps {
 export interface SurveyProps {
     allow:boolean; //Allow
     minCreateSurvey: string;
-    surveyTime: number;
-    
-    surveyCreated: boolean;
+    durationTime: number;
     
     surveyTitle:string;
     options:OptionsProps[];
     minToVote:string;
+
+    endTime: TimerProps;
+    amount: string;
 }
 
 export interface OptionsProps {
     id: string;
     name: string;
     votes: string;
+}
+
+export interface WinnerProps {
+    id: string;
+    name:string;
+    percentage: string;
+    amount: string;
 }
 
 export interface TestProps {

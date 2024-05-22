@@ -142,17 +142,18 @@ export default function Field({
                     {text}
                 </Button>
             case 'slider':
-                return <SliderContainer>
-                    <input
-                        id="myRange"
-                        type="range"
-                        className="rangeSlider"
-                        min={durationMin}
-                        max={durationMax}
-                        value={(value) ? value.toString() : ''}
-                        onChange={(e) => handleChangeSlider(e.target.value)}
-                    />
-                </SliderContainer>
+                return  <SliderContainer>
+                            <input
+                                id="myRange"
+                                type="range"
+                                className="rangeSlider"
+                                min={durationMin}
+                                max={durationMax}
+                                value={(value) ? value.toString() : ''}
+                                onChange={(e) => handleChangeSlider(e.target.value)}
+                                disabled={(disabled) ? disabled : false}
+                            />
+                        </SliderContainer>
             case 'options':
                 return <Select>
                           <option value="dog">Dog</option>

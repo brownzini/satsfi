@@ -44,13 +44,17 @@ const listInitial: DataContextValue = {
         survey: {
             allow: false,
             minCreateSurvey: '2,500',
-            surveyTime: 1,
-
-            surveyCreated: false,
+            durationTime: 1,
 
             surveyTitle: 'Enquete',
-            options: [],
+            options: [
+                {id:'1', name:'pera', votes: '1000'}, 
+                {id:'2', name:'banana', votes: '2000'}
+            ],
             minToVote: '',
+            
+            endTime: {day:21, minute: 21, second: 34},
+            amount: '50000',
         },
         test: {
             allow: false,
@@ -92,13 +96,17 @@ export function DataProvider({ children }: Props) {
         survey: {
             allow: false,
             minCreateSurvey: '2,500',
-            surveyTime: 1,
-
-            surveyCreated: false,
+            durationTime: 1,
 
             surveyTitle: 'Enquete',
-            options: [],
+            options: [
+                {id:'1', name:'pera', votes: '1000'}, 
+                {id:'2', name:'banana', votes: '2000'}
+            ],
             minToVote: '',
+
+            endTime: {day:21, minute: 21, second: 34},
+            amount: '50000',
         },
         test: {
             allow: false,
