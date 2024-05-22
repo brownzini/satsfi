@@ -13,7 +13,6 @@ import {
 } from "@/utils/types";
 
 export interface DataProps {
-    idStream: string;
     config: ConfigProps;
     survey: SurveyProps;
     test: TestProps;
@@ -40,7 +39,6 @@ interface Props {
 
 const listInitial: DataContextValue = {
     data: {
-        idStream: 'stream',
         config: {
             allow: false,
             minDonate: '1000',
@@ -94,15 +92,14 @@ const DataContext = React.createContext<DataContextValue>(listInitial);
 export function DataProvider({ children }: Props) {
 
     const [data, setData] = React.useState<DataProps>({
-        idStream: 'stream',
         config: {
-            allow: false,
+            allow: true,
             minDonate: '1000',
             alertVolume: 100,
             durationAlert: 15,
         },
         survey: {
-            allow: false,
+            allow: true,
             minCreateSurvey: '2,500',
             durationTime: 1,
 
@@ -116,23 +113,14 @@ export function DataProvider({ children }: Props) {
                 minute: 0, 
                 second: 0
             },
-            amount: '0',
+            amount: '50000',
         },
         test: {
             allow: true,
         },
-        trackDonate: [{
-            name: 'anonemo',
-            amount: '12,000',
-            description: 'Bom dia meu nobre como que vai essa consagração ?',
-            type: "default",
-            narrator: "jusep camole",
-            isCalling: false,
-            callUrl: "",
-            backgroundUrl: "",
-        }],
+        trackDonate: [],
         call: {
-            allow: false,
+            allow: true,
             minAmount: '',
         },
         generateKey: {

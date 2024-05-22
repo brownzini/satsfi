@@ -35,6 +35,7 @@ export default function Call() {
             setMinAmount('Minimo é de 12,000 sats');
             setHaveError(true);
         } else {
+            //
             dispatchMessage('[SUCESSO]: Alterações realizadas', true, 3000);
         }
     }

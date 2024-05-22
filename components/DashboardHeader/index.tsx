@@ -16,15 +16,20 @@ import { useHeader } from "@/contexts/useHeader";
 
 //Types
 import { ScreenProp } from "@/utils/types";
+import { useData } from "@/contexts/useData";
 
 export default function DashboardHeader() {
 
     const [screenStatus, setScreenStatus] = useState<boolean>(false);   
 
+    const { data } = useData();
     const { screens, setActiveScreen } = useHeader();
 
+    const exceptionScreens = (screen:string) => (screen !== 'initial' && screen !== 'importKey');
+    const filterScreen = (screens.generateKey.status && data.generateKey.keyHub === '' );
+
     useEffect(() => {
-        setScreenStatus((screens.initial.status || screens.importKey.status));
+        setScreenStatus((screens.initial.status || screens.importKey.status || filterScreen));
     }, [screens]);
 
     return (
@@ -34,7 +39,7 @@ export default function DashboardHeader() {
             </WrapperLogoArea>
             <OptionsArea className="flex">
                 {(!screenStatus) &&
-                    Object.keys(screens).map(screen => (screen !== 'initial' && screen !== 'importKey') && (
+                    Object.keys(screens).map(screen => (exceptionScreens(screen)) && (
                         <OptionArea
                             key={screen}
                             className="flex"

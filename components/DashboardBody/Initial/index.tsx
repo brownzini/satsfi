@@ -14,8 +14,11 @@ export default function Initial() {
     
     const { setActiveScreen } = useHeader();
 
-    const handleClick = () => setActiveScreen('importKey');
+    const handleClick = ()  => setActiveScreen('importKey');
     
+    const handleCreate = () => setActiveScreen('generateKey');
+    
+
     return (
         <Container className="flex fd">
             <Head className="flex">
@@ -47,6 +50,7 @@ export default function Initial() {
                                 background-color:#6B3EA5;
                             }
                         `}
+                        onClick={handleCreate}
                     > 
                       Create new hub 
                     </Button>

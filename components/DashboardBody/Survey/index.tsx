@@ -50,7 +50,7 @@ import SvgModel from "@/utils/svg";
 import { useData } from "@/contexts/useData";
 
 //Utils
-import { filterAmount } from "@/utils/priceFormat";
+import { filterAmount } from "@/utils/inputFormat";
 import { OptionsProps, TimerProps } from "@/utils/types";
 
 export default function Survey() {
@@ -250,6 +250,23 @@ export default function Survey() {
             amount: ''
           });
           setSurveyTimer({minute:0, second:0});
+          updateData('survey', {
+            allow: false,
+            minCreateSurvey: '2,500',
+            durationTime: 1,
+
+            surveyTitle: 'Enquete',
+            options: [],
+            minToVote: '',
+
+            endTime: {
+                day:0, 
+                hour:0,
+                minute: 0, 
+                second: 0
+            },
+            amount: '0',
+          })
     }
 
     // const calculatePercentages = (options: OptionsProps[]) => {

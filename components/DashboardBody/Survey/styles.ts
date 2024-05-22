@@ -361,6 +361,7 @@ export const Title = styled.h1`
     font-size: 2rem;
     font-family: 'Roboto';
     font-weight: bold;
+    text-align: center;
 
     @media only screen and (min-height: 900px) {
         font-size: 3rem;
