@@ -83,3 +83,14 @@ export interface GenerateKeyProps {
 export interface BlackListProps {
     wordsBlocked: string;
 }
+
+export interface DonateProps {
+    name: string;
+    amount: string;
+    description: string;
+    type: "ai" | "default" | "survey" | "call" | "background";
+    narrator: string;
+    isCalling: boolean;
+    callUrl: string,
+    backgroundUrl: string;
+}

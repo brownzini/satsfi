@@ -5,7 +5,7 @@ import {
     BlackListProps,
     CallProps,
     ConfigProps,
-    DonationProps,
+    DonateProps,
     GenerateKeyProps,
     SurveyProps,
     TestProps
@@ -16,7 +16,7 @@ export interface DataProps {
     config: ConfigProps;
     survey: SurveyProps;
     test: TestProps;
-    trackDonate: DonationProps;
+    trackDonate: DonateProps[];
     call: CallProps;
     generateKey: GenerateKeyProps;
     blackList: BlackListProps;
@@ -26,6 +26,10 @@ interface DataContextValue {
     data: DataProps;
     setData: React.Dispatch<React.SetStateAction<DataProps>>;
     updateData: <K extends keyof DataProps>(key: K, newData: Partial<DataProps[K]>) => void;
+
+    addDonate: (newDonate: DonateProps) => void;
+    deleteDonate: (index: number) => void;
+    removeLastDonate: () => void;
 }
 
 interface Props {
@@ -47,23 +51,21 @@ const listInitial: DataContextValue = {
             durationTime: 1,
 
             surveyTitle: 'Enquete',
-            options: [
-                {id:'1', name:'pera', votes: '1000'}, 
-                {id:'2', name:'banana', votes: '2000'}
-            ],
+            options: [],
             minToVote: '',
             
-            endTime: {day:21, minute: 21, second: 34},
-            amount: '50000',
+            endTime: {
+                day:0, 
+                hour:0,
+                minute: 0, 
+                second: 0
+            },
+            amount: '0',
         },
         test: {
             allow: true,
         },
-        trackDonate: {
-            donator: '',
-            amount: '',
-            content: '',
-        },
+        trackDonate: [],
         call: {
             allow: false,
             minAmount: '',
@@ -79,6 +81,9 @@ const listInitial: DataContextValue = {
     },
     setData: param => { },
     updateData: param => { },
+    addDonate: param => { },
+    deleteDonate: param => { },
+    removeLastDonate: () => { },
 };
 
 const DataContext = React.createContext<DataContextValue>(listInitial);
@@ -99,23 +104,30 @@ export function DataProvider({ children }: Props) {
             durationTime: 1,
 
             surveyTitle: 'Enquete',
-            options: [
-                {id:'1', name:'pera', votes: '1000'}, 
-                {id:'2', name:'banana', votes: '2000'}
-            ],
+            options: [],
             minToVote: '',
 
-            endTime: {day:21, minute: 21, second: 34},
-            amount: '50000',
+            endTime: {
+                day:0, 
+                hour:0,
+                minute: 0, 
+                second: 0
+            },
+            amount: '0',
         },
         test: {
             allow: true,
         },
-        trackDonate: {
-            donator: '',
-            amount: '',
-            content: '',
-        },
+        trackDonate: [{
+            name: 'anonemo',
+            amount: '12,000',
+            description: 'Bom dia meu nobre como que vai essa consagração ?',
+            type: "default",
+            narrator: "jusep camole",
+            isCalling: false,
+            callUrl: "",
+            backgroundUrl: "",
+        }],
         call: {
             allow: false,
             minAmount: '',
@@ -151,8 +163,34 @@ export function DataProvider({ children }: Props) {
         });
     };
 
+    const addDonate = (newDonate: DonateProps) => {
+        setData(prevData => ({
+            ...prevData,
+            trackDonate: [newDonate, ...prevData.trackDonate || []]
+        }));
+    };
+
+    const deleteDonate = (index: number) => {
+        setData(prevData => ({
+            ...prevData,
+            trackDonate: (prevData.trackDonate || []).filter((_, i) => i !== index)
+        }));
+    };
+
+    const removeLastDonate = () => {
+        setData(prevData => ({
+            ...prevData,
+            trackDonate: (prevData.trackDonate || []).slice(0, -1)
+        }));
+    };
+
     return (
-        <DataContext.Provider value={{ data, setData, updateData }}>
+        <DataContext.Provider value={{ 
+            data, setData, 
+            updateData,
+            addDonate, deleteDonate,
+            removeLastDonate,
+        }}>
             {children}
         </DataContext.Provider>
     );
@@ -160,7 +198,16 @@ export function DataProvider({ children }: Props) {
 
 export function useData() {
     const context = React.useContext(DataContext);
-
-    const { data, setData,  updateData, } = context;
-    return { data, setData, updateData, };
+    const { 
+            data, setData,  
+            updateData, 
+            addDonate, deleteDonate,
+            removeLastDonate,
+    } = context;
+    return { 
+            data, setData, 
+            updateData, 
+            addDonate, deleteDonate,
+            removeLastDonate,
+    };
 }

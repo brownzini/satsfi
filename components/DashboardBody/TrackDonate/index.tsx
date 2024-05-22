@@ -1,127 +1,54 @@
-import SvgModel from "@/utils/svg";
-import { 
-    AmountArea,
-    Body,
+import {
     Container,
     ContentContainer,
-    DescriptionArea,
-    DescriptionTitle,
     DonationCard,
-    Header,
-    MessageBoxContainer,
-    NameArea,
-    NameTitle,
-    PriceArea,
-    PriceTitle,
-    SatoshiSvgArea,
-    WrapperDonationCard,
 } from "./styles";
 
-export default function TrackDonate () {
+//Components
+import Card from "./Card";
+
+//Utils
+import { useData } from "@/contexts/useData";
+
+export default function TrackDonate() {
+
+    const {
+        data, updateData,
+        addDonate, deleteDonate,
+        removeLastDonate,
+    } = useData();
+
+    const cleanDonates = () => {
+        updateData('trackDonate', [])
+    };
+
+    const addNewDonate = () => {
+          addDonate({
+            name: 'anonemo2 ',
+            amount: '2,000',
+            description: 'Testando esse teste maluco ?',
+            type: "default",
+            narrator: "jusep camole",
+            isCalling: false,
+            callUrl: "",
+            backgroundUrl: "",
+          });
+    }
+
     return (
-        <Container className="flex fd"> 
-            <MessageBoxContainer></MessageBoxContainer>
+        <Container className="flex fd">
             <ContentContainer className="flex">
-                <DonationCard>
-                    <WrapperDonationCard className="flex fd">
-                        <Header>
-                            <NameArea>
-                                <NameTitle> Anonimo </NameTitle>
-                            </NameArea>
-                            <AmountArea className="flex">
-                                <PriceArea>
-                                    <PriceTitle>1,200 sats</PriceTitle>
-                                </PriceArea>
-                            </AmountArea>
-                        </Header>
-                        <Body className="flex">
-                            <DescriptionArea>
-                                <DescriptionTitle>
-                                    Bom dia meu nobre, to aqui mandando essa contribuição pra ajudar na consagração ta ligado ? Manda salve
-                                </DescriptionTitle>
-                            </DescriptionArea>
-                        </Body>
-                    </WrapperDonationCard>
-
-                    <WrapperDonationCard className="flex fd">
-                        <Header>
-                            <NameArea>
-                                <NameTitle> Anonimo </NameTitle>
-                            </NameArea>
-                            <AmountArea className="flex">
-                                <PriceArea>
-                                    <PriceTitle>1,200 sats</PriceTitle>
-                                </PriceArea>
-                            </AmountArea>
-                        </Header>
-                        <Body className="flex">
-                            <DescriptionArea>
-                                <DescriptionTitle>
-                                    Bom dia meu nobre, to aqui mandando essa contribuição pra ajudar na consagração ta ligado ? Manda salve
-                                </DescriptionTitle>
-                            </DescriptionArea>
-                        </Body>
-                    </WrapperDonationCard>
-
-                    <WrapperDonationCard className="flex fd">
-                        <Header>
-                            <NameArea>
-                                <NameTitle> Anonimo </NameTitle>
-                            </NameArea>
-                            <AmountArea className="flex">
-                                <PriceArea>
-                                    <PriceTitle>1,200 sats</PriceTitle>
-                                </PriceArea>
-                            </AmountArea>
-                        </Header>
-                        <Body className="flex">
-                            <DescriptionArea>
-                                <DescriptionTitle>
-                                    Bom dia meu nobre, to aqui mandando essa contribuição pra ajudar na consagração ta ligado ? Manda salve
-                                </DescriptionTitle>
-                            </DescriptionArea>
-                        </Body>
-                    </WrapperDonationCard>
-
-                    <WrapperDonationCard className="flex fd">
-                        <Header>
-                            <NameArea>
-                                <NameTitle> Anonimo </NameTitle>
-                            </NameArea>
-                            <AmountArea className="flex">
-                                <PriceArea>
-                                    <PriceTitle>1,200 sats</PriceTitle>
-                                </PriceArea>
-                            </AmountArea>
-                        </Header>
-                        <Body className="flex">
-                            <DescriptionArea>
-                                <DescriptionTitle>
-                                    Bom dia meu nobre, to aqui mandando essa contribuição pra ajudar na consagração ta ligado ? Manda salve
-                                </DescriptionTitle>
-                            </DescriptionArea>
-                        </Body>
-                    </WrapperDonationCard>
-
-                    <WrapperDonationCard className="flex fd">
-                        <Header>
-                            <NameArea>
-                                <NameTitle> Anonimo </NameTitle>
-                            </NameArea>
-                            <AmountArea className="flex">
-                                <PriceArea>
-                                    <PriceTitle>1,200 sats</PriceTitle>
-                                </PriceArea>
-                            </AmountArea>
-                        </Header>
-                        <Body className="flex">
-                            <DescriptionArea>
-                                <DescriptionTitle>
-                                    Bom dia meu nobre, to aqui mandando essa contribuição pra ajudar na consagração ta ligado ? Manda salve
-                                </DescriptionTitle>
-                            </DescriptionArea>
-                        </Body>
-                    </WrapperDonationCard>
+                <DonationCard onClick={() => removeLastDonate()}>
+                    {data.trackDonate.length > 0 &&
+                        data.trackDonate.map((donate, index) => (
+                            <Card 
+                                key={index}
+                                name={donate.name}
+                                amount={donate.amount}
+                                description={donate.description}
+                            /> 
+                        ))
+                    }
                 </DonationCard>
             </ContentContainer>
         </Container>
