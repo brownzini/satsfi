@@ -5,18 +5,27 @@ import {
     Container,
     ControlArea,
     MessageButton,
+    SaveButton,
 } from "./style";
 
 //Components
 import Field from "../Field";
 
+//Svg
 import SvgModel from "@/utils/svg";
+
+//Context
+import { useData } from "@/contexts/useData";
 import { useMessage } from "@/contexts/useMessage";
 
 export default function Test() {
+    
+    const { data, updateData } = useData();
+    
     const widgetLink = 'https://www.teste.com';
     const chromakeyLink = 'https://www.chroma.com';
-    const [surveyStatus, setSurveyStatus] = useState<boolean>(true);
+
+    const [allow, setAllow] = useState<boolean>(data.test.allow);
 
     const { dispatchMessage } = useMessage();
 
@@ -41,6 +50,10 @@ export default function Test() {
             dispatchMessage('Erro ao copiar o texto: ', false), 2000;
         });
     }
+
+    const handleSave = () => 
+        updateData('test', { allow: allow });
+    
 
     return (
         <Container className="flex">
@@ -94,8 +107,8 @@ export default function Test() {
                     styler={` 
 
                     `}
-                    checked={surveyStatus}
-                    setChecked={setSurveyStatus}
+                    checked={allow}
+                    setChecked={setAllow}
                 />
                 <Field
                     type="title"
@@ -208,6 +221,12 @@ export default function Test() {
                     onClick={copyChromaToClipboard}
                 />
                 <ButtonArea>
+                    <SaveButton 
+                        className="flex"
+                        onClick={handleSave}
+                    >
+                        SALVAR
+                    </SaveButton>    
                     <MessageButton className="flex">
                         <SvgModel
                             name="playIcon"

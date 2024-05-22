@@ -57,7 +57,7 @@ const listInitial: DataContextValue = {
             amount: '50000',
         },
         test: {
-            allow: false,
+            allow: true,
         },
         trackDonate: {
             donator: '',
@@ -109,7 +109,7 @@ export function DataProvider({ children }: Props) {
             amount: '50000',
         },
         test: {
-            allow: false,
+            allow: true,
         },
         trackDonate: {
             donator: '',

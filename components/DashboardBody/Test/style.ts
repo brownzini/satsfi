@@ -21,7 +21,7 @@ export const VoiceArea = styled.div`
 `;
 
 export const ButtonArea = styled.div`
-    width: 75.81%;
+    width: 75%;
     height: 14%;
     
     display: flex;
@@ -59,6 +59,38 @@ export const MessageButton = styled.button`
 
     &:hover {
         background-color: #8140cf;
+    }
+
+    padding-right: 3%;
+
+    cursor:pointer;
+`;
+
+export const SaveButton = styled.button`
+    width: 100%;
+    height: 100%;
+
+    color:white;
+    font-family: 'Inter';
+    font-weight: bold;
+    font-size: 1rem;
+
+    border:none;
+    border-radius: 4px;
+
+    background-color: #07CCA1;
+
+    transition: 1s;
+
+    max-width: 200px;
+
+    @media only screen and (min-height: 900px) {
+        font-size: 1.4rem;
+        padding-right:0%;
+    }
+
+    &:hover {
+        background-color: #11977a;
     }
 
     padding-right: 3%;
