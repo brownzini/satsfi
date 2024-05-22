@@ -188,10 +188,11 @@ export default function Call() {
                         
                     `}
                     inputType="price"
+                    disabled={(!allow)}
+                    onClick={hiddeError}
                     inputValue={minAmount}
                     setInputValue={setMinAmount}
                     placeholder="Minimo de 12,000 Sats"
-                    onClick={hiddeError}
                 />
 
                 <Field

@@ -94,7 +94,7 @@ export function DataProvider({ children }: Props) {
     const [data, setData] = React.useState<DataProps>({
         config: {
             allow: true,
-            minDonate: '1000',
+            minDonate: '1,000',
             alertVolume: 100,
             durationAlert: 15,
         },

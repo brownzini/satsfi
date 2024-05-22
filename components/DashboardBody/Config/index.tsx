@@ -118,10 +118,11 @@ export default function Config() {
                             }
                         `}
                          inputType="price"
+                         onClick={hiddeError}
                          inputValue={minAmount}
                          setInputValue={setMinAmount}
+                         disabled={(!allowDonate)}
                          placeholder="Minimo de 1,000 Sats"
-                         onClick={hiddeError}
                     />
                     <br />
                     <Field
@@ -150,7 +151,6 @@ export default function Config() {
                             justify-content: flex-start;
                             padding-left: 12%;
                         `}
-                        text="Permitir donate por audio e IA"
                         styler={`
                     
                         `}
@@ -239,6 +239,7 @@ export default function Config() {
                         durationMin="1"
                         durationMax="100"
                         value={donationVolume}
+                        disabled={(!allowDonate)}
                         setValue={setDonationVolume}
                     />
                     <br />
@@ -283,6 +284,7 @@ export default function Config() {
                          durationMin="1"
                          durationMax="15"
                          value={durationDonate}
+                         disabled={(!allowDonate)}
                          setValue={setDurationDonate}
                     />
                     <br />
