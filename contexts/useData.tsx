@@ -121,7 +121,7 @@ export function DataProvider({ children }: Props) {
         trackDonate: [],
         call: {
             allow: true,
-            minAmount: '',
+            minAmount: '12,000',
         },
         generateKey: {
             idString: '',

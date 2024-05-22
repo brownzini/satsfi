@@ -1,18 +1,21 @@
 import { useState } from "react";
 import {
     Content,
-    ControlArea,
-    LinkArea
 } from "./styles";
 
 //Components
 import Field from "../Field";
 
+//Contexts
 import { useMessage } from "@/contexts/useMessage";
+import { useData } from "@/contexts/useData";
 
 export default function Call() {
-    const [allow, setAllow] = useState<boolean>(false);
-    const [minAmount, setMinAmount] = useState<string>('12,000');
+
+    const { data, updateData } = useData();
+
+    const [allow, setAllow] = useState<boolean>(data.call.allow);
+    const [minAmount, setMinAmount] = useState<string>(data.call.minAmount);
     const [haveError, setHaveError] = useState<boolean>(false);
 
     const link = 'https://www.google.com';
@@ -20,14 +23,17 @@ export default function Call() {
     const { dispatchMessage } = useMessage();
 
     const hiddeError = () => {
+        (haveError) && setMinAmount('');
         setHaveError(false);
     }
 
     const voidFunction = (param:string) => { }
 
+    const hasNotChanged = () => (data.call.allow === allow && data.call.minAmount === minAmount);
+
     const handleSave = () => {
         const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
-    
+        
         if(minAmount === '' || Number.isNaN(priceFiltered)) {
             setMinAmount('Preencha o campo');
             setHaveError(true);
@@ -35,8 +41,14 @@ export default function Call() {
             setMinAmount('Minimo é de 12,000 sats');
             setHaveError(true);
         } else {
-            //
-            dispatchMessage('[SUCESSO]: Alterações realizadas', true, 3000);
+            const notChange = hasNotChanged();
+            if(!notChange) {
+               updateData('call', { 
+                   allow: allow,
+                   minAmount: minAmount,
+                });
+               dispatchMessage('[SUCESSO]: Alterações realizadas', true, 3000);
+            }
         }
     }
 
@@ -52,18 +64,25 @@ export default function Call() {
     }
 
     return (
-        <Content className="flex">
-            <ControlArea className="flex fd">
+        <Content className="flex fd">
                 <Field
                     type="title"
                     text="Liberar chamada ao vivo:"
                     center={`
                                 height: 10%;
                                 justify-content: flex-start;
-                                padding-left: 12%;
+                                padding-left: 25%;
 
-                                @media only screen and (min-height: 900px) {
-                                    height: 16%;
+                                @media only screen and (min-width: 2560px) {
+                                    height: 10%;
+                                }
+
+                                @media only screen and (min-width: 1920px) {
+                                    height: 5%;
+                                }
+
+                                @media only screen and (min-width: 1600px) {
+                                    height: 10%;
                                 }
                             `}
                     styler={`
@@ -72,7 +91,15 @@ export default function Call() {
                                 font-family: "Inter";
                                 font-weight: bold;
 
-                                @media only screen and (min-height: 900px) {
+                                @media only screen and (min-width: 2560px) {
+                                    font-size: 3rem;
+                                }
+
+                                @media only screen and (min-width: 1920px) {
+                                    font-size: 2rem;
+                                }
+
+                                @media only screen and (min-width: 1600px) {
                                     font-size: 2rem;
                                 }
                             `}
@@ -82,7 +109,7 @@ export default function Call() {
                     center={`
                             height: 10%;
                             justify-content: flex-start;
-                            padding-left: 12%;
+                            padding-left: 25%;
                         `}
                     text="Permitir donate por audio e IA"
                     styler={`
@@ -98,7 +125,7 @@ export default function Call() {
                     center={`
                         height: 10%;
                         justify-content: flex-start;
-                        padding-left: 12%;
+                        padding-left: 25%;
                     `}
                     styler={`
                         color: ${(!haveError) ? '#3C5774' : 'red'};
@@ -107,9 +134,19 @@ export default function Call() {
                         font-family: "Inter";
                         font-weight: bold;
 
-                        @media only screen and (min-height: 900px) {
+                        @media only screen and (min-width: 2560px) {
                             font-size: 2rem;
                         }
+
+                        @media only screen and (min-width: 1920px) {
+                            font-size: 2rem;
+                        }
+
+                        @media only screen and (min-width: 1600px) {
+                            font-size: 2rem;
+                            margin-top:2%;
+                        }
+
                     `}
                 />
                 <Field
@@ -117,11 +154,13 @@ export default function Call() {
                     center={`
                         width: 100%;
                         height: 10%;
-                        padding-left: 12%;
+                        padding-left: 25%;
                     `}
                     styler={`
                         width: 75%;
                         height: 100%;
+
+                        max-width: 250px;
 
                         border-radius: 5px;
 
@@ -135,9 +174,18 @@ export default function Call() {
                         padding-left: 5%;
                         outline:none;
 
-                        @media only screen and (min-height: 900px) {
+                        @media only screen and (min-width: 2560px) {
+                            font-size: 2rem;
+                        }
+
+                        @media only screen and (min-width: 1920px) {
+                            font-size: 2rem;
+                        }
+
+                        @media only screen and (min-width: 1600px) {
                             font-size: 1.6rem;
                         }
+                        
                     `}
                     inputType="price"
                     inputValue={minAmount}
@@ -145,8 +193,7 @@ export default function Call() {
                     placeholder="Minimo de 12,000 Sats"
                     onClick={hiddeError}
                 />
-            </ControlArea>
-            <LinkArea className="flex fd">
+
                 <Field
                     type="title"
                     text="Link para acessar:"
@@ -155,8 +202,8 @@ export default function Call() {
                                 justify-content: flex-start;
                                 padding-left: 25%;
 
-                                @media only screen and (min-height: 900px) {
-                                    height: 20%;
+                                @media only screen and (min-width: 2560px) {
+                                    height: 10%;
                                 }
                             `}
                     styler={`
@@ -165,8 +212,17 @@ export default function Call() {
                                 font-family: "Inter";
                                 font-weight: bold;
 
-                                @media only screen and (min-height: 900px) {
+                                @media only screen and (min-width: 2560px) {
                                     font-size: 2rem;
+                                }
+
+                                @media only screen and (min-width: 1920px) {
+                                    font-size: 2rem;
+                                }
+
+                                @media only screen and (min-width: 1600px) {
+                                    font-size: 2rem;
+                                    margin-top:2%;
                                 }
                             `}
                 />
@@ -197,9 +253,18 @@ export default function Call() {
                             cursor: pointer;
                             user-select:none;
 
-                            @media only screen and (min-height: 900px) {
-                                font-size: 1.6rem;
+                            @media only screen and (min-width: 2560px) {
+                                font-size: 2rem;
                             }
+
+                            @media only screen and (min-width: 1920px) {
+                                font-size: 2rem;
+                            }
+                            @media only screen and (min-width: 1600px) {
+                                font-size: 1.6rem;
+                                margin-top: 2%;
+                            }
+
                         `}
                     inputType="price"
                     inputValue={link}
@@ -212,14 +277,14 @@ export default function Call() {
                     center={`
                             width: 100%;
                             height: 20%;
-                            justify-content: center;
+                            justify-content: flex-start;
                             align-items: flex-end;
-                            padding-left: 12%;
+                            padding-left: 25%;
                            
                         `}
                     text="Salvar"
                     styler={`
-                            width: 70%;
+                            width: 25%;
                             height: 70%;
                             color: white;
                             font-size: 1.4rem;
@@ -238,13 +303,21 @@ export default function Call() {
 
                             cursor:pointer;
 
-                            @media only screen and (min-height: 900px) {
-                                font-size: 3rem;
+                            @media only screen and (min-width: 2560px) {
+                                font-size: 5rem;
+                            }
+
+                            @media only screen and (min-width: 1920px) {
+                                font-size: 2.1rem;
+                            }
+
+                            @media only screen and (min-width: 1600px) {
+                                font-size: 2rem;
                             }
                         `}
                     onClick={handleSave}
                 />
-            </LinkArea>
+      
         </Content>
     );
 }
