@@ -26,7 +26,7 @@ import { useHeader } from "@/contexts/useHeader";
 
 export default function GenerateKey() {
 
-    const { data, updateData } = useData();
+    const { data, updateData, destroyHub } = useData();
 
     const [handle, setHandle] = useState<string>(data.generateKey.idString);
     const [keyHub, setKeyHub] = useState<string>(data.generateKey.keyHub);
@@ -152,12 +152,13 @@ export default function GenerateKey() {
                        (keyHub === data.generateKey.keyHub));
 
     const handleClick = () => {
-        if (!hasChanged) {
-            if (userHaveKeyHub) {
-
-            } else {
-                handleSave();
-            }
+        if (!hasChanged && !userHaveKeyHub) {
+             handleSave();
+        } else if(hasChanged && userHaveKeyHub) {
+             destroyHub();
+             setHandle('');
+             setKeyHub('');
+             setLightningAddress('');
         }
     }
 
@@ -214,7 +215,7 @@ export default function GenerateKey() {
                             }
                 `}
                 maxLength={30}
-                inputType="text"
+                inputType="textWithOutSC"
                 inputValue={handle}
                 disabled={userHaveKeyHub}
                 setInputValue={setHandle}

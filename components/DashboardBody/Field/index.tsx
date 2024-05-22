@@ -22,7 +22,7 @@ interface Props {
 
     maxPrice?: number;
     maxLength?: number;
-    inputType?: "price" | "text" | "nit";
+    inputType?: "price" | "text" | "nit" | "textWithOutSC";
     inputValue?: string;
     placeholder?: string;
     setInputValue?: (param: string) => void;
@@ -86,7 +86,9 @@ export default function Field({
             } else {
                 if (maxLength) {
                     const text = removeEmojis(param);
-                    const textFilter = (param.length < maxLength) ? text : param.slice(0, -1);
+                    const removeSpecialCaracter = text.replace(/[^\w\s]/gi, '');
+                    const baseText = (inputType === 'textWithOutSC') ? removeSpecialCaracter : text;
+                    const textFilter = (param.length < maxLength) ? baseText : param.slice(0, -1);
                     setInputValue(textFilter);
                 }
             }
