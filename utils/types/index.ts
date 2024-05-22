@@ -94,3 +94,7 @@ export interface DonateProps {
     callUrl: string,
     backgroundUrl: string;
 }
+
+export interface ChromaKeyProps {
+    allow: boolean;
+}

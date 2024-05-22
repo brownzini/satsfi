@@ -4,6 +4,7 @@ import React from "react";
 import {
     BlackListProps,
     CallProps,
+    ChromaKeyProps,
     ConfigProps,
     DonateProps,
     GenerateKeyProps,
@@ -20,6 +21,7 @@ export interface DataProps {
     call: CallProps;
     generateKey: GenerateKeyProps;
     blackList: BlackListProps;
+    chromaKey: ChromaKeyProps;
 }
 
 interface DataContextValue {
@@ -77,7 +79,8 @@ const listInitial: DataContextValue = {
         },
         blackList: {
             wordsBlocked: '',
-        }
+        },
+        chromaKey: {allow: true},
     },
     setData: param => { },
     updateData: param => { },
@@ -139,7 +142,8 @@ export function DataProvider({ children }: Props) {
         },
         blackList: {
             wordsBlocked: '',
-        }
+        },
+        chromaKey: {allow: true},
     });
 
     const updateData = <K extends keyof DataProps>(key: K, newData: Partial<DataProps[K]>) => {

@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import Link from "next/link";
+
 import {
     ChromaContent,
     Container,
@@ -13,21 +17,38 @@ import {
     TutorialContainer,
 } from "./styles";
 
+//Components
 import Field from "../Field";
-import { useState } from "react";
+
+//Utils
 import SvgModel from "@/utils/svg";
+
+//Contexts
 import { useMessage } from "@/contexts/useMessage";
-import Link from "next/link";
+import { useData } from "@/contexts/useData";
 
 export default function ChromaKey() {
-    const [allow, setAllow] = useState<boolean>(true);
+
+    const { data, updateData } = useData();
+
+    const [allow, setAllow] = useState<boolean>(data.chromaKey.allow);
     const [port, setPort] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
     const { dispatchMessage } = useMessage();
 
+    const hasChange = () => {
+        if(allow === data.chromaKey.allow) {
+           return false;
+        } else {
+           return true;
+        }
+    }
+
     const handleSave = () => {
-        if (port !== '' && password !== '') {
+        const validationChange = hasChange();
+        if (validationChange) {
+            updateData('chromaKey', { allow: allow });
             dispatchMessage('[SUCESSO]: Seus Dados foram registrados', true);
         }
     }
