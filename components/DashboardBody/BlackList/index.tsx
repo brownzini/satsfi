@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Container,
     RemoveArea,
@@ -11,32 +11,34 @@ import {
 
 //Components
 import Field from "../Field";
-import SvgModel from "@/utils/svg";
-import { useMessage } from "@/contexts/useMessage";
 
-interface WordProps {
-    name: string;
-}
+//Utils
+import SvgModel from "@/utils/svg";
+
+//Contexts
+import { useMessage } from "@/contexts/useMessage";
+import { useData } from "@/contexts/useData";
 
 export default function BlackList() {
-    const compactedWords = '';
+    
+    const { data, updateData } = useData();
     
     const [word, setWord] = useState<string>('');
-    const [wordList, setWordList] = useState<WordProps[]>([]);
+    const [wordList, setWordList] = useState<string[]>([]);
 
     const { dispatchMessage } = useMessage();
 
     const alreadyOnTheList = (wordSearch: string) => {
-        const response = wordList.filter(word => word.name === wordSearch);
+        const response = wordList.filter(word => word === wordSearch);
         return (response.length > 0) ? true : false;
     };
 
     const addWord = () => {
-        const validation = alreadyOnTheList(word);
-        if (!validation) {
+        const validation =  alreadyOnTheList(word);
+        if (!validation && !isOnlySpaces(word)) {
             setWordList(prevWord => [
                 ...prevWord,
-                { name: word }
+                word
             ]);
         }
     }
@@ -44,7 +46,7 @@ export default function BlackList() {
     const removeWord = (name: string) => {
         const validation = alreadyOnTheList(name);
         if (validation) {
-            setWordList(prevWords => prevWords.filter(word => word.name !== name));
+            setWordList(prevWords => prevWords.filter(word => word !== name));
         }
     }
 
@@ -52,20 +54,32 @@ export default function BlackList() {
         setWordList([]);
     }
 
-    const handleFilterWords = (compacted: boolean) => {
-        if(compacted) {
-           return wordList.join(' ');
-        } else {
-            return compactedWords.split(' ');
-        }
-    }
+    const compactList = () => {
+        return wordList.join('|=75]');
+    };
+
+    const decompressList = (str:string) => {
+        return str.split('|=75]')
+    };
+
+    const isOnlySpaces = (str:string) => {
+        return str.trim().length === 0;
+    };
 
     const handleSave = () => {
-        if(wordList.length > 0) {
-            const compacted = handleFilterWords(true);
+        const comparationList = compactList();
+        if((wordList.length > 0 && comparationList !== data.blackList.wordsBlocked) || (wordList.length === 0 && comparationList !== data.blackList.wordsBlocked)) {
+            const compacted = compactList();
+            updateData('blackList', { wordsBlocked: compacted });
             dispatchMessage('[SUCESSO]: Palavras registradas', true, 3000);
         }
     }
+
+    useEffect(() => {
+         const validateWords = data.blackList.wordsBlocked;
+         const desCompacted = decompressList(data.blackList.wordsBlocked);
+         setWordList((isOnlySpaces(validateWords)) ? [] : desCompacted);
+    },[]);
 
     return (
         <Container className="flex fd">
@@ -155,12 +169,12 @@ export default function BlackList() {
                         >
                             <TextAreaFieldSvg
                                 className="flex"
-                                onClick={() => removeWord(word.name)}
+                                onClick={() => removeWord(word)}
                             >
                                 X
                             </TextAreaFieldSvg>
                             <TextAreaFieldTexxt>
-                                {word.name}
+                                {word}
                             </TextAreaFieldTexxt>
                         </TextAreaFieldArea>
                     ))}
