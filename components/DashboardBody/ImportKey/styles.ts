@@ -35,7 +35,7 @@ export const InputArea = styled.div`
 
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 5px;
 
     position: relative;
@@ -119,4 +119,20 @@ export const MessageError = styled.h2`
 export const ImportContent = styled.div`
     width: 40%;
     height: 100%;
+`;
+
+export const BackButton = styled.h2`
+    color: #9BC9EA;
+    
+    font-size: 1.4rem;
+    font-weight: 480;
+    font-family: 'Roboto';
+
+    transition: 0.5s ease;
+
+    &:hover {
+        color: #1F78B9;
+    }
+
+    cursor: pointer;
 `;

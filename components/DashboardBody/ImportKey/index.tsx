@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import {
+    BackButton,
     Button,
     Container,
     ImportContent,
@@ -16,11 +17,6 @@ import { useData } from "@/contexts/useData";
 import { useHeader } from "@/contexts/useHeader";
 import { useMessage } from "@/contexts/useMessage";
 import SvgModel from "@/utils/svg";
-
-interface ErrorProps {
-    status: boolean;
-    message: string;
-}
 
 export default function ImportKey() {
     
@@ -58,9 +54,12 @@ export default function ImportKey() {
         }
     };
 
+    const backPage = () => 
+        setActiveScreen('initial');
+
     return (
         <Container className="flex fd">
-            <InputArea className="flex">
+            <InputArea className="flex fd">
                 <Input
                     type="file"
                     onChange={handleFileChange}
@@ -83,6 +82,7 @@ export default function ImportKey() {
                 </Label>
                 </ImportContent>
             </InputArea>
+                <BackButton onClick={backPage}> voltar </BackButton>
         </Container>
     );
 }

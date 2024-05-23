@@ -27,6 +27,33 @@ export const Wrapper = styled.div<Prop>`
     border-radius: 3px;
 `;
 
+export const BackArea = styled.div`
+    width: 100%;
+    height: 3%;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+
+    padding-left: 3%;
+`;
+
+export const BackButton = styled.h2`
+    color: #6B3EA5;
+    
+    font-size: 1.4rem;
+    font-weight: 480;
+    font-family: 'Roboto';
+
+    transition: 0.5s ease;
+
+    &:hover {
+        color: #E0C9FF;
+    }
+
+    cursor: pointer;
+`;
+
 export const RenderingContainer = styled.div`
     width: 100%;
     height:100%;

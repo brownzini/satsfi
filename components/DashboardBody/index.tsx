@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
 import {
+    BackArea,
+    BackButton,
     Body,
     RenderingContainer,
     Wrapper,
@@ -33,7 +35,7 @@ import { useData } from "@/contexts/useData";
 export default function DashboardBody() {
 
     const { data } = useData();
-    const { screens } = useHeader();
+    const { screens, setActiveScreen } = useHeader();
 
     const [noBorder, setNoBorder] = useState<boolean>(true);
     const [overviewBorderDatail, setOverviewBorderDatail] = useState<string>('');
@@ -66,6 +68,8 @@ export default function DashboardBody() {
 
     const haveBorderInScreen = (screen: string) => setNoBorder((screen === 'initial' || screen === 'importKey'));
 
+    const haveBackButton = (screens.generateKey.status && data.generateKey.keyHub === '');
+
     useEffect(() => {
         Object.keys(screens).map((screen) => (screens[screen as keyof ScreenProp].status) ? haveBorderInScreen(screen) : '');
         Object.keys(screens).map((screen) => {
@@ -80,6 +84,8 @@ export default function DashboardBody() {
         })
     }, [screens]);
 
+    const handleBack = () => setActiveScreen('initial');
+
     return (
         <Body 
             className="flex fd"
@@ -87,12 +93,15 @@ export default function DashboardBody() {
         >
             <MessageArea />
             <Wrapper
-                className="flex"
+                className="flex fd"
                 styles={(noBorder) ? `
                     border:none;
                     background-color:white;
                 ` : overviewBorderDatail}
             >
+                {(haveBackButton) && (<BackArea>
+                    <BackButton onClick={handleBack}>Voltar</BackButton>
+                </BackArea>)}
                 {Object.keys(screens).map((screen) => (screens[screen as keyof ScreenProp].status) && renderActiveScreen(screen))}
             </Wrapper>
         </Body>
