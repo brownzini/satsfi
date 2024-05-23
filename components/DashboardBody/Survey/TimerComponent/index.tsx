@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+
 import { Container, Timer } from "./styles";
+
+import { useData } from "@/contexts/useData";
 
 interface TimerProps {
     minute: number;
@@ -7,14 +10,13 @@ interface TimerProps {
 }
 
 interface Props {
-    data: TimerProps;
     endTime: () => void;
 }
 
 export default function TimerComponent({ 
-    data, 
     endTime,
 }:Props) {
+    const { data } = useData();
     const [remainingTime, setRemainingTime] = useState<number>(0);
     const [deadline, setDeadline] = useState<TimerProps>({minute:100, second:0});
     
@@ -44,29 +46,22 @@ export default function TimerComponent({
         const second = now.getSeconds();
         
         //Contexto
-        const futureMinute = data.minute;
-        const futureSecond = data.second;
+        const futureMinute = data.survey.endTime.minute;
+        const futureSecond = data.survey.endTime.second;
         
         const minuteFilter = (futureMinute-minute);
-
-        const remainingTimeFilter = (minuteFilter <= 0) ? 0 : (minuteFilter);
-        const acutalMinute = (minuteFilter <= 0) ? 0 : (minuteFilter+minute); 
-
-        const secondsFilter = ((futureSecond-second) > 0 ? (futureSecond-second) : 0);
         
         if(minuteFilter < 0) {
             endTime();
         } 
 
-        if(minuteFilter > 0) { 
-            setRemainingTime((remainingTimeFilter*60)+secondsFilter);
-            setDeadline({ minute: acutalMinute, second: futureSecond });
-        } else if(minuteFilter === 0 && (futureSecond-second) > 0) { 
-            setRemainingTime((remainingTimeFilter*60)+secondsFilter);
-            setDeadline({ minute: acutalMinute, second: futureSecond });
-        } else {
-            endTime();
-        }
+        const allSeconds = (minute*60)+second;
+        const generalSeconds = (futureMinute*60)+futureSecond;
+
+        const result = generalSeconds - allSeconds;
+        
+        setRemainingTime(result);
+        setDeadline({ minute: futureMinute, second: second });
     }, []);
 
     useEffect(() => {

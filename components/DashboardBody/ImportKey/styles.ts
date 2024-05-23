@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-interface Prop {
-    styler:string;
-}
-
 export const Container = styled.div`
     width: 100%;
     height: 100%;
@@ -41,35 +37,44 @@ export const InputArea = styled.div`
     justify-content: center;
     align-items: flex-start;
     gap: 5px;
+
+    position: relative;
 `;
 
-export const Input = styled.input<Prop>`
-    width: 75%;
-    height: 50%;
+export const Input = styled.input`
+    width: 100%;
+    height: 100%;
 
-    color: ${(p) => (p.styler !== 'red') ? '#0B4786' : 'red'};
-    font-family: 'Roboto';
-    font-weight: 400;
-    font-size: 1.2rem;
-    font-style: italic;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     
-    background-color: #F0F2FA;
+    opacity: 0;
+    
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    
+    cursor: pointer;
+`;
 
-    border: 2px solid ${(p) => p.styler};
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px;
+export const Label = styled.label`
+    width: 100%;
+    height: 100%;
 
-    @media only screen and (max-width: 1600px) {
+    color: #8F45CA;
+    font-size: 2rem;
+    font-family: 'Inter';
+    font-weight: bolder;
+
+    @media only screen and (min-width: 1600px) {
         font-size: 2rem;
     }
 
-    @media only screen and (min-height: 900px) {
-        font-size: 3rem;
-    }
+    position: relative;
+    z-index: 1;
 
-    padding-left: 5%;
-
-    outline: none;
+    cursor: pointer;
 `;
 
 export const Button = styled.button`
@@ -109,4 +114,9 @@ export const MessageError = styled.h2`
     font-size: 1.4rem;
     font-family: 'Roboto';
     font-style: italic;
+`;
+
+export const ImportContent = styled.div`
+    width: 40%;
+    height: 100%;
 `;

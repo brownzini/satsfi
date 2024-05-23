@@ -67,7 +67,6 @@ export default function Survey() {
     const [options, setOptions] = useState<OptionsProps[]>(data.survey.options);
     const [minToVote, setMinToVote] = useState<string>('');
 
-    const [SurveyTimer, setSurveyTimer] = useState<TimerProps>({ minute: 0, second: 0 });
     const [isSurveyCreated, setIsSurveyCreated] = useState<boolean>(false);
     const [SurveyTimerStatus, setSurveyTimerStatus] = useState<boolean>(false);
     const [isFinished, setIsFinished] = useState<boolean>(false);
@@ -93,6 +92,7 @@ export default function Survey() {
             setSurveyCreated(!surveyCreated);
         } else {
             handleReset();
+            dispatchMessage('[SUCESSO]: Enquete Finalizada', true);
         }
     }
 
@@ -151,7 +151,18 @@ export default function Survey() {
                 allow: surveyStatus,
                 minCreateSurvey: minCreateSurvey,
                 durationTime: durationTime,
-                ...data,
+                
+                surveyTitle: data.survey.surveyTitle,
+                options: data.survey.options,
+                minToVote: data.survey.minToVote,
+                
+                endTime: {
+                    day: data.survey.endTime.day,
+                    hour: data.survey.endTime.hour,
+                    minute: data.survey.endTime.minute,
+                    second: data.survey.endTime.second,
+                },
+                amount: data.survey.amount,
              });
             dispatchMessage('[SUCESSO]: Detalhes de Enquete foram salvos', true);
         }
@@ -188,18 +199,54 @@ export default function Survey() {
     }
 
     // Left Side
+    const fillEmptyNameFields = (options: OptionsProps[]) => {
+        const updatedOptions = options.map((option, index) => {
+            return {
+                ...option,
+                name: option.name || `Opção ${index}`
+            };
+        });
+        setOptions(updatedOptions);
+    };
+
+    function getNextDay() {
+        const today = new Date();
+        const nextDay = new Date(today);
+
+        nextDay.setDate(today.getDate() + 1);
+
+        return nextDay;
+    }
+
     const defineTime = () => {
         const now = new Date();
 
-        const completeMinute = now.getMinutes()+durationTime;
+        const completeMinute = now.getMinutes()+ data.survey.durationTime;
 
-        const filterMinute = completeMinute-60;
-        const filterSecond = now.getSeconds()-60;
+        const filterMinute = (completeMinute >= 60) ? completeMinute-60 : completeMinute;
 
-        setSurveyTimer({ 
-            minute: (filterMinute >= 60) ? filterMinute : completeMinute, 
-            second: (now.getSeconds() >= 60) ? filterSecond : now.getSeconds()
-        });            
+        const zeroHour = (now.getHours()+1 === 24) ? 0 : now.getHours()+1;
+        const moreOneHour = (completeMinute >= 60) ? zeroHour : now.getHours();
+
+        const moreOneDay = (moreOneHour === 0) ? getNextDay().getHours() : now.getUTCDate(); ;
+
+        updateData('survey', {
+            allow: data.survey.allow,
+            minCreateSurvey: data.survey.minCreateSurvey,
+            durationTime: data.survey.durationTime,
+
+            surveyTitle: surveyTitle,
+            options: options,
+            minToVote: minToVote,
+            
+            endTime: {
+                day: moreOneDay,
+                hour: moreOneHour,
+                minute: filterMinute,
+                second: now.getSeconds(),
+            },
+            amount: '0',
+        });
         
     }
 
@@ -209,6 +256,7 @@ export default function Survey() {
         const isOptionsOk = optionsValidation();
 
         if (isVotationOk && isOptionsOk) {
+            fillEmptyNameFields(options);
             defineTime();
             setSurveyCreated(false);
             setIsSurveyCreated(true);
@@ -249,11 +297,10 @@ export default function Survey() {
             percentage: '', 
             amount: ''
           });
-          setSurveyTimer({minute:0, second:0});
           updateData('survey', {
-            allow: false,
-            minCreateSurvey: '2,500',
-            durationTime: 1,
+            allow: data.survey.allow,
+            minCreateSurvey: data.survey.minCreateSurvey,
+            durationTime: data.survey.durationTime,
 
             surveyTitle: 'Enquete',
             options: [],
@@ -307,7 +354,7 @@ export default function Survey() {
     const timerRendering = () => {
         return SurveyTimerStatus ? (
             <TimerComponent
-                data={SurveyTimer}
+            
                 endTime={endTime}
             />
         ) : 
@@ -368,17 +415,6 @@ export default function Survey() {
         if (data.survey.options.length === 0) {
             setSurveyCreated(false);
         } else {
-            const today = new Date();
-            const day = today.getUTCDate();
-            const hour = today.getHours();
-
-            const inTheSameTime = (day === data.survey.endTime.day && hour === data.survey.endTime.hour);
-            
-            setSurveyTimer({ 
-                minute: (inTheSameTime) ? data.survey.endTime.minute : today.getMinutes(), 
-                second: (inTheSameTime) ? data.survey.endTime.second : today.getSeconds(), 
-            });
-            
             setSurveyCreated(false);
             setIsSurveyCreated(true);
             setSurveyTimerStatus(true);
@@ -701,8 +737,7 @@ export default function Survey() {
                                         <MessageErrorArea className="flex">
                                             <h2> {(errorOptions) && `É necessário criar pelo menos 2 opções`} </h2>
                                         </MessageErrorArea>
-                                    )
-                                    }
+                                    )}
                                 </OptionsList>
                             </OptionsWrapper>
                             <SaveButtoArea className="flex">

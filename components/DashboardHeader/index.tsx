@@ -26,9 +26,9 @@ export default function DashboardHeader() {
     const { screens, setActiveScreen } = useHeader();
 
     const exceptionScreens = (screen:string) => (screen !== 'initial' && screen !== 'importKey');
-    const filterScreen = (screens.generateKey.status && data.generateKey.keyHub === '' );
 
     useEffect(() => {
+        const filterScreen = (screens.generateKey.status && data.generateKey.keyHub === '' );
         setScreenStatus((screens.initial.status || screens.importKey.status || filterScreen));
     }, [screens]);
 

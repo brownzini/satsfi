@@ -17,7 +17,6 @@ export default function Initial() {
     const handleClick = ()  => setActiveScreen('importKey');
     
     const handleCreate = () => setActiveScreen('generateKey');
-    
 
     return (
         <Container className="flex fd">
@@ -36,7 +35,7 @@ export default function Initial() {
                         `}
                         onClick={handleClick}
                     > 
-                      Import key hub 
+                      Importar Hub
                     </Button>
                 </ButtonArea>
                 <ButtonArea>
@@ -52,7 +51,7 @@ export default function Initial() {
                         `}
                         onClick={handleCreate}
                     > 
-                      Create new hub 
+                      Criar Novo Hub
                     </Button>
                 </ButtonArea>
             </Body>
