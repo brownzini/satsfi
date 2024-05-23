@@ -384,7 +384,7 @@ export default function GenerateKey() {
                 <FileArea>
                    {(userHaveKeyHub) && 
                     <LinkToDownload onClick={downloadJson}> 
-                        Exportar Configuração 
+                        Salvar Hub
                     </LinkToDownload>}
                 </FileArea>
             </ButtonArea>

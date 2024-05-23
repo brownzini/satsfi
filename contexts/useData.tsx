@@ -10,7 +10,8 @@ import {
     DonateProps,
     GenerateKeyProps,
     SurveyProps,
-    TestProps
+    TestProps,
+    QRCodeProps
 } from "@/utils/types";
 
 //Context
@@ -26,6 +27,7 @@ export interface DataProps {
     blackList: BlackListProps;
     chromaKey: ChromaKeyProps;
     donations: AllDonationsProps[];
+    qrCode: QRCodeProps;
 }
 
 interface DataContextValue {
@@ -86,6 +88,7 @@ const listInitial: DataContextValue = {
         },
         chromaKey: {allow: true},
         donations: [],
+        qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
     },
     setData: param => { },
     updateData: param => { },
@@ -147,6 +150,7 @@ export function DataProvider({ children }: Props) {
             { date: '2024-05-21', type: 'normal', value: '3700' },
             { date: '2024-04-22', type: 'normal', value: '3000' },
         ],
+        qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
     });
 
     const updateData = <K extends keyof DataProps>(key: K, newData: Partial<DataProps[K]>) => {
@@ -232,11 +236,9 @@ export function DataProvider({ children }: Props) {
             blackList: {
                 wordsBlocked: '',
             },
-            chromaKey: {allow: true},
-            donations: [  
-                { date: '2024-04-14', type: 'normal', value: '3400' }, 
-                { date: '2024-04-15', type: 'normal', value: '3700' },
-            ],
+            chromaKey: { allow: true },
+            donations: [],
+            qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
         });
         setActiveScreen('generateKey');
         setTimeout(() => {

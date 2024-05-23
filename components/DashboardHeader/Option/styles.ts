@@ -31,7 +31,7 @@ export const SvgContainer = styled.div<FontColorProp>`
     height: 100%;
 
     position: relative;
-
+    
     ${(p) => p.isselected};
     
     transition: 0.25s ease-in;
@@ -40,12 +40,14 @@ export const SvgContainer = styled.div<FontColorProp>`
         ${(p) => (p.isselected === 'opacity: 0.5;') ? 'opacity: 0.84;' : 'opacity: 1;'};
     }
 
+    z-index: 3;
+
     cursor: pointer;
 `;
 
 export const TooltipText = styled.span`
     width: 120px;
-    
+    height: auto;
     color: #fff;
     text-align: center;
     font-weight: bold;
@@ -72,7 +74,7 @@ export const TooltipText = styled.span`
     position: absolute;
     top: 100%;
     left: 50%;
-    z-index: 3;
+    z-index: 7;
     margin-left: -60px;
     
     opacity: 0;

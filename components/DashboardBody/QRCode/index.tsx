@@ -1,3 +1,5 @@
+import { useRef, useState } from "react";
+
 import {
     BodyArea,
     Button,
@@ -15,16 +17,21 @@ import {
     Input,
 } from "./styles";
 
+//Components
 import Field from "../Field";
-import { useRef, useState } from "react";
 
+//Libs
 import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
 
+//Contexts
+import { useData } from "@/contexts/useData";
+
 export default function QRCodeScreen() {
-    const [bgColor, setBgColor] = useState<string>('#ff8800');
-    const [fontColor, setFontColor] = useState<string>('#ffffff');
-    const [handle, setHandle] = useState<string>('Bananada');
+
+    const { data, updateData } = useData();
+
+    const [handle, setHandle] = useState<string>(data.generateKey.idString);
 
     const divRef = useRef(null);
 
@@ -82,14 +89,14 @@ export default function QRCodeScreen() {
                 <ColorsArea>
                     <Input
                         type="color"
-                        value={bgColor}
-                        onChange={(e) => setBgColor(e.target.value)}
+                        value={data.qrCode.bgColor}
+                        onChange={(e) => updateData('qrCode', { bgColor: e.target.value, fontColor: data.qrCode.fontColor })}
                     />
                     {' '}
                     <Input
                         type="color"
-                        value={fontColor}
-                        onChange={(e) => setFontColor(e.target.value)}
+                        value={data.qrCode.fontColor}
+                        onChange={(e) => updateData('qrCode', { bgColor: data.qrCode.bgColor, fontColor: e.target.value })}
                     />
                 </ColorsArea>
                 <br />
@@ -186,15 +193,15 @@ export default function QRCodeScreen() {
             >
                 <CardWrapper 
                     className="flex fd"
-                    styler={bgColor}
+                    styler={data.qrCode.bgColor}
                 >
                     <HeaderArea
                         className="flex"
-                        bgcolor={bgColor}
-                        fontcolor={fontColor}
+                        bgcolor={data.qrCode.bgColor}
+                        fontcolor={data.qrCode.fontColor}
                         fontSize="1rem"
                     >
-                        <HeaderText>{'satsfi.com/' +'\n'+handle}</HeaderText>
+                        <HeaderText>{'satsfi.com/'+handle}</HeaderText>
                     </HeaderArea>
                     <BodyArea
                         id="body-area" 
@@ -204,8 +211,8 @@ export default function QRCodeScreen() {
                     </BodyArea>
                     <FooterArea
                         className="flex"
-                        bgcolor={bgColor}
-                        fontcolor={fontColor}
+                        bgcolor={data.qrCode.bgColor}
+                        fontcolor={data.qrCode.fontColor}
                         fontSize="0.93rem"
                     >
                         <FooterText>Contribua com sua doação</FooterText>
