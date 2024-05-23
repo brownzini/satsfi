@@ -53,30 +53,3 @@ export const filterAmount = (value: string) => {
 export const isOnlySpaces = (str:string) => {
     return str.trim().length === 0;
 };
-
-export const handleFileChange = (event:any) => {
-    const file = event.target.files[0];
-    if (!file) {
-    console.error('Nenhum arquivo selecionado');
-    return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = (e:any) => {
-    try {
-        
-        const fileContent = JSON.parse(e.target.result);
-        console.log('Conteúdo do arquivo:', fileContent);
-        // Faça algo com o conteúdo do arquivo, como armazená-lo no estado do componente
-    } catch (error) {
-        console.error('Erro ao ler o arquivo JSON:', error);
-    }
-    };
-
-    reader.onerror = (e:any) => {
-    console.error('Erro ao ler o arquivo:', e.target.error);
-    };
-
-    reader.readAsText(file);
-};

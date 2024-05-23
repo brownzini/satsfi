@@ -98,3 +98,9 @@ export interface DonateProps {
 export interface ChromaKeyProps {
     allow: boolean;
 }
+
+export interface AllDonationsProps {
+    date: string;
+    type: string;
+    value: string;
+}

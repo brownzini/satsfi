@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
+
 import Papa from 'papaparse';
-import { Container, Input, Label } from './styles';
+
+import { 
+  Container, 
+  Input, 
+  Label 
+} from './styles';
+
+//Contexts
 import { useMessage } from '@/contexts/useMessage';
+import { useData } from '@/contexts/useData';
 
 interface Prop {
   setDonates: React.Dispatch<any>;
@@ -11,6 +20,7 @@ const CSVImporter = ({ setDonates }:Prop) => {
   
   const [fileInputKey, setFileInputKey] = useState(Date.now());
 
+  const { setData } = useData();
   const { dispatchMessage } = useMessage();
 
   const handleFileUpload = (event:any) => {
@@ -29,7 +39,12 @@ const CSVImporter = ({ setDonates }:Prop) => {
         complete: (result:any) => {
       
           const donate:any = result.data[0];
+          
           setDonates((prevData:any) => [...prevData, donate]);
+          setData(prevData => ({
+              ...prevData,
+              donations: [...prevData.donations || [], donate]
+          }));
 
           setFileInputKey(Date.now());
           dispatchMessage('[SUCESSO]: Dados importados', true);

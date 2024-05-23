@@ -6,6 +6,7 @@ import {
     CallProps,
     ChromaKeyProps,
     ConfigProps,
+    AllDonationsProps,
     DonateProps,
     GenerateKeyProps,
     SurveyProps,
@@ -24,6 +25,7 @@ export interface DataProps {
     generateKey: GenerateKeyProps;
     blackList: BlackListProps;
     chromaKey: ChromaKeyProps;
+    donations: AllDonationsProps[];
 }
 
 interface DataContextValue {
@@ -83,6 +85,7 @@ const listInitial: DataContextValue = {
             wordsBlocked: '',
         },
         chromaKey: {allow: true},
+        donations: [],
     },
     setData: param => { },
     updateData: param => { },
@@ -139,6 +142,11 @@ export function DataProvider({ children }: Props) {
             wordsBlocked: '',
         },
         chromaKey: {allow: true},
+        donations: [  
+            { date: '2024-05-22', type: 'normal', value: '3400' }, 
+            { date: '2024-05-21', type: 'normal', value: '3700' },
+            { date: '2024-04-22', type: 'normal', value: '3000' },
+        ],
     });
 
     const updateData = <K extends keyof DataProps>(key: K, newData: Partial<DataProps[K]>) => {
@@ -225,6 +233,10 @@ export function DataProvider({ children }: Props) {
                 wordsBlocked: '',
             },
             chromaKey: {allow: true},
+            donations: [  
+                { date: '2024-04-14', type: 'normal', value: '3400' }, 
+                { date: '2024-04-15', type: 'normal', value: '3700' },
+            ],
         });
         setActiveScreen('generateKey');
         setTimeout(() => {

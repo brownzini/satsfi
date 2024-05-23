@@ -2,16 +2,11 @@ import React from 'react';
 import { parse } from 'json2csv';
 import { saveAs } from 'file-saver';
 import { ExportTitleArea } from '../Card/styles';
+import { useData } from '@/contexts/useData';
 
 const CSVConverter = () => {
 
-  const data = [
-    // { date: '2024-05-15', value: '1600' }, 
-    // { date: '2024-05-14', value: '2800' },
-    // { date: '2024-05-14', value: '2500' }, 
-    // { date: '2024-03-14', value: '2800' },
-    { date: '2024-04-14', value: '3400' },
-  ];
+  const { data } = useData();
 
   const generateFileName = (BrazilDate: boolean = false) => {
         const now = new Date();
@@ -28,7 +23,7 @@ const CSVConverter = () => {
     try {
       const fields = ['date', 'value']; // Especificando os campos para os cabeçalhos
       const opts = { fields };
-      const csv = parse(data, opts);
+      const csv = parse(data.donations, opts);
       const csvBlob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
 
       const fileName = 'donations_'+generateFileName(true);

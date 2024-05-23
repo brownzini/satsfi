@@ -29,8 +29,13 @@ import {
 import Card from "./Card";
 import CSVImporter from "./Import";
 
-import SvgModel from "@/utils/svg";
+//Contexts
 import { useMessage } from "@/contexts/useMessage";
+import { useData } from "@/contexts/useData";
+
+//Utils
+import SvgModel from "@/utils/svg";
+import { getToday } from "@/utils/Date";
 
 interface SeriesProps {
     name: string;
@@ -47,6 +52,8 @@ const Chart = dynamic(() => import('react-apexcharts'), {
 });
 
 export default function Overview() {
+    const { data, setData } = useData();
+
     const defaultSeries = [{
         name: 'Satoshis',
         data: []
@@ -97,7 +104,7 @@ export default function Overview() {
     });
     const [series, setSeries] = useState<SeriesProps[]>(defaultSeries);
 
-    const [donates, setDonates] = useState<DonationProps[]>([]);
+    const [donates, setDonates] = useState<DonationProps[]>(data.donations);
 
     const [monthAmount, setMonthAmount] = useState<string>('0');
     const [totalAmount, setTotalAmount] = useState<string>('0');
@@ -117,59 +124,10 @@ export default function Overview() {
             data: []
         }]);
         setDonates([]);
+        setData(prevData => ({...prevData, donations: []}));
         setMonthAmount('0');
         setTotalAmount('0');
     }
-
-    const handleImport = () => {
-
-        // if(!status) dispatchMessage('[SUCESSO]: Dados importados', true);
-    }
-
-    // const organizingData = () => {
-    //     const donatesPerDay: any = {};
-
-    //     donates.forEach((item: any) => {
-    //         const { date, value } = item;
-    //         if (!donatesPerDay[date]) {
-    //             donatesPerDay[date] = 0;
-    //         }
-    //         donatesPerDay[date] += parseInt(value);
-    //     });
-
-    //     const collectionOrdered = Object.entries(donatesPerDay).sort((a, b) => {
-    //         const dateA: any = new Date(a[0]);
-    //         const dateB: any = new Date(b[0]);
-    //         return dateA - dateB;
-    //     });
-
-    //     const completedDonates = collectionOrdered.reverse();
-
-
-    //     const categories = completedDonates.map(([date, _]) => date);
-    //     const series = collectionOrdered.map(([, value]) => Number(value));
-
-    //     setOptions((prevOptions: any) => ({
-    //         ...prevOptions,
-    //         xaxis: {
-    //             ...prevOptions.xaxis,
-    //             categories: categories,
-    //         },
-    //     }));
-    //     setSeries(prevSeriesData => [{ name: 'Satoshis', data: series }]);
-
-    //     const monthResultAmount = filterAmount(getValuesByMonth(donates).toString());
-    //     const totalResultAmount = filterAmount(calculateTotalValue(donates).toString());
-
-    //     if(monthResultAmount) {
-    //        setMonthAmount(monthResultAmount);
-    //     }
-
-    //     if(totalResultAmount) {
-    //        setTotalAmount((totalResultAmount).toString());
-    //     }
-
-    // }   
 
     const filterAmount = (value: string) => {
         const integerAmount = parseInt(value);
@@ -249,13 +207,31 @@ export default function Overview() {
         }
     };
 
-    const calculateTotalValue = (donates: any) => {
+    const sumDailyDonations = () => {
+
+        const today = getToday();
+
+        const donationsForToday = data.donations.filter(item => item.date === today);
+
         let sum = 0;
-        for (const donate of donates) {
-            sum += Number(donate.value);
-        }
-        return sum;
+
+        donationsForToday.forEach(item => {
+            sum += parseFloat(item.value);
+        });
+
+        const result = filterAmount(sum.toString());
+        
+        return (result) ? result : '0';
     };
+
+    const calculateTotalValue = (): string => {
+        let sum = 0;
+        data.donations.forEach(item => {
+            sum += parseFloat(item.value);
+        });
+        const result = filterAmount(sum.toString());
+        return (result) ? result : '0';
+    }
 
     useEffect(() => {
         const organizingData = () => {
@@ -291,7 +267,7 @@ export default function Overview() {
             setSeries(prevSeriesData => [{ name: 'Satoshis', data: series }]);
 
             const monthResultAmount = filterAmount(getValuesByMonth(donates).toString());
-            const totalResultAmount = filterAmount(calculateTotalValue(donates).toString());
+            const totalResultAmount = filterAmount(calculateTotalValue().toString());
 
             if (monthResultAmount) {
                 setMonthAmount(monthResultAmount);
@@ -319,13 +295,10 @@ export default function Overview() {
                                 width="50%"
                                 height="50%"
                             />
-                            Limpar
+                            <p> Limpar </p>
                         </SvgIconInImportArea>
                     </CleanAllContainer>
-                    <ImportWrapper
-                        className="flex"
-                        onClick={handleImport}
-                    >
+                    <ImportWrapper className="flex">
                         {(!status)
                             ? <CSVImporter setDonates={setDonates} />
                             : <SvgModel
@@ -339,7 +312,7 @@ export default function Overview() {
 
                 <CardsContent>
                     <CardsWrapper className="flex">
-                        <Card day="Hoje" amount="0" hasExport />
+                        <Card day="Hoje" amount={sumDailyDonations()} hasExport />
                         <Card day="Mensal" amount={monthAmount} hasExport={false} />
                         <MonthlyCard className="flex fd">
                             <MonthlyCardHeader className="flex">
