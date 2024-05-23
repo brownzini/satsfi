@@ -16,6 +16,7 @@ export type ScreenProp = {
     generateKey: FieldScreen;
     blackList: FieldScreen;
     chromaKey: FieldScreen;
+    start: FieldScreen;
 }
 
 

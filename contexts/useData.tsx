@@ -28,6 +28,7 @@ export interface DataProps {
     chromaKey: ChromaKeyProps;
     donations: AllDonationsProps[];
     qrCode: QRCodeProps;
+    isActiveHub: boolean;
 }
 
 interface DataContextValue {
@@ -89,6 +90,7 @@ const listInitial: DataContextValue = {
         chromaKey: {allow: true},
         donations: [],
         qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
+        isActiveHub:false,
     },
     setData: param => { },
     updateData: param => { },
@@ -145,12 +147,9 @@ export function DataProvider({ children }: Props) {
             wordsBlocked: '',
         },
         chromaKey: {allow: true},
-        donations: [  
-            { date: '2024-05-22', type: 'normal', value: '3400' }, 
-            { date: '2024-05-21', type: 'normal', value: '3700' },
-            { date: '2024-04-22', type: 'normal', value: '3000' },
-        ],
+        donations: [],
         qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
+        isActiveHub:false,
     });
 
     const updateData = <K extends keyof DataProps>(key: K, newData: Partial<DataProps[K]>) => {
@@ -239,6 +238,7 @@ export function DataProvider({ children }: Props) {
             chromaKey: { allow: true },
             donations: [],
             qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
+            isActiveHub:false,
         });
         setActiveScreen('generateKey');
         setTimeout(() => {

@@ -31,6 +31,7 @@ import { useHeader } from "@/contexts/useHeader";
 //Types
 import { ScreenProp } from "@/utils/types";
 import { useData } from "@/contexts/useData";
+import Start from "./Start";
 
 export default function DashboardBody() {
 
@@ -54,6 +55,7 @@ export default function DashboardBody() {
             case 'importKey': return (<ImportKey />);
             case 'overview': return (<Overview />);
             case 'initial': return (<Initial />);
+            case 'start': return (<Start />);
         }
     }
 

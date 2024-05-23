@@ -15,6 +15,7 @@ interface Props {
 
 const listInitial: HeaderContextValue = {
     screens: {
+        start: { status: false, name: 'Inicializar Hub' },
         initial: { status: true, name: 'Initial' },
         importKey: { status: false, name: 'ImportKey' },
         overview: { status: false, name: 'Visão Geral' },
@@ -37,6 +38,7 @@ const HeaderContext = React.createContext<HeaderContextValue>(listInitial);
 export function HeaderProvider({ children }: Props) {
 
     const [screens, setScreens] = React.useState<ScreenProp>({
+        start: { status: false, name: 'Inicializar Hub' },
         initial: { status: true, name: 'Initial' },
         importKey: { status: false, name: 'ImportKey' },
         overview: { status: false, name: 'Visão Geral' },
