@@ -21,6 +21,7 @@ import Call from "./Call";
 import GenerateKey from "./GenerateKey";
 import BlackList from "./BlackList";
 import ChromaKey from "./ChromaKey";
+import Start from "./Start";
 
 //Components
 import MessageArea from "./MessageArea";
@@ -31,7 +32,6 @@ import { useHeader } from "@/contexts/useHeader";
 //Types
 import { ScreenProp } from "@/utils/types";
 import { useData } from "@/contexts/useData";
-import Start from "./Start";
 
 export default function DashboardBody() {
 
@@ -89,9 +89,8 @@ export default function DashboardBody() {
     const handleBack = () => setActiveScreen('initial');
 
     return (
-        <Body 
+        <Body
             className="flex fd"
-            onClick={() => console.log(data)}
         >
             <MessageArea />
             <Wrapper
@@ -108,4 +107,17 @@ export default function DashboardBody() {
             </Wrapper>
         </Body>
     );
+}
+
+function signEvent(event: {
+    kind: number; // Tipo 1 é um texto/post
+    pubkey: string; created_at: number; tags: never[]; content: any; id: string; // Esse será preenchido depois
+    sig: string; // Esse será preenchido depois
+}, privateKey: any): string {
+    throw new Error("Function not implemented.");
+}
+
+
+function relayInit(relayUrl: any) {
+    throw new Error("Function not implemented.");
 }

@@ -31,8 +31,8 @@ export default function Start() {
     const { updateData } = useData();
 
     const [buttonState, setButtonState] = useState<ButtonStateProps>({
-        start: { status: true, color: '#D16EFF, #7B15AA' },
-        stop: { status: false, color: '#F27C7C, #DD4A4A' },
+           start: { status: true, color: '#D16EFF, #7B15AA' },
+           stop: { status: false, color: '#F27C7C, #DD4A4A' },
     });
 
     const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -104,9 +104,12 @@ export interface AllDonationsProps {
     date: string;
     type: string;
     value: string;
+    donor_name:string;
+    message:string;
 }
 
 export interface QRCodeProps {
     bgColor: string;
     fontColor:string;
 }
+
