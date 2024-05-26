@@ -89,9 +89,7 @@ export default function DashboardBody() {
     const handleBack = () => setActiveScreen('initial');
 
     return (
-        <Body
-            className="flex fd"
-        >
+        <Body className="flex fd">
             <MessageArea />
             <Wrapper
                 className="flex fd"
@@ -107,17 +105,4 @@ export default function DashboardBody() {
             </Wrapper>
         </Body>
     );
-}
-
-function signEvent(event: {
-    kind: number; // Tipo 1 é um texto/post
-    pubkey: string; created_at: number; tags: never[]; content: any; id: string; // Esse será preenchido depois
-    sig: string; // Esse será preenchido depois
-}, privateKey: any): string {
-    throw new Error("Function not implemented.");
-}
-
-
-function relayInit(relayUrl: any) {
-    throw new Error("Function not implemented.");
 }
