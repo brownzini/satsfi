@@ -57,23 +57,6 @@ export default function ButtonComponent({
                     <TextTitle> {getButtonName()} </TextTitle>
                 </TextArea>
             </ButtonArea>
-            {(buttonState.stop.status) &&
-                <ButtonArea
-                    className="flex"
-                    styler={` background: linear-gradient(to left,#FFD79B, #DD972E); `}
-                >
-                    <SvgArea styler="50%">
-                        <SvgModel
-                            name="restart"
-                            width="50%"
-                            height="50%"
-                        />
-                    </SvgArea>
-                    <TextArea>
-                        <TextTitle> Reiniciar </TextTitle>
-                    </TextArea>
-                </ButtonArea>
-            }
         </Container>
     );
 }

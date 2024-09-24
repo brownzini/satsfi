@@ -35,7 +35,7 @@ export default function DashboardHeader() {
     return (
         <Header className="flex">
             <WrapperLogoArea className="flex">
-                <Logo>SatsFI</Logo>
+                <Logo onClick={() => console.log(data)}>SatsFI</Logo>
             </WrapperLogoArea>
             <OptionsArea className="flex">
                 {(!screenStatus) &&

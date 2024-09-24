@@ -53,6 +53,12 @@ export interface OptionsProps {
     votes: string;
 }
 
+export interface WebsocketSurveyProps {
+    id: string;
+    name?:string;
+    amount: string;
+}
+
 export interface WinnerProps {
     id: string;
     name:string;
@@ -98,6 +104,7 @@ export interface DonateProps {
 
 export interface ChromaKeyProps {
     allow: boolean;
+    obsPassword?:string;
 }
 
 export interface AllDonationsProps {

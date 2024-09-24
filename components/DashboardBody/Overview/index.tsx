@@ -253,7 +253,6 @@ export default function Overview() {
 
             const completedDonates = collectionOrdered.reverse();
 
-
             const categories = completedDonates.map(([date, _]) => date);
             const series = collectionOrdered.map(([, value]) => Number(value));
 

@@ -50,6 +50,15 @@ export const filterAmount = (value: string) => {
 
 }
 
-export const isOnlySpaces = (str:string) => {
+export const isOnlySpaces = (str: string) => {
     return str.trim().length === 0;
 };
+
+export const feeConvert = (type: string, amount:string) => {
+    switch (type) {
+        case 'call': return Math.floor(parseInt(amount) * 0.95).toString();
+        case 'surveyDonation': return Math.floor(parseInt(amount) * 0.25).toString(); 
+        case 'backgroundDonation': return Math.floor(parseInt(amount) * 0.95).toString();
+        default: return Math.floor(parseInt(amount) * 0.975).toString();
+    }
+}

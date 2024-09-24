@@ -12,28 +12,7 @@ import { useData } from "@/contexts/useData";
 
 export default function TrackDonate() {
 
-    const {
-        data, updateData,
-        addDonate, deleteDonate,
-        removeLastDonate,
-    } = useData();
-
-    const cleanDonates = () => {
-        updateData('trackDonate', [])
-    };
-
-    const addNewDonate = () => {
-          addDonate({
-            name: 'anonemo2 ',
-            amount: '2,000',
-            description: 'Testando esse teste maluco ?',
-            type: "default",
-            narrator: "jusep camole",
-            isCalling: false,
-            callUrl: "",
-            backgroundUrl: "",
-          });
-    }
+    const { data, removeLastDonate } = useData();
 
     return (
         <Container className="flex fd">

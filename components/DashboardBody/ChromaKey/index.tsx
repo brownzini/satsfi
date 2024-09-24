@@ -33,22 +33,27 @@ export default function ChromaKey() {
 
     const [allow, setAllow] = useState<boolean>(data.chromaKey.allow);
     const [port, setPort] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [password, setPassword] = useState<string>(
+       (data.chromaKey.obsPassword)  ? data.chromaKey.obsPassword : ''
+    );
 
     const { dispatchMessage } = useMessage();
 
     const hasChange = () => {
-        if(allow === data.chromaKey.allow) {
-           return false;
+        if (password === data.chromaKey.obsPassword) {
+            return false;
         } else {
-           return true;
+            return true;
         }
     }
 
     const handleSave = () => {
         const validationChange = hasChange();
         if (validationChange) {
-            updateData('chromaKey', { allow: allow });
+            updateData('chromaKey', { 
+                allow: allow, 
+                obsPassword: password
+            });
             dispatchMessage('[SUCESSO]: Seus Dados foram registrados', true);
         }
     }
@@ -174,9 +179,10 @@ export default function ChromaKey() {
                     `}
                     maxLength={5}
                     inputType="nit"
-                    inputValue={port}
+                    inputValue={"4444"}
                     setInputValue={setPort}
                     placeholder=" Ex: 4455"
+                    disabled={true}
                 />
                 <Field
                     type="title"
@@ -301,65 +307,75 @@ export default function ChromaKey() {
                 />
             </ChromaContent>
             <DownloadContent className="flex fd">
-                <NodeObsContainer className="flex">
+                <TutorialContainer>
                     <Link
                         id="link-initial-button-style"
                         href="/"
                     >
-                        <NodeArea className="flex fd">
-                            <br />
-                            <Field
-                                type="title"
-                                center={`
-                                height: 5%;
-                                justify-content: flex-start;
-                                padding-left: 0%;
+                        <Field
+                            type="button"
+                            center={`
+                            width: 100%;
+                            height: 100%;
+                            justify-content: flex-start;
+                            align-items: center;
+                            padding-right: 11.1%;
+                            user-select: none;
 
-                                @media only screen and (min-width: 2560px) {
-                                    height: 3%;
-                                    align-items: flex-end;
-                                }
+                            @media only screen and (min-width: 2560px) {
+                                align-items: flex-start;
+                                border-radius: 10px;
+                            }
 
-                                @media only screen and (min-width: 1920px) {
-                                    height: 3%;
-                                    align-items: flex-end;
-                                }
+                            @media only screen and (min-width: 1920px) {
+                                align-items: flex-start;
+                                border-radius: 10px;
+                            }
 
-                                @media only screen and (min-width: 1600px) {
-                                    align-items: flex-end;
-                                }
+                            @media only screen and (min-width: 1600px) {
+                                align-items: flex-start;
+                                border-radius: 10px;
+                            }
+                        `}
+                            text="TUTORIAL"
+                            styler={`
+                            width: 100%;
+                            height: 50%;
 
-                                @media only screen and (min-width: 1300px) {
-                                    height: 7%;
-                                    align-items: flex-end;
-                                }
-                            `}
-                                text="Node:"
-                                styler={`
-                        color: #3C5774;
-                        font-size: 1.4rem;
-                        font-family: "Inter";
-                        font-weight: bold;
+                            color: white;
+                            font-size: 1.4rem;
+                            font-family: 'Poppins';
+                            font-weight: bold;
 
-                        @media only screen and (min-height: 900px) {
-                            font-size: 2.5rem;
-                            padding-right:0%;
-                        }
-                    `}
-                            />
-                            <NodeSvgArea>
-                                <NodeSvgContent className="flex">
-                                    <SvgModel
-                                        name="nodeSvg"
-                                        width="100%"
-                                        height="100%"
-                                    />
-                                </NodeSvgContent>
-                            </NodeSvgArea>
+                            border: none;
+                            border-radius: 5px;
+                            background-color: #3B1170;
 
-                        </NodeArea>
+                            transition: 0.75s;
+
+                            &:hover {
+                                background-color: #521997;
+                            }
+
+                            cursor:pointer;
+
+                            @media only screen and (min-width: 2560px) {
+                                border-radius: 10px;
+                            }
+                            @media only screen and (min-width: 1920px) {
+                                font-size: 3rem;
+                            }
+
+                            @media only screen and (min-width: 1600px) {
+                                font-size: 2rem;
+                            }
+
+                        `}
+                        />
                     </Link>
-                    <Link
+                </TutorialContainer>
+                <NodeObsContainer className="flex">
+                    {/* <Link
                         id="link-initial-button-style"
                         href="/"
                     >
@@ -414,10 +430,67 @@ export default function ChromaKey() {
                                 </GithubSvgContent>
                             </GithubSvgArea>
                         </GithubArea>
+                    </Link> */}
+                    <Link
+                        id="link-initial-button-style"
+                        href="/"
+                    >
+                        <NodeArea className="flex fd">
+                            <br />
+                            {/* <Field
+                                type="title"
+                                center={`
+                                height: 5%;
+                                justify-content: flex-start;
+                                padding-left: 0%;
+
+                                @media only screen and (min-width: 2560px) {
+                                    height: 3%;
+                                    align-items: flex-end;
+                                }
+
+                                @media only screen and (min-width: 1920px) {
+                                    height: 3%;
+                                    align-items: flex-end;
+                                }
+
+                                @media only screen and (min-width: 1600px) {
+                                    align-items: flex-end;
+                                }
+
+                                @media only screen and (min-width: 1300px) {
+                                    height: 7%;
+                                    align-items: flex-end;
+                                }
+                            `}
+                                text="Node:"
+                                styler={`
+                        color: #3C5774;
+                        font-size: 1.4rem;
+                        font-family: "Inter";
+                        font-weight: bold;
+
+                        @media only screen and (min-height: 900px) {
+                            font-size: 2.5rem;
+                            padding-right:0%;
+                        }
+                    `}
+                            />
+                            <NodeSvgArea>
+                                <NodeSvgContent className="flex">
+                                    <SvgModel
+                                        name="nodeSvg"
+                                        width="100%"
+                                        height="100%"
+                                    />
+                                </NodeSvgContent>
+                            </NodeSvgArea> */}
+
+                        </NodeArea>
                     </Link>
                 </NodeObsContainer>
                 <br />
-                <InitializerContainer className="flex fd">
+                {/* <InitializerContainer className="flex fd">
                     <Field
                         type="title"
                         center={`
@@ -507,74 +580,7 @@ export default function ChromaKey() {
                         `}
                         />
                     </Link>
-                </InitializerContainer>
-                <TutorialContainer>
-                    <Link
-                        id="link-initial-button-style"
-                        href="/"
-                    >
-                        <Field
-                            type="button"
-                            center={`
-                            width: 100%;
-                            height: 100%;
-                            justify-content: flex-start;
-                            align-items: center;
-                            padding-right: 11.1%;
-                            user-select: none;
-
-                            @media only screen and (min-width: 2560px) {
-                                align-items: flex-start;
-                                border-radius: 10px;
-                            }
-
-                            @media only screen and (min-width: 1920px) {
-                                align-items: flex-start;
-                                border-radius: 10px;
-                            }
-
-                            @media only screen and (min-width: 1600px) {
-                                align-items: flex-start;
-                                border-radius: 10px;
-                            }
-                        `}
-                            text="TUTORIAL"
-                            styler={`
-                            width: 100%;
-                            height: 50%;
-
-                            color: white;
-                            font-size: 1.4rem;
-                            font-family: 'Poppins';
-                            font-weight: bold;
-
-                            border: none;
-                            border-radius: 5px;
-                            background-color: #3B1170;
-
-                            transition: 0.75s;
-
-                            &:hover {
-                                background-color: #521997;
-                            }
-
-                            cursor:pointer;
-
-                            @media only screen and (min-width: 2560px) {
-                                border-radius: 10px;
-                            }
-                            @media only screen and (min-width: 1920px) {
-                                font-size: 3rem;
-                            }
-
-                            @media only screen and (min-width: 1600px) {
-                                font-size: 2rem;
-                            }
-
-                        `}
-                        />
-                    </Link>
-                </TutorialContainer>
+                </InitializerContainer> */}
             </DownloadContent>
         </Container>
     );

@@ -14,6 +14,10 @@ import SvgModel from "@/utils/svg";
 //Contexts
 import { useData } from "@/contexts/useData";
 
+//Websocket
+import WebSocketService from "../../../websocket";
+import { useActiveWs } from "@/contexts/useActiveWs";
+
 type ButtonName = 'start' | 'stop';
 
 interface ButtonProps {
@@ -28,11 +32,21 @@ interface ButtonStateProps {
 
 export default function Start() {
 
-    const { updateData } = useData();
-
+    const { data, updateData, addDonate } = useData();
+    const { 
+        wsConfig, setWsConfig, setActiveWs, 
+        surveySoloDonation, setsurveySoloDonation 
+    } = useActiveWs();
+    
     const [buttonState, setButtonState] = useState<ButtonStateProps>({
-           start: { status: true, color: '#D16EFF, #7B15AA' },
-           stop: { status: false, color: '#F27C7C, #DD4A4A' },
+        start: { 
+            status: !wsConfig, 
+            color: '#D16EFF, #7B15AA' 
+        },
+        stop: { 
+            status: wsConfig, 
+            color: '#F27C7C, #DD4A4A' 
+        },
     });
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -68,12 +82,12 @@ export default function Start() {
         }
     }
 
-    const handleActiveHub = (param:string) => updateData('isActiveHub', (param === 'start'));
-    
+    const handleActiveHub = (param: string) => updateData('isActiveHub', (param === 'start'));
+
     const handleClick = () => {
         const activedButton = getActiveButton();
         const getNextButton = (activedButton === 'start') ? 'stop' : 'start';
-        
+
         handleActiveHub(activedButton);
 
         setIsLoading(true);
@@ -81,6 +95,27 @@ export default function Start() {
             setIsLoading(false);
         }, 3000);
         toggleButtonState(getNextButton);
+
+        if (data.generateKey.keyHub && activedButton === 'start') {
+            const socket = WebSocketService(
+                data.generateKey.idString,
+                data.generateKey.keyHub,
+                data,
+                addDonate,
+                updateData,
+                setsurveySoloDonation,
+                surveySoloDonation
+            );
+            setActiveWs(true);
+            setWsConfig(socket);
+        } else {
+            if(wsConfig) { 
+                wsConfig.close();
+                setWsConfig(null);
+                setActiveWs(false);
+            }
+        }
+
     }
 
     return (

@@ -52,10 +52,12 @@ import { useData } from "@/contexts/useData";
 //Utils
 import { filterAmount } from "@/utils/inputFormat";
 import { OptionsProps, TimerProps } from "@/utils/types";
+import { useActiveWs } from "@/contexts/useActiveWs";
 
 export default function Survey() {
 
     const { data, updateData } = useData();
+    const { surveySoloDonation, setsurveySoloDonation } = useActiveWs();
 
     const [surveyStatus, setSurveyStatus] = useState<boolean>(data.survey.allow);
     const [minCreateSurvey, setMinCreateSurvey] = useState<string>(data.survey.minCreateSurvey);
@@ -77,18 +79,22 @@ export default function Survey() {
     const [errorOptions, setErrorOptions] = useState<boolean>(false);
 
     const [winnerOption, setWinnerOption] = useState({
-           id:'', 
-           name:'', 
-           percentage: '', 
-           amount: ''
+        id: '',
+        name: '',
+        percentage: '',
+        amount: ''
     });
     const [changeTitle, setChangeTitle] = useState<boolean>(false);
-    const [maxVotes, setMaxVotes] = useState<number>(0);
 
     const { dispatchMessage } = useMessage();
 
     const handleClickSurvey = () => {
-        if (!isSurveyCreated) {
+        if(!isSurveyCreated && data.survey.options.length > 0) {
+            setSurveyCreated(false);
+            setIsSurveyCreated(true);
+            setSurveyTimerStatus(true);
+        }
+        if (!isSurveyCreated && data.survey.options.length === 0) {
             setSurveyCreated(!surveyCreated);
         } else {
             handleReset();
@@ -137,8 +143,8 @@ export default function Survey() {
     }
 
     const notChanged = () => {
-        const validateSurveyStatus   = (data.survey.allow ===  surveyStatus);
-        const validateMinCreate = (data.survey.minCreateSurvey ===  minCreateSurvey);
+        const validateSurveyStatus = (data.survey.allow === surveyStatus);
+        const validateMinCreate = (data.survey.minCreateSurvey === minCreateSurvey);
         const validateDurationSurvey = (data.survey.durationTime === durationTime);
         return (validateSurveyStatus && validateMinCreate && validateDurationSurvey);
     }
@@ -147,15 +153,15 @@ export default function Survey() {
     const handleSave = () => {
         const hasNotChanged = notChanged();
         if (createValidation() && !hasNotChanged) {
-            updateData('survey', { 
+            updateData('survey', {
                 allow: surveyStatus,
                 minCreateSurvey: minCreateSurvey,
                 durationTime: durationTime,
-                
+
                 surveyTitle: data.survey.surveyTitle,
                 options: data.survey.options,
                 minToVote: data.survey.minToVote,
-                
+
                 endTime: {
                     day: data.survey.endTime.day,
                     hour: data.survey.endTime.hour,
@@ -163,7 +169,7 @@ export default function Survey() {
                     second: data.survey.endTime.second,
                 },
                 amount: data.survey.amount,
-             });
+            });
             dispatchMessage('[SUCESSO]: Detalhes de Enquete foram salvos', true);
         }
     }
@@ -221,14 +227,14 @@ export default function Survey() {
     const defineTime = () => {
         const now = new Date();
 
-        const completeMinute = now.getMinutes()+ data.survey.durationTime;
+        const completeMinute = now.getMinutes() + data.survey.durationTime;
 
-        const filterMinute = (completeMinute >= 60) ? completeMinute-60 : completeMinute;
+        const filterMinute = (completeMinute >= 60) ? completeMinute - 60 : completeMinute;
 
-        const zeroHour = (now.getHours()+1 === 24) ? 0 : now.getHours()+1;
+        const zeroHour = (now.getHours() + 1 === 24) ? 0 : now.getHours() + 1;
         const moreOneHour = (completeMinute >= 60) ? zeroHour : now.getHours();
 
-        const moreOneDay = (moreOneHour === 0) ? getNextDay().getHours() : now.getUTCDate(); ;
+        const moreOneDay = (moreOneHour === 0) ? getNextDay().getHours() : now.getUTCDate();
 
         updateData('survey', {
             allow: data.survey.allow,
@@ -238,7 +244,7 @@ export default function Survey() {
             surveyTitle: surveyTitle,
             options: options,
             minToVote: minToVote,
-            
+
             endTime: {
                 day: moreOneDay,
                 hour: moreOneHour,
@@ -247,11 +253,11 @@ export default function Survey() {
             },
             amount: '0',
         });
-        
+
     }
 
     const handleCreate = () => {
-       
+
         const isVotationOk = voteValidation();
         const isOptionsOk = optionsValidation();
 
@@ -279,25 +285,25 @@ export default function Survey() {
     }
 
     const handleReset = () => {
-          setChangeTitle(false);
-          setIsSurveyCreated(false);
-          setMaxVotes(0);
-          setSurveyCreated(false);
-          setSurveyTitle('');
-          setOptions([]);
-          setMinToVote('');
-          setErrorTitle(false);
-          setErrorMinToVote(false);
-          setErrorOptions(false);
-          setIsFinished(false);
-          setSurveyTimerStatus(false);
-          setWinnerOption({
-            id:'', 
-            name:'', 
-            percentage: '', 
+        setChangeTitle(false);
+        setIsSurveyCreated(false);
+        setSurveyCreated(false);
+        setSurveyTitle('');
+        setOptions([]);
+        setMinToVote('');
+        setErrorTitle(false);
+        setErrorMinToVote(false);
+        setErrorOptions(false);
+        setIsFinished(false);
+        setsurveySoloDonation([]);
+        setSurveyTimerStatus(false);
+        setWinnerOption({
+            id: '',
+            name: '',
+            percentage: '',
             amount: ''
-          });
-          updateData('survey', {
+        });
+        updateData('survey', {
             allow: data.survey.allow,
             minCreateSurvey: data.survey.minCreateSurvey,
             durationTime: data.survey.durationTime,
@@ -307,28 +313,20 @@ export default function Survey() {
             minToVote: '',
 
             endTime: {
-                day:0, 
-                hour:0,
-                minute: 0, 
+                day: 0,
+                hour: 0,
+                minute: 0,
                 second: 0
             },
             amount: '0',
-          })
+        })
     }
-
-    // const calculatePercentages = (options: OptionsProps[]) => {
-    //     const totalVotes = options.reduce((sum, option) => sum + parseInt(option.votes), 0);
-    //     return options.map(option => ({
-    //         ...option,
-    //         percentage: totalVotes === 0 ? 0 : (parseInt(option.votes) / totalVotes) * 100
-    //     }));
-    // };
 
     const calculatePercentageForOption = (options: OptionsProps[], optionId: string) => {
         const totalVotes = options.reduce((sum, option) => sum + parseInt(option.votes), 0);
 
         const chosenOption = options.find(option => option.id === optionId);
-        
+
         if (!chosenOption) {
             return null;
         }
@@ -342,10 +340,10 @@ export default function Survey() {
         };
     };
 
-    const winnerFilter = (type:string) => {
+    const winnerFilter = (type: string) => {
         switch (type) {
             case 'name':
-                return options[0].name+': 0% dos votos';
+                return "" + ': 0% dos votos';
             case 'amount':
                 return '0 satohis';
         }
@@ -353,33 +351,31 @@ export default function Survey() {
 
     const timerRendering = () => {
         return SurveyTimerStatus ? (
-            <TimerComponent
-            
-                endTime={endTime}
-            />
-        ) : 
-          <>
-            <TrophyArea className="flex">
-                <SvgModel 
-                    name="trophy" 
-                    width="100%" 
-                    height="100%" 
-                />
-            </TrophyArea>
-            <br />
-            <WinnerText>
-                {(winnerOption.name !== '') ? winnerOption.name+': '+winnerOption.percentage+'% dos votos' : winnerFilter('name')}
-            </WinnerText>
-            <br />
-            <AmountVotesText> 
-                {(winnerOption.name !== '') ? winnerOption.amount+' '+' satohis' : winnerFilter('amount') }
-            </AmountVotesText>
-            <br />
-            <br />
-          </>
+            <TimerComponent endTime={endTime} />
+        ) :
+            <>
+                <TrophyArea className="flex">
+                    <SvgModel
+                        name="trophy"
+                        width="100%"
+                        height="100%"
+                    />
+                </TrophyArea>
+                <br />
+                <WinnerText>
+                    {(winnerOption.name !== '') ? winnerOption.name + ': ' + winnerOption.percentage + '% dos votos' : winnerFilter('name')}
+                </WinnerText>
+                <br />
+                <AmountVotesText>
+                    {(winnerOption.name !== '') ? winnerOption.amount + ' ' + ' satohis' : winnerFilter('amount')}
+                </AmountVotesText>
+                <br />
+                <br />
+            </>
     }
 
     const endTime = () => {
+        endSurveyData();
         setIsFinished(true);
         findMaxVotesOption();
     }
@@ -388,28 +384,99 @@ export default function Survey() {
         return (!changeTitle) ? 'Enquete expira em' : 'Vencedor da enquete'
     }
 
+    const getTotalVotes = (options: any) => {
+        return options.reduce((total: any, option: any) => {
+            return total + parseInt(option.votes);
+        }, 0);
+    };
+
     const findMaxVotesOption = () => {
+        let maxVote = 0;
         for (const option of options) {
-             const filterOption = calculatePercentageForOption(options, option.id);
-             const totalAmount = filterAmount(data.survey.amount);
-             if (parseInt(option.votes) > maxVotes) {
-                 setWinnerOption({
-                    id: option.id, 
+            const filterOption = calculatePercentageForOption(options, option.id);
+            const totalAmount = filterAmount(getTotalVotes(options));
+
+            if (parseInt(option.votes) > maxVote) {
+                setWinnerOption({
+                    id: option.id,
                     name: option.name,
-                    percentage: (filterOption) ? filterOption.percentage : '0%', 
+                    percentage: (filterOption) ? filterOption.percentage : '0%',
                     amount: (totalAmount) ? totalAmount : '0',
-                 });
-                 setMaxVotes(parseInt(option.votes));
-             }
+                });
+                maxVote = parseInt(option.votes);
+            }
         }
     };
 
+    const calculateDonationsFromWs = () => {
+
+        // Função para agrupar por id e somar os amounts
+        const groupedSums = surveySoloDonation.reduce((acc: any, item: any) => {
+            // Verifica se o id já existe no acumulador
+            if (!acc[item.id]) {
+                acc[item.id] = 0; // Se não existir, inicializa com 0
+            }
+
+            // Soma o amount convertendo de string para número
+            acc[item.id] += parseInt(item.amount);
+
+            return acc;
+        }, {});
+
+        // Transforma o resultado em um array de objetos com id e totalAmount
+        const result = Object.entries(groupedSums).map(([id, totalAmount]) => ({
+            id,
+            totalAmount
+        }));
+
+        return result;
+    }
+
+    const endSurveyData = () => {
+        const dataOrg = calculateDonationsFromWs();
+        const copyData = data.survey.options;
+        const copyArr: any = [];
+
+        copyData.filter((param, i) => {
+            if (dataOrg[i]) {
+                if (param.id === dataOrg[i].id) {
+                    const vote = (dataOrg[i].totalAmount)
+                    copyArr.push({
+                        id: dataOrg[i].id,
+                        name: param.name,
+                        votes: vote,
+                    });
+                }
+            }
+        });
+
+        updateData('survey', {
+            allow: surveyStatus,
+            minCreateSurvey: minCreateSurvey,
+            durationTime: durationTime,
+
+            surveyTitle: data.survey.surveyTitle,
+            options: copyArr,
+            minToVote: data.survey.minToVote,
+
+            endTime: {
+                day: data.survey.endTime.day,
+                hour: data.survey.endTime.hour,
+                minute: data.survey.endTime.minute,
+                second: data.survey.endTime.second,
+            },
+            amount: data.survey.amount,
+        });
+
+        setOptions(copyArr);
+    }
+
     useEffect(() => {
-       if(isFinished) {
-           setSurveyTimerStatus(false);
-           setChangeTitle(true);
-       }
-    },[isFinished]);
+        if (isFinished) {
+            setSurveyTimerStatus(false);
+            setChangeTitle(true);
+        }
+    }, [isFinished]);
 
     useEffect(() => {
         if (data.survey.options.length === 0) {
@@ -419,7 +486,7 @@ export default function Survey() {
             setIsSurveyCreated(true);
             setSurveyTimerStatus(true);
         }
-    },[]);
+    }, []);
 
     return (
         <Container className="flex">
@@ -753,7 +820,7 @@ export default function Survey() {
                                 {(!isSurveyCreated) ? 'Nenhuma Enquete Gerada' : titleAreaRendering()}
                             </Title>
                         </TitleArea>
-                        <SvgArea className="flex fd"> 
+                        <SvgArea className="flex fd">
                             {(!isSurveyCreated) ? (
                                 <SvgModel
                                     name="addSurvey"
@@ -761,7 +828,7 @@ export default function Survey() {
                                     height="50%"
                                 />
                             ) : timerRendering()}
-                        </SvgArea> 
+                        </SvgArea>
                         <ButtonArea>
                             <Button
                                 styler={(!isSurveyCreated) ? `

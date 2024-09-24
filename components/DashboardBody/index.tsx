@@ -38,6 +38,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "@/db/firebase";
 import { addInGame } from "@/db/calls/ingame";
+import axios from "axios";
 
 export default function DashboardBody() {
 
@@ -93,7 +94,7 @@ export default function DashboardBody() {
     }, [screens]);
 
     const handleBack = () => setActiveScreen('initial');
-    
+
     return (
         <Body className="flex fd">
             <MessageArea />

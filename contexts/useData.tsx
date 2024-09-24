@@ -36,7 +36,7 @@ interface DataContextValue {
     setData: React.Dispatch<React.SetStateAction<DataProps>>;
     updateData: <K extends keyof DataProps>(key: K, newData: Partial<DataProps[K]>) => void;
 
-    addDonate: (newDonate: DonateProps) => void;
+    addDonate: (newDonate: any, normalDonate?: boolean) => void;
     deleteDonate: (index: number) => void;
     removeLastDonate: () => void;
     destroyHub: () => void;
@@ -62,11 +62,11 @@ const listInitial: DataContextValue = {
             surveyTitle: 'Enquete',
             options: [],
             minToVote: '',
-            
+
             endTime: {
-                day:0, 
-                hour:0,
-                minute: 0, 
+                day: 0,
+                hour: 0,
+                minute: 0,
                 second: 0
             },
             amount: '0',
@@ -87,17 +87,17 @@ const listInitial: DataContextValue = {
         blackList: {
             wordsBlocked: '',
         },
-        chromaKey: {allow: true},
+        chromaKey: { allow: true },
         donations: [],
         qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
-        isActiveHub:false,
+        isActiveHub: false,
     },
     setData: param => { },
     updateData: param => { },
     addDonate: param => { },
     deleteDonate: param => { },
     removeLastDonate: () => { },
-    destroyHub: () => {},
+    destroyHub: () => { },
 };
 
 const DataContext = React.createContext<DataContextValue>(listInitial);
@@ -123,9 +123,9 @@ export function DataProvider({ children }: Props) {
             minToVote: '',
 
             endTime: {
-                day:0, 
-                hour:0,
-                minute: 0, 
+                day: 0,
+                hour: 0,
+                minute: 0,
                 second: 0
             },
             amount: '50000',
@@ -146,16 +146,16 @@ export function DataProvider({ children }: Props) {
         blackList: {
             wordsBlocked: '',
         },
-        chromaKey: {allow: true},
+        chromaKey: { allow: true },
         donations: [],
         qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
-        isActiveHub:false,
+        isActiveHub: false,
     });
 
     const updateData = <K extends keyof DataProps>(key: K, newData: Partial<DataProps[K]>) => {
         setData(prevData => {
             const prevValue = prevData[key];
-            
+
             if (typeof prevValue === 'object' && prevValue !== null) {
                 return {
                     ...prevData,
@@ -173,11 +173,18 @@ export function DataProvider({ children }: Props) {
         });
     };
 
-    const addDonate = (newDonate: DonateProps) => {
-        setData(prevData => ({
-            ...prevData,
-            trackDonate: [newDonate, ...prevData.trackDonate || []]
-        }));
+    const addDonate = (newDonate: any, normalDonate: boolean=true) => {
+        if (normalDonate) {
+            setData(prevData => ({
+                ...prevData,
+                trackDonate: [newDonate, ...prevData.trackDonate || []]
+            }));
+        } else {
+            setData(prevData => ({
+                ...prevData,
+                donations: [newDonate, ...prevData.donations || []]
+            }));
+        }
     };
 
     const deleteDonate = (index: number) => {
@@ -206,15 +213,15 @@ export function DataProvider({ children }: Props) {
                 allow: true,
                 minCreateSurvey: '2,500',
                 durationTime: 1,
-    
+
                 surveyTitle: 'Enquete',
                 options: [],
                 minToVote: '',
-    
+
                 endTime: {
-                    day:0, 
-                    hour:0,
-                    minute: 0, 
+                    day: 0,
+                    hour: 0,
+                    minute: 0,
                     second: 0
                 },
                 amount: '50000',
@@ -238,7 +245,7 @@ export function DataProvider({ children }: Props) {
             chromaKey: { allow: true },
             donations: [],
             qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
-            isActiveHub:false,
+            isActiveHub: false,
         });
         setActiveScreen('generateKey');
         setTimeout(() => {
@@ -247,8 +254,8 @@ export function DataProvider({ children }: Props) {
     }
 
     return (
-        <DataContext.Provider value={{ 
-            data, setData, 
+        <DataContext.Provider value={{
+            data, setData,
             updateData,
             addDonate, deleteDonate,
             removeLastDonate,
@@ -261,18 +268,18 @@ export function DataProvider({ children }: Props) {
 
 export function useData() {
     const context = React.useContext(DataContext);
-    const { 
-            data, setData,  
-            updateData, 
-            addDonate, deleteDonate,
-            removeLastDonate,
-            destroyHub,
+    const {
+        data, setData,
+        updateData,
+        addDonate, deleteDonate,
+        removeLastDonate,
+        destroyHub,
     } = context;
-    return { 
-            data, setData, 
-            updateData, 
-            addDonate, deleteDonate,
-            removeLastDonate,
-            destroyHub,
+    return {
+        data, setData,
+        updateData,
+        addDonate, deleteDonate,
+        removeLastDonate,
+        destroyHub,
     };
 }
