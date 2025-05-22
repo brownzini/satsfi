@@ -12,12 +12,12 @@ import { useData } from "@/contexts/useData";
 
 export default function TrackDonate() {
 
-    const { data, removeLastDonate } = useData();
+    const { data } = useData();
 
     return (
         <Container className="flex fd">
             <ContentContainer className="flex">
-                <DonationCard onClick={() => removeLastDonate()}>
+                <DonationCard onClick={() => console.log(data)}>
                     {data.trackDonate.length > 0 &&
                         data.trackDonate.map((donate, index) => (
                             <Card 
