@@ -1,88 +1,139 @@
 import { useState } from "react";
 
 import {
-    BackButton,
-    Button,
-    Container,
-    ImportContent,
-    Input,
-    InputArea,
-    Label,
-    Title,
-    TitleArea,
+  BackButton,
+  ButtonArea,
+  ConfirmButton,
+  Container,
+  ImportContent,
+  InputArea,
 } from "./styles";
 
 //Contexts
 import { useData } from "@/contexts/useData";
 import { useHeader } from "@/contexts/useHeader";
+import Field from "../Field";
+import { getUserProfile } from "@/app/firebase/services/Users";
 import { useMessage } from "@/contexts/useMessage";
-import SvgModel from "@/utils/svg";
 
 export default function ImportKey() {
-    
-    const { setData } = useData();
-    const { setActiveScreen } = useHeader();
-    const { dispatchMessage } = useMessage();
+  const { setData } = useData();
+  const { setActiveScreen } = useHeader();
 
-    const handleFileChange = (event: any) => {
-        const file = event.target.files[0];
-        if (!file) {
-            console.error('Nenhum arquivo selecionado');
-            return;
-        }
-        
-        if(file.type === "application/json") {
-           const reader = new FileReader();
+  const { dispatchMessage } = useMessage();
 
-           reader.onload = (e: any) => {
-               try {
-                   const userHubData = JSON.parse(e.target.result);
-                   setData(userHubData);
-                   setActiveScreen('overview');
-               } catch (error) {
-                   dispatchMessage('[ERRO]: Erro na leitura do arquivo JSON', false);
-               }
-           };
+  const [accessCode, setAccessCode] = useState<string>("");
 
-           reader.onerror = (e: any) => {
-               console.error('Erro ao ler o arquivo:', e.target.error);
-           };
+  const [acError, setACError] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
-           reader.readAsText(file);
-        } else {
-           dispatchMessage('[ERRO]: Apenas arquivos JSON são permitidos', false);
-        }
-    };
+  async function handleLogin(e: React.MouseEvent<HTMLButtonElement>) {
+    if (!loading) {
+      setLoading(true);
 
-    const backPage = () => 
-        setActiveScreen('initial');
+      if (e.detail > 1) {
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+        }, 60 * 1000);
+        return;
+      }
 
-    return (
-        <Container className="flex fd">
-            <InputArea className="flex fd">
-                <Input
-                    type="file"
-                    onChange={handleFileChange}
-                    key="key"
-                    id="fileInput"
-                    className="hidden-input"
-                />
+      const [keyHub, handle] = accessCode.split("|");
+      const response = await getUserProfile(handle, accessCode);
 
-                <ImportContent className="flex">
-                <SvgModel 
-                    name="import"
-                    width="30%"
-                    height="100%"
-                />
-                <Label
-                    className="flex"
-                    htmlFor="fileInput"
-                >
-                    Importar
-                </Label>
-                </ImportContent>
-            </InputArea>
-                <BackButton onClick={backPage}> voltar </BackButton>
-        </Container>
-    );
+      if (accessCode.length < 100) {
+        setACError(false);
+        dispatchMessage("[ERRO]: Campo inválido !!", false);
+        return;
+      }
+
+      if (response) {
+        setData(response);
+        setActiveScreen("start");
+      } else {
+        setACError(false);
+        dispatchMessage("[ERRO]: Hub inválido !!", false);
+      }
+      setLoading(false);
+    }
+  }
+
+  const normalizeAccessCode = () => {
+    setACError(true);
+  };
+
+  const backPage = () => setActiveScreen("initial");
+
+  return (
+    <Container className="flex fd">
+      <InputArea className="flex fd">
+        <ImportContent className="flex fd">
+          <Field
+            type="title"
+            text="Chave do seu Hub:  "
+            center={`
+                              height: 10%;
+                              justify-content: flex-start;
+                       
+                          `}
+            styler={`
+                              color: ${acError ? "#3C5774" : "red"};
+                              transition: 0.5s;
+                              font-size: 1.6rem;
+                              font-family: "Inter";
+                              font-weight: bold;
+          
+                              @media only screen and (min-width: 2560px) {
+                                  font-size: 3rem;
+                              }
+                          `}
+          />
+          <ButtonArea className="flex">
+            <Field
+              type="input"
+              center={`   
+                        width: 100%;
+                        height: 100%;
+                  `}
+              styler={`
+                        width: 100%;
+                        height: 50%;
+
+                        border-radius: 5px;
+
+                        color: ${acError ? "#240C42" : "red"};
+                        font-family: "Roboto";
+                        font-weight: 300;
+                        font-size: 1.2rem;
+                        font-style: italic;
+                        transition: 0.5s ease;           
+
+                        padding-left: 3%;
+                        outline:none;
+                    
+                        @media only screen and (min-width: 2560px) {
+                            font-size: 2rem;
+                        }
+
+                        cursor: pointer;
+                    `}
+              maxLength={300}
+              inputType="text"
+              inputValue={accessCode}
+              setInputValue={setAccessCode}
+              placeholder="EX: satsfi_78dsa8d7as5x..."
+              isSecret
+              onClick={normalizeAccessCode}
+            />
+            <ConfirmButton onClick={handleLogin} disabled={loading}>
+              {!loading ? "ENTRAR" : "CARREGANDO"}
+            </ConfirmButton>
+          </ButtonArea>
+        </ImportContent>
+      </InputArea>
+
+      <BackButton onClick={backPage}> voltar </BackButton>
+    </Container>
+  );
 }

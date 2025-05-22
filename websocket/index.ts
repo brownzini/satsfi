@@ -1,9 +1,9 @@
-import { AllDonationsProps, DonateProps, WebsocketSurveyProps } from "@/utils/types";
+import { WebsocketSurveyProps } from "@/utils/types";
 import { DataProps } from "../contexts/useData";
 import { nEncode } from "../utils/encrypt/encrypt";
 import { io } from "socket.io-client";
-import { getToday } from "@/utils/Date";
-import { feeConvert } from "@/utils/inputFormat";
+import { getToday } from "../utils/Date";
+import { feeConvert } from "../utils/inputFormat";
 
 export default function WebSocketService(
     handle: string,
@@ -26,7 +26,6 @@ export default function WebSocketService(
 
     socket.on(channelID + '_remove_background', (msg) => {
         const data = JSON.parse(msg);
-        console.log(feeConvert("backgroundDonation", data.amount))
         addDonate({
             date: getToday(),
             type: "background",
@@ -62,7 +61,6 @@ export default function WebSocketService(
         }, false);
     });
 
-    //Canal para receber as votações das enquetes
     socket.on(channelID + '_donated_to_survey', (msg) => {
         const data = JSON.parse(msg);
 
@@ -80,7 +78,6 @@ export default function WebSocketService(
         }]);
     });
 
-    //Canal para receber as enquetes criadas
     socket.on(channelID + '_created_survey', (msg) => {
 
         function getNextDay() {
@@ -129,11 +126,10 @@ export default function WebSocketService(
                 minute: filterMinute,
                 second: now.getSeconds(),
             },
-            amount: data.amount,
+            amount: "0",
         });
     });
 
-    //Canal para receber doações normais de texto ou audio
     socket.on(channelID + '_normal_donation', (msg) => {
         const data = JSON.parse(msg);
 
@@ -157,16 +153,11 @@ export default function WebSocketService(
         }, true);
     });
 
-    // Event listener para mensagens recebidas do servidor
     socket.on(encodedHandle + '_72206d6f6e7468732c20746865792064', (msg) => {
         if (msg === "getStreamerKeyHub") {
             socket.emit(encodedHandle + '_get_keyhub', keyHub);
         }
     });
-
-    function updateConfig() {
-        socket.emit(keyHub + '_config', JSON.stringify(config));
-    }
 
     return socket;
 }

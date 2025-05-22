@@ -35,7 +35,6 @@ export const SvgIconInImportArea = styled.div`
     border: 2px solid #FF8585;
     border-radius: 5px;
 
-    padding-right: 1%;
     transition: 0.4s;
 
     @media only screen and (min-width: 1600px) {
@@ -91,7 +90,7 @@ export const ImportWrapper = styled.div`
     }
 
     @media only screen and (min-height: 699px) {
-        max-width: 257px;
+        max-width: 120px;
         font-size: 1.6rem;
     }
     

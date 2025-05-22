@@ -87,7 +87,7 @@ const listInitial: DataContextValue = {
         blackList: {
             wordsBlocked: '',
         },
-        chromaKey: { allow: true },
+        chromaKey: { allow: true, obsPassword:"", },
         donations: [],
         qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
         isActiveHub: false,
@@ -146,7 +146,7 @@ export function DataProvider({ children }: Props) {
         blackList: {
             wordsBlocked: '',
         },
-        chromaKey: { allow: true },
+        chromaKey: { allow: true, obsPassword:"", },
         donations: [],
         qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
         isActiveHub: false,
@@ -242,7 +242,7 @@ export function DataProvider({ children }: Props) {
             blackList: {
                 wordsBlocked: '',
             },
-            chromaKey: { allow: true },
+            chromaKey: { allow: true, obsPassword:"", },
             donations: [],
             qrCode: { bgColor: '#ff8800', fontColor: '#ffffff' },
             isActiveHub: false,

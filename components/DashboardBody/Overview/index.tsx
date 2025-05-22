@@ -278,6 +278,7 @@ export default function Overview() {
 
         }
         if (donates.length > 0) organizingData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [donates]);
 
     return (
@@ -289,11 +290,7 @@ export default function Overview() {
                             className="flex"
                             onClick={handleRemove}
                         >
-                            <SvgModel
-                                name="delete"
-                                width="50%"
-                                height="50%"
-                            />
+
                             <p> Limpar </p>
                         </SvgIconInImportArea>
                     </CleanAllContainer>

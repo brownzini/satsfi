@@ -33,13 +33,6 @@ import { useHeader } from "@/contexts/useHeader";
 import { ScreenProp } from "@/utils/types";
 import { useData } from "@/contexts/useData";
 
-//DB
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from "firebase/firestore";
-import { firebaseConfig } from "@/db/firebase";
-import { addInGame } from "@/db/calls/ingame";
-import axios from "axios";
-
 export default function DashboardBody() {
 
     const { data } = useData();

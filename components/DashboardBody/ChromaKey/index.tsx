@@ -3,68 +3,88 @@ import { useState } from "react";
 import Link from "next/link";
 
 import {
-    ChromaContent,
-    Container,
-    DownloadContent,
-    GithubArea,
-    GithubSvgArea,
-    GithubSvgContent,
-    InitializerContainer,
-    NodeArea,
-    NodeObsContainer,
-    NodeSvgArea,
-    NodeSvgContent,
-    TutorialContainer,
+  ChromaContent,
+  Container,
+  DownloadContent,
+  NodeArea,
+  NodeObsContainer,
+  TutorialContainer,
 } from "./styles";
 
 //Components
 import Field from "../Field";
 
-//Utils
-import SvgModel from "@/utils/svg";
-
 //Contexts
 import { useMessage } from "@/contexts/useMessage";
 import { useData } from "@/contexts/useData";
+import { updateConfig } from "@/app/firebase/services/Users";
 
 export default function ChromaKey() {
+  const { data, updateData } = useData();
 
-    const { data, updateData } = useData();
+  const [allow, setAllow] = useState<boolean>(data.chromaKey.allow);
+  const [port, setPort] = useState<string>("4444");
+  const [password, setPassword] = useState<string>(
+    data.chromaKey.obsPassword ? data.chromaKey.obsPassword : ""
+  );
 
-    const [allow, setAllow] = useState<boolean>(data.chromaKey.allow);
-    const [port, setPort] = useState<string>('');
-    const [password, setPassword] = useState<string>(
-       (data.chromaKey.obsPassword)  ? data.chromaKey.obsPassword : ''
-    );
+  const [controlClick, setControlClick] = useState<boolean>(false);
 
-    const { dispatchMessage } = useMessage();
+  const { dispatchMessage } = useMessage();
 
-    const hasChange = () => {
-        if (password === data.chromaKey.obsPassword) {
-            return false;
-        } else {
-            return true;
-        }
+  const hasChange = () => {
+    if (password === data.chromaKey.obsPassword) {
+      return false;
+    } else {
+      return true;
     }
+  };
 
-    const handleSave = () => {
-        const validationChange = hasChange();
-        if (validationChange) {
-            updateData('chromaKey', { 
-                allow: allow, 
-                obsPassword: password
-            });
-            dispatchMessage('[SUCESSO]: Seus Dados foram registrados', true);
-        }
+  const handleSave = async () => {
+    const validationChange = hasChange();
+    if (validationChange && !controlClick) {
+      setControlClick(true);
+      updateData("chromaKey", {
+        allow: allow,
+        obsPassword: password,
+      });
+      await updateConfig(
+        data.generateKey.idString,
+        JSON.stringify({
+          config: data.config,
+          survey: data.survey,
+          chromaKey: {
+            allow: allow,
+            obsPassword: password,
+          },
+          call: data.call,
+          generateKey: data.generateKey,
+          test: {
+            allow: true,
+          },
+          trackDonate: [],
+          blackList: {
+            wordsBlocked: "",
+          },
+          donations: [],
+          qrCode: data.qrCode,
+          isActiveHub: data.isActiveHub,
+        })
+      );
+      setTimeout(() => {
+        setControlClick(false);
+      }, 30000);
+      dispatchMessage("[SUCESSO]: Seus Dados foram registrados", true);
     }
+  };
 
-    return (
-        <Container className="flex">
-            <ChromaContent className="flex fd">
-                <Field
-                    type="title"
-                    text="Permitir Chroma Key:"
-                    center={`
+  return (
+    <Container className="flex">
+      <ChromaContent className="flex fd">
+        <Field
+          type="title"
+          text="Permitir Chroma Key:"
+          center={`
                                 height: 10%;
                                 justify-content: flex-start;
                                 padding-left: 12%;
@@ -73,7 +93,7 @@ export default function ChromaKey() {
                                     height: 5%;
                                 }
                             `}
-                    styler={`
+          styler={`
                                 color: #3C5774;
                                 font-size: 1.2rem;
                                 font-family: "Inter";
@@ -83,10 +103,10 @@ export default function ChromaKey() {
                                     font-size: 2rem;
                                 }
                             `}
-                />
-                <Field
-                    type="toggle"
-                    center={`
+        />
+        <Field
+          type="toggle"
+          center={`
                             height: 10%;
                             justify-content: flex-start;
                             padding-left: 12%;
@@ -95,16 +115,16 @@ export default function ChromaKey() {
                                 margin-bottom: 3%;
                             }
                         `}
-                    styler={`
+          styler={`
                     
                         `}
-                    checked={allow}
-                    setChecked={setAllow}
-                />
-                <br />
-                <Field
-                    type="title"
-                    center={`
+          checked={allow}
+          setChecked={setAllow}
+        />
+        <br />
+        <Field
+          type="title"
+          center={`
                                 height: 10%;
                                 justify-content: flex-start;
                                 padding-left: 12%;
@@ -129,8 +149,8 @@ export default function ChromaKey() {
                                     align-items: flex-end;
                                 }
                             `}
-                    text="OBS Porta:"
-                    styler={`
+          text="OBS Porta:"
+          styler={`
                         color: #3C5774;
                         font-size: 1.4rem;
                         font-family: "Inter";
@@ -141,10 +161,10 @@ export default function ChromaKey() {
                             border-radius: 10px;
                         }
                     `}
-                />
-                <Field
-                    type="input"
-                    center={`
+        />
+        <Field
+          type="input"
+          center={`
                             width: 100%;
                             height: 10%;
                             padding-left: 12%;
@@ -154,14 +174,14 @@ export default function ChromaKey() {
                                 margin-bottom: 3%;
                             }
                     `}
-                    styler={`
+          styler={`
                             width: 30%;
                             height: 100%;
 
                             border-radius: 5px;
 
                             transition: 0.3s;
-                            color: ${true ? '#6a5212' : 'red'};
+                            color: ${true ? "#6a5212" : "red"};
                             font-family: "Roboto";
                             font-weight: 400;
                             font-size: 1.2rem;
@@ -177,16 +197,16 @@ export default function ChromaKey() {
 
                             cursor:pointer;
                     `}
-                    maxLength={5}
-                    inputType="nit"
-                    inputValue={"4444"}
-                    setInputValue={setPort}
-                    placeholder=" Ex: 4455"
-                    disabled={true}
-                />
-                <Field
-                    type="title"
-                    center={`
+          maxLength={5}
+          inputType="nit"
+          inputValue={port}
+          setInputValue={setPort}
+          placeholder=" Ex: 4455"
+          disabled={true}
+        />
+        <Field
+          type="title"
+          center={`
                                 height: 10%;
                                 justify-content: flex-start;
                                 padding-left: 12%;
@@ -210,8 +230,8 @@ export default function ChromaKey() {
                                     align-items: flex-end;
                                 }
                             `}
-                    text="OBS Password:"
-                    styler={`
+          text="OBS Password:"
+          styler={`
                         color: #3C5774;
                         font-size: 1.4rem;
                         font-family: "Inter";
@@ -221,22 +241,22 @@ export default function ChromaKey() {
                             font-size: 1.6rem;
                         }
                     `}
-                />
-                <Field
-                    type="input"
-                    center={`
+        />
+        <Field
+          type="input"
+          center={`
                             width: 100%;
                             height: 10%;
                             padding-left: 12%;
                     `}
-                    styler={`
+          styler={`
                             width: 70%;
                             height: 100%;
 
                             border-radius: 5px;
 
                             transition: 0.3s;
-                            color: ${true ? '#6a5212' : 'red'};
+                            color: ${true ? "#6a5212" : "red"};
                             font-family: "Roboto";
                             font-weight: 400;
                             font-size: 1.2rem;
@@ -252,16 +272,16 @@ export default function ChromaKey() {
 
                             cursor:pointer;
                     `}
-                    maxLength={50}
-                    inputType="text"
-                    inputValue={password}
-                    setInputValue={setPassword}
-                    placeholder=" Senha ... "
-                />
-                <br />
-                <Field
-                    type="button"
-                    center={`
+          maxLength={50}
+          inputType="text"
+          inputValue={password}
+          setInputValue={setPassword}
+          placeholder=" Senha ... "
+        />
+        <br />
+        <Field
+          type="button"
+          center={`
                             width: 100%;
                             height: 20%;
                             justify-content: flex-start;
@@ -269,8 +289,8 @@ export default function ChromaKey() {
                             padding-left: 12%;
                             user-select: none;
                         `}
-                    text="SALVAR"
-                    styler={`
+          text="SALVAR"
+          styler={`
                             width: 70%;
                             height: 70%;
 
@@ -303,18 +323,15 @@ export default function ChromaKey() {
                             }
 
                         `}
-                    onClick={handleSave}
-                />
-            </ChromaContent>
-            <DownloadContent className="flex fd">
-                <TutorialContainer>
-                    <Link
-                        id="link-initial-button-style"
-                        href="/"
-                    >
-                        <Field
-                            type="button"
-                            center={`
+          onClick={handleSave}
+        />
+      </ChromaContent>
+      <DownloadContent className="flex fd">
+        <TutorialContainer>
+          <Link id="link-initial-button-style" href="/">
+            <Field
+              type="button"
+              center={`
                             width: 100%;
                             height: 100%;
                             justify-content: flex-start;
@@ -337,8 +354,8 @@ export default function ChromaKey() {
                                 border-radius: 10px;
                             }
                         `}
-                            text="TUTORIAL"
-                            styler={`
+              text="TUTORIAL"
+              styler={`
                             width: 100%;
                             height: 50%;
 
@@ -371,11 +388,11 @@ export default function ChromaKey() {
                             }
 
                         `}
-                        />
-                    </Link>
-                </TutorialContainer>
-                <NodeObsContainer className="flex">
-                    {/* <Link
+            />
+          </Link>
+        </TutorialContainer>
+        <NodeObsContainer className="flex">
+          {/* <Link
                         id="link-initial-button-style"
                         href="/"
                     >
@@ -431,13 +448,10 @@ export default function ChromaKey() {
                             </GithubSvgArea>
                         </GithubArea>
                     </Link> */}
-                    <Link
-                        id="link-initial-button-style"
-                        href="/"
-                    >
-                        <NodeArea className="flex fd">
-                            <br />
-                            {/* <Field
+          <Link id="link-initial-button-style" href="/">
+            <NodeArea className="flex fd">
+              <br />
+              {/* <Field
                                 type="title"
                                 center={`
                                 height: 5%;
@@ -485,12 +499,11 @@ export default function ChromaKey() {
                                     />
                                 </NodeSvgContent>
                             </NodeSvgArea> */}
-
-                        </NodeArea>
-                    </Link>
-                </NodeObsContainer>
-                <br />
-                {/* <InitializerContainer className="flex fd">
+            </NodeArea>
+          </Link>
+        </NodeObsContainer>
+        <br />
+        {/* <InitializerContainer className="flex fd">
                     <Field
                         type="title"
                         center={`
@@ -581,7 +594,7 @@ export default function ChromaKey() {
                         />
                     </Link>
                 </InitializerContainer> */}
-            </DownloadContent>
-        </Container>
-    );
+      </DownloadContent>
+    </Container>
+  );
 }

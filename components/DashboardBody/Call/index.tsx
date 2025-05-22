@@ -121,7 +121,7 @@ export default function Call() {
                 <br />
                 <Field
                     type="title"
-                    text="Valor minimo:"
+                    text="Valor minimo (FIXO):"
                     center={`
                         height: 10%;
                         justify-content: flex-start;
@@ -188,7 +188,7 @@ export default function Call() {
                         
                     `}
                     inputType="price"
-                    disabled={(!allow)}
+                    disabled={true}
                     onClick={hiddeError}
                     inputValue={minAmount}
                     setInputValue={setMinAmount}

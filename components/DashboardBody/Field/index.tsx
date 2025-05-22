@@ -35,6 +35,8 @@ interface Props {
     onClick?: () => void;
 
     disabled?:boolean;
+
+    isSecret?:boolean;
 }
 
 export default function Field({
@@ -56,7 +58,8 @@ export default function Field({
     handleClick,
     onKeyDown,
     onClick,
-    disabled
+    disabled,
+    isSecret
 }: Props) {
     const handleChange = () => {
         if ((checked !== undefined) && (setChecked)) {
@@ -120,7 +123,7 @@ export default function Field({
             case 'input':
                 return <Input
                           name="input"
-                          type="text"
+                          type={(isSecret) ? "password" :  "text"}
                           value={(inputValue) ? inputValue : ''}
                           styler={styler}
                           placeholder={(placeholder) ? placeholder : ''}
@@ -144,7 +147,7 @@ export default function Field({
             case 'button':
                 return <Button
                     styler={styler}
-                    onClick={onClick}
+                    onClick={(event) => { (onClick && event.detail === 1) ? onClick() : voidFunction() }}
                 >
                     {text}
                 </Button>
@@ -170,13 +173,7 @@ export default function Field({
                           <option value="spider">Spider</option>
                           <option value="goldfish">Goldfish</option>
                         </Select>
-            default:
-                return <Title
-                          styler={styler}
-                          onClick={handleClick}
-                        >
-                          {text}
-                        </Title>
+            default: return <Title styler={styler} onClick={handleClick}> {text} </Title>
         }
     }
 

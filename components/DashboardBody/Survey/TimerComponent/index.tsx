@@ -5,6 +5,7 @@ import { Container, Timer } from "./styles";
 import { useData } from "@/contexts/useData";
 
 interface TimerProps {
+    hour: number;
     minute: number;
     second: number;
 }
@@ -18,7 +19,7 @@ export default function TimerComponent({
 }:Props) {
     const { data } = useData();
     const [remainingTime, setRemainingTime] = useState<number>(0);
-    const [deadline, setDeadline] = useState<TimerProps>({minute:100, second:0});
+    const [deadline, setDeadline] = useState<TimerProps>({ hour: 0, minute:100, second:0});
     
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
@@ -28,10 +29,18 @@ export default function TimerComponent({
 
     const checkTime = () => {
         const now = new Date();
+        const day = now.getUTCDate();
+        const month = now.getUTCMonth()+1;
+        const year = now.getUTCFullYear();
+
+        const hour = now.getHours();
         const minute = now.getMinutes();
         const second = now.getSeconds();
+
+        const actualDate = new Date(month+"-"+day+"-"+year+' '+hour+':'+minute+":"+second);
+        const targetDate = new Date(month+"-"+day+"-"+year+' '+deadline.hour+':'+deadline.minute+":"+deadline.second);
         
-        if (minute >= deadline.minute && second >= deadline.second) {
+        if (actualDate >= targetDate) {
             endTime();
             setRemainingTime(0);
             clearInterval(validationTimer);
@@ -42,6 +51,7 @@ export default function TimerComponent({
 
     useEffect(() => {
         const now = new Date();   
+        const hour = now.getHours();
         const minute = now.getMinutes();
         const second = now.getSeconds();
         
@@ -49,19 +59,13 @@ export default function TimerComponent({
         const futureMinute = data.survey.endTime.minute;
         const futureSecond = data.survey.endTime.second;
         
-        const minuteFilter = (futureMinute-minute);
-        
-        if(minuteFilter < 0) {
-            endTime();
-        } 
-
         const allSeconds = (minute*60)+second;
         const generalSeconds = (futureMinute*60)+futureSecond;
 
         const result = generalSeconds - allSeconds;
         
         setRemainingTime(result);
-        setDeadline({ minute: futureMinute, second: second });
+        setDeadline({ hour: (data.survey.endTime.hour) ? data.survey.endTime.hour : hour, minute: futureMinute, second: second });
     }, []);
 
     useEffect(() => {

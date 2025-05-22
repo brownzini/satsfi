@@ -59,6 +59,6 @@ export const feeConvert = (type: string, amount:string) => {
         case 'call': return Math.floor(parseInt(amount) * 0.95).toString();
         case 'surveyDonation': return Math.floor(parseInt(amount) * 0.25).toString(); 
         case 'backgroundDonation': return Math.floor(parseInt(amount) * 0.95).toString();
-        default: return Math.floor(parseInt(amount) * 0.975).toString();
+        default: return Math.floor(parseInt(amount) * 0.9).toString();
     }
 }

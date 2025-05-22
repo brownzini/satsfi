@@ -21,7 +21,7 @@ const listInitial: HeaderContextValue = {
         overview: { status: false, name: 'Visão Geral' },
         config: { status: false, name: 'Configurar Donate' },
         survey: { status: false, name: 'Enquete' },
-        test: { status: false, name: 'Testar' },
+        test: { status: false, name: 'Widget' },
         trackDonate: { status: false, name: 'Acompanhar Doações' },
         qrCode: { status: false, name: 'QR Code' },
         call: { status: false, name: 'Chamadas Ao Vivo' },
@@ -44,13 +44,13 @@ export function HeaderProvider({ children }: Props) {
         overview: { status: false, name: 'Visão Geral' },
         config: { status: false, name: 'Configurar Donate' },
         survey: { status: false, name: 'Enquete' },
-        test: { status: false, name: 'Testar' },
+        test: { status: false, name: 'Widget' },
         trackDonate: { status: false, name: 'Acompanhar Doações' },
         qrCode: { status: false, name: 'QR Code' },
         call: { status: false, name: 'Chamadas Ao Vivo' },
-        generateKey: { status: false, name: 'Minha Chave' },
-        blackList: { status: false, name: 'Bloquear Palavra' },
         chromaKey: { status: false, name: 'Chroma Key' },
+        blackList: { status: false, name: 'Bloquear Palavra' },
+        generateKey: { status: false, name: 'Minha Chave' },
     });
 
     const setActiveScreen = (activeScreen: keyof ScreenProp) => {

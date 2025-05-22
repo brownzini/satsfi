@@ -117,8 +117,41 @@ export const MessageError = styled.h2`
 `;
 
 export const ImportContent = styled.div`
-    width: 40%;
+    width: 100%;
     height: 100%;
+`;
+
+export const ConfirmButton = styled.button`
+    width: 20%;
+    height: 50%;
+    color: white;
+    
+    border-radius: 4px;
+
+    font-size: 1.4rem;
+    font-weight: 480;
+    font-family: 'Roboto';
+
+    outline: none;
+    border: none;
+
+    background-color: #8F45CA;
+
+    transition: 0.5s ease;
+
+    &:hover {
+        color: #8F45CA;
+        background-color: white;
+        border: 1px solid #8F45CA;
+    }
+
+    cursor: pointer;
+`;
+
+export const ButtonArea = styled.div`
+    width: 100%;
+    height: 100%;
+    gap: 1%;
 `;
 
 export const BackButton = styled.h2`

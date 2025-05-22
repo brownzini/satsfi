@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
-    Button,
-    ButtonArea,
-    Content,
-    FileArea,
-    GenerationArea,
-    LinkToDownload,
-    SvgArea,
-    SvgAreaWrapper
+  Button,
+  ButtonArea,
+  Content,
+  FileArea,
+  GenerationArea,
+  SvgArea,
+  SvgAreaWrapper,
 } from "./styles";
 
 //Components
 import Field from "../Field";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 //Utils
 import SvgModel from "@/utils/svg";
@@ -23,157 +22,241 @@ import { isOnlySpaces } from "@/utils/inputFormat";
 import { useData } from "@/contexts/useData";
 import { useMessage } from "@/contexts/useMessage";
 import { useHeader } from "@/contexts/useHeader";
+import { createNewHub } from "@/app/firebase/services/Users";
 
 export default function GenerateKey() {
+  const { data, updateData, destroyHub } = useData();
 
-    const { data, updateData, destroyHub } = useData();
+  const [handle, setHandle] = useState<string>(data.generateKey.idString);
+  const [keyHub, setKeyHub] = useState<string>(data.generateKey.keyHub);
+  const [lightningAddress, setLightningAddress] = useState<string>(
+    data.generateKey.addressLightning
+  );
 
-    const [handle, setHandle] = useState<string>(data.generateKey.idString);
-    const [keyHub, setKeyHub] = useState<string>(data.generateKey.keyHub);
-    const [lightningAddress, setLightningAddress] = useState<string>(data.generateKey.addressLightning);
+  const [handleError, setHandleError] = useState<boolean>(false);
+  const [keyHubError, setKeyHubError] = useState<boolean>(false);
+  const [addressError, setAddressError] = useState<boolean>(false);
 
-    const [handleError, setHandleError] = useState<boolean>(false);
-    const [keyHubError, setKeyHubError] = useState<boolean>(false);
-    const [addressError, setAddressError] = useState<boolean>(false);
+  const { dispatchMessage } = useMessage();
+  const { setActiveScreen } = useHeader();
 
-    const { dispatchMessage } = useMessage();
-    const { setActiveScreen } = useHeader();
+  const userHaveKeyHub = data.generateKey.idString !== "";
 
-    const userHaveKeyHub = (data.generateKey.idString !== '');
+  function generateCode() {
+    if (handle.length > 0) {
+      if (!userHaveKeyHub) {
+        if (keyHub === "Gere a chave primeiro") normalizeKeyHub();
+        const cod1 = uuidv4().replace(/[_-]/g, "");
+        const cod2 = uuidv4().replace(/[_-]/g, "");
+        const cod3 = uuidv4().replace(/[_-]/g, "");
+        const hasHandle = (handle.length > 0) ? handle : "";
+        setKeyHub("satsfi_" + cod1 + cod2 + cod3 + "|"+hasHandle);
+      }
+    } else {
+      setKeyHubError(true);
+      setTimeout(() => {
+         setKeyHubError(false);
+      },2000)
+      dispatchMessage(
+        "[ERRO]: Preencha o handle antes de gerar a chave !!",
+        false
+      );
+    }
+  }
 
-    function generateCode() {
-        if (!userHaveKeyHub) {
-            if (keyHub === 'Gere a chave primeiro') normalizeKeyHub();
-            const cod1 = uuidv4().replace(/[_-]/g, "");
-            const cod2 = uuidv4().replace(/[_-]/g, "");
-            const cod3 = uuidv4().replace(/[_-]/g, "");
-            setKeyHub('satsfi_' + cod1 + cod2 + cod3);
-        }
+  function copyTextToClipboard() {
+    if (!navigator.clipboard) {
+      return;
+    }
+    navigator.clipboard.writeText(keyHub).then(
+      function () {
+        dispatchMessage("Link copiado com sucesso!", true, 2000);
+      },
+      function (err) {
+        dispatchMessage("Erro ao copiar o texto", true, 2000);
+      }
+    );
+  }
+
+  const voidFunction = () => {
+    normalizeKeyHub();
+  };
+
+  const handleChangeGenerate = (param: string) => {};
+
+  const normalizeHandle = () => {
+    if (handle === "Nome Inválido") {
+      setHandle("");
+    }
+    setHandleError(false);
+  };
+
+  const normalizeLNAddress = () => {
+    if (lightningAddress === "Preencha o campo") {
+      setLightningAddress("");
+    }
+    setAddressError(false);
+  };
+
+  const normalizeKeyHub = () => {
+    if (keyHub === "Gere a chave primeiro") {
+      setKeyHub("");
+    }
+    setKeyHubError(false);
+  };
+
+  const resetAllErrorFields = () => {
+    setHandleError(false);
+    setKeyHubError(false);
+    setAddressError(false);
+  };
+
+  const verifyIfHandleNotExists = () => {
+    return true;
+  };
+
+  const handleSave = async () => {
+    const handleValidation = isOnlySpaces(handle);
+    const handleNameValidation = verifyIfHandleNotExists();
+
+    const keyHubValidation = isOnlySpaces(keyHub);
+    const lightningAddressValidation = isOnlySpaces(lightningAddress);
+
+    if (handleValidation && handleNameValidation) {
+      setHandle("Nome Inválido");
+      setHandleError(true);
+    }
+    if (keyHubValidation) {
+      setKeyHub("Gere a chave primeiro");
+      setKeyHubError(true);
+    }
+    if (lightningAddressValidation) {
+      setLightningAddress("Preencha o campo");
+      setAddressError(true);
     }
 
-    function copyTextToClipboard() {
-        if (!navigator.clipboard) {
-            return;
+    if (
+      handle !== "Nome Inválido" &&
+      keyHub !== "Gere a chave primeiro" &&
+      lightningAddress !== "Preencha o campo" &&
+      !handleValidation &&
+      !keyHubValidation &&
+      !lightningAddressValidation
+    ) {
+      const defaultData = {
+        config: {
+          allow: true,
+          minDonate: "500",
+          alertVolume: 100,
+          durationAlert: 15,
+        },
+        survey: {
+          allow: true,
+          minCreateSurvey: "2,500",
+          durationTime: 1,
+          surveyTitle: "Enquete",
+          options: [],
+          minToVote: "",
+          endTime: {
+            day: 0,
+            hour: 0,
+            minute: 0,
+            second: 0,
+          },
+          amount: "0",
+        },
+        test: {
+          allow: true,
+        },
+        trackDonate: [],
+        call: {
+          allow: true,
+          minAmount: "12,000",
+        },
+        generateKey: {
+          idString: handle,
+          addressLightning: lightningAddress,
+          keyHub: keyHub,
+        },
+        blackList: {
+          wordsBlocked: "",
+        },
+        chromaKey: {
+          allow: true,
+          obsPassword: "",
+        },
+        donations: [],
+        qrCode: {
+          bgColor: "#ff8800",
+          fontColor: "#ffffff",
+        },
+        isActiveHub: false,
+      };
+      const result = await createNewHub(handle, JSON.stringify(defaultData));
+      if (result) {
+        if (result === "exist") {
+          setHandleError(true);
+          dispatchMessage(
+            "[ERRO]: Já existe um hub associado a este nome !!",
+            false
+          );
+        } else {
+          updateData("generateKey", {
+            idString: handle,
+            addressLightning: lightningAddress,
+            keyHub: keyHub,
+          });
+          resetAllErrorFields();
+          dispatchMessage("[SUCESSO]: Seu hub foi criado com sucesso !!", true);
+          setActiveScreen("generateKey");
+          localStorage.setItem("sid", keyHub);
         }
-        navigator.clipboard.writeText(keyHub).then(function () {
-            dispatchMessage('Link copiado com sucesso!', true, 2000);
-        }, function (err) {
-            dispatchMessage('Erro ao copiar o texto', true, 2000);
-        });
+      } else {
+        dispatchMessage(
+          "[ERRO]: Não foi possivel criar seu hub, tente mais tarde !!",
+          false
+        );
+      }
     }
-
-    const voidFunction = () => {
-        normalizeKeyHub();
+  };
+  
+  function toggleSetHandle(text:string) {
+    setHandle(text);
+    if(keyHub.length > 0) {
+      const [ukeyHub, uhandle] = keyHub.split("|");
+      setKeyHub(ukeyHub+"|"+text);
     }
+  }
 
-    const handleChangeGenerate = (param: string) => { }
+  const hasChanged =
+    handle === data.generateKey.idString &&
+    lightningAddress === data.generateKey.addressLightning &&
+    keyHub === data.generateKey.keyHub;
 
-    const normalizeHandle = () => {
-        if (handle === 'Nome Inválido') {
-            setHandle('');
-        }
-        setHandleError(false);
+  const handleClick = () => {
+    if (!hasChanged && !userHaveKeyHub) {
+      handleSave();
+    } else if (hasChanged && userHaveKeyHub) {
+      destroyHub();
+      setHandle("");
+      setKeyHub("");
+      setLightningAddress("");
+      localStorage.removeItem("sid");
     }
+  };
 
-    const normalizeLNAddress = () => {
-        if (lightningAddress === 'Preencha o campo') {
-            setLightningAddress('');
-        }
-        setAddressError(false);
-    }
-
-    const normalizeKeyHub = () => {
-        if (keyHub === 'Gere a chave primeiro') {
-            setKeyHub('');
-        }
-        setKeyHubError(false);
-    }
-
-    const resetAllErrorFields = () => {
-        setHandleError(false);
-        setKeyHubError(false);
-        setAddressError(false);
-    }
-
-    const verifyIfHandleNotExists = () => {
-        return true;
-    }
-
-    const downloadJson = () => {
-        const jsonString = JSON.stringify(data, null, 2);
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'satsFiKeyHub.json';
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    };
-    
-    const handleSave = () => {
-        const handleValidation = isOnlySpaces(handle);
-        const handleNameValidation = verifyIfHandleNotExists();
-
-        const keyHubValidation = isOnlySpaces(keyHub);
-        const lightningAddressValidation = isOnlySpaces(lightningAddress);
-
-        if (handleValidation && handleNameValidation) {
-            setHandle('Nome Inválido');
-            setHandleError(true);
-        }
-        if (keyHubValidation) {
-            setKeyHub('Gere a chave primeiro');
-            setKeyHubError(true);
-        }
-        if (lightningAddressValidation) {
-            setLightningAddress('Preencha o campo');
-            setAddressError(true);
-        }
-
-        if (handle !== 'Nome Inválido' && keyHub !== 'Gere a chave primeiro' && lightningAddress !== 'Preencha o campo' &&
-           (!handleValidation && !keyHubValidation && !lightningAddressValidation)) {
-            updateData('generateKey', {
-                idString: handle,
-                addressLightning: lightningAddress,
-                keyHub: keyHub,
-            });
-            resetAllErrorFields();
-            dispatchMessage('[SUCESSO]: Seu hub foi criado com sucesso !!', true);
-            setActiveScreen('generateKey');
-        }
-    }
-
-    const hasChanged = (handle === data.generateKey.idString &&
-                       (lightningAddress === data.generateKey.addressLightning) &&
-                       (keyHub === data.generateKey.keyHub));
-
-    const handleClick = () => {
-        if (!hasChanged && !userHaveKeyHub) {
-             handleSave();
-        } else if(hasChanged && userHaveKeyHub) {
-             destroyHub();
-             setHandle('');
-             setKeyHub('');
-             setLightningAddress('');
-        }
-    }
-
-    return (
-        <Content>
-            <Field
-                type="title"
-                text={"satsfi.com/" + ((handle === 'Nome Inválido') ? '' : handle)}
-                center={`
+  return (
+    <Content>
+      <Field
+        type="title"
+        text={"satsfi.com.br/" + (handle === "Nome Inválido" ? "" : handle)}
+        center={`
                             height: 16%;
                             justify-content: flex-start;
                             padding-left: 12%;
                             `}
-                styler={`
-                            color: ${(!handleError) ? '#3C5774' : 'red'};
+        styler={`
+                            color: ${!handleError ? "#3C5774" : "red"};
                             transition: 0.5s;
                             font-size: 1.6rem;
                             font-family: "Inter";
@@ -185,22 +268,22 @@ export default function GenerateKey() {
                                 font-size: 3rem;
                             }
                 `}
-            />
-            <Field
-                type="input"
-                center={`
+      />
+      <Field
+        type="input"
+        center={`
                             width: 100%;
                             height: 10%;
                             padding-left: 12%;
                 `}
-                styler={`
+        styler={`
                             width: 100%;
                             height: 100%;
                             max-width: 340px;
 
                             border-radius: 5px;
 
-                            color: ${(!handleError) ? '#240C42' : 'red'};
+                            color: ${!handleError ? "#240C42" : "red"};
                             font-family: "Roboto";
                             font-weight: 300;
                             font-size: 1.4rem;
@@ -214,25 +297,25 @@ export default function GenerateKey() {
                                 font-size: 2rem;
                             }
                 `}
-                maxLength={30}
-                inputType="textWithOutSC"
-                inputValue={handle}
-                disabled={userHaveKeyHub}
-                setInputValue={setHandle}
-                onClick={normalizeHandle}
-                placeholder="Ex: satsfi.com/BananaTV"
-            />
-            <br />
-            <Field
-                type="title"
-                text="Endereço lightning para receber: "
-                center={`
+        maxLength={30}
+        inputType="textWithOutSC"
+        inputValue={handle}
+        disabled={userHaveKeyHub}
+        setInputValue={toggleSetHandle}
+        onClick={normalizeHandle}
+        placeholder="Ex: satsfi.com.br/BananaTV"
+      />
+      <br />
+      <Field
+        type="title"
+        text="Endereço lightning para receber: "
+        center={`
                         height: 10%;
                         justify-content: flex-start;
                         padding-left: 12%;
                 `}
-                styler={`
-                        color: ${(!addressError) ? '#3C5774' : 'red'};
+        styler={`
+                        color: ${!addressError ? "#3C5774" : "red"};
                         transition: 0.5s;
                         font-size: 1.6rem;
                         font-family: "Inter";
@@ -242,22 +325,22 @@ export default function GenerateKey() {
                             font-size: 3rem;
                         }
                 `}
-            />
-            <Field
-                type="input"
-                center={`   
+      />
+      <Field
+        type="input"
+        center={`   
                     width: 100%;
                     height: 10%;
                     padding-left: 12%;
                 `}
-                styler={`
+        styler={`
                     width: 100%;
                     height: 100%;
                     max-width:520px;
 
                     border-radius: 5px;
 
-                    color: ${(!addressError) ? '#240C42' : 'red'};
+                    color: ${!addressError ? "#240C42" : "red"};
                     font-family: "Roboto";
                     font-weight: 300;
                     font-size: 1.2rem;
@@ -271,25 +354,25 @@ export default function GenerateKey() {
                     padding-left: 3%;
                     outline:none;
                 `}
-                maxLength={400}
-                inputType="text"
-                disabled={userHaveKeyHub}
-                onClick={normalizeLNAddress}
-                inputValue={lightningAddress}
-                setInputValue={setLightningAddress}
-                placeholder="Seu endereço de receber da sua carteira lightning"
-            />
-            <br />
-            <Field
-                type="title"
-                text="Chave do seu hub:  "
-                center={`
+        maxLength={400}
+        inputType="text"
+        disabled={userHaveKeyHub}
+        onClick={normalizeLNAddress}
+        inputValue={lightningAddress}
+        setInputValue={setLightningAddress}
+        placeholder="Seu endereço de receber da sua carteira lightning"
+      />
+      <br />
+      <Field
+        type="title"
+        text="Chave do seu hub:  "
+        center={`
                     height: 10%;
                     justify-content: flex-start;
                     padding-left: 12%;
                 `}
-                styler={`
-                    color: ${(!keyHubError) ? '#3C5774' : 'red'};
+        styler={`
+                    color: ${!keyHubError ? "#3C5774" : "red"};
                     transition: 0.5s;
                     font-size: 1.6rem;
                     font-family: "Inter";
@@ -299,22 +382,22 @@ export default function GenerateKey() {
                         font-size: 3rem;
                     }
                 `}
-            />
-            <GenerationArea className="flex">
-                <Field
-                    type="input"
-                    center={`   
+      />
+      <GenerationArea className="flex">
+        <Field
+          type="input"
+          center={`   
                         width: 100%;
                         height: 100%;
                         padding-left: 12%;
                     `}
-                    styler={`
+          styler={`
                         width: 100%;
                         height: 100%;
 
                         border-radius: 5px;
 
-                        color: ${(!keyHubError) ? '#240C42' : 'red'};
+                        color: ${!keyHubError ? "#240C42" : "red"};
                         font-family: "Roboto";
                         font-weight: 300;
                         font-size: 1.2rem;
@@ -332,36 +415,33 @@ export default function GenerateKey() {
 
                         cursor: pointer;
                     `}
-                    maxLength={300}
-                    inputType="text"
-                    inputValue={keyHub}
-                    disabled={userHaveKeyHub}
-                    setInputValue={handleChangeGenerate}
-                    placeholder="Nenhuma chave gerada"
-                    onClick={() => (keyHub !== '' && keyHub !== 'Gere a chave primeiro') ? copyTextToClipboard() : voidFunction()}
-                />
-                <SvgAreaWrapper>
-                    <SvgArea
-                        className="flex"
-                        onClick={generateCode}
-                    >
-                        <SvgModel
-                            name="add2"
-                            width="100%"
-                            height="100%"
-                        />
-                    </SvgArea>
-                </SvgAreaWrapper>
-            </GenerationArea>
-            <Field
-                type="title"
-                text="[ ! ] AVISO: Não compartilhe sua chave com ninguém"
-                center={`
+          maxLength={300}
+          inputType="text"
+          inputValue={keyHub}
+          disabled={userHaveKeyHub}
+          setInputValue={handleChangeGenerate}
+          placeholder="Nenhuma chave gerada"
+          onClick={() =>
+            keyHub !== "" && keyHub !== "Gere a chave primeiro"
+              ? copyTextToClipboard()
+              : voidFunction()
+          }
+        />
+        <SvgAreaWrapper>
+          <SvgArea className="flex" onClick={generateCode}>
+            <SvgModel name="add2" width="100%" height="100%" />
+          </SvgArea>
+        </SvgAreaWrapper>
+      </GenerationArea>
+      <Field
+        type="title"
+        text="[ ! ] AVISO: Não compartilhe sua chave com ninguém"
+        center={`
                     height: 10%;
                     justify-content: flex-start;
                     padding-left: 12%;
                 `}
-                styler={`
+        styler={`
                     color: #0D72AB;
                     transition: 0.5s;
                     font-size: 1rem;
@@ -372,22 +452,14 @@ export default function GenerateKey() {
                         font-size: 2rem;
                     }
                 `}
-            />
-            <br />
-            <ButtonArea>
-                <Button 
-                    havekey={userHaveKeyHub.toString()}
-                    onClick={handleClick}
-                > 
-                    {(userHaveKeyHub) ? 'DELETAR HUB' : 'CRIAR HUB'}
-                </Button>
-                <FileArea>
-                   {(userHaveKeyHub) && 
-                    <LinkToDownload onClick={downloadJson}> 
-                        Salvar Hub
-                    </LinkToDownload>}
-                </FileArea>
-            </ButtonArea>
-        </Content>
-    );
+      />
+      <br />
+      <ButtonArea>
+        <Button havekey={userHaveKeyHub.toString()} onClick={handleClick}>
+          {userHaveKeyHub ? "DELETAR HUB" : "CRIAR HUB"}
+        </Button>
+        <FileArea></FileArea>
+      </ButtonArea>
+    </Content>
+  );
 }
