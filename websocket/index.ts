@@ -27,7 +27,7 @@ export default function WebSocketService(
   const encodedHandle = nEncode(handle);
 
   const channelID = keyHub;
-  console.log(encodedHandle);
+
   socket.on(channelID + "_viewer_call", (msg) => {
     const data = JSON.parse(msg);
     addDonate(
@@ -74,19 +74,23 @@ export default function WebSocketService(
         date: getToday(),
         type: "survey",
         value: feeConvert("surveyDonation", data.amount),
-        donor_name: data.name,
-        message: data.message,
+        donor_name: "",
+        message: "",
       },
       false
     );
 
-    setsurveySoloDonation((prevItems) => [
-      ...prevItems,
-      {
-        id: data.selectedOption,
-        amount: data.amount,
-      },
-    ]);
+    const newDonate = {
+      id: data.selectedOption,
+      amount: data.amount,
+    };
+
+    setsurveySoloDonation((prevItems) => [...prevItems, newDonate]);
+
+    const getDonations = localStorage.getItem("options");
+    const options = getDonations ? JSON.parse(getDonations) : [];
+    options.push(newDonate);
+    localStorage.setItem("options", JSON.stringify(options));
   });
 
   socket.on(channelID + "_created_survey", (msg) => {
@@ -107,23 +111,24 @@ export default function WebSocketService(
     const minTime = data.survey.minTime;
     const [hour, minute] = minTime.split(":");
 
-    updateData("survey", {
-      allow: true,
-      minCreateSurvey: config?.survey.minCreateSurvey,
-      durationTime: config?.survey.durationTime,
+    localStorage.setItem(
+      "survey",
+      JSON.stringify({
+        allow: false,
+        surveyTitle: data.survey.title,
+        options: data.survey.options,
 
-      surveyTitle: data.survey.title,
-      options: data.survey.options,
-      minToVote: config?.survey.minToVote,
+        endTime: {
+          day: now.getDate(),
+          hour: Number(hour),
+          minute: Number(minute),
+          second: now.getSeconds(),
+        },
+        amount: "0",
+      })
+    );
 
-      endTime: {
-        day: now.getDate(),
-        hour: hour,
-        minute: minute,
-        second: now.getSeconds(),
-      },
-      amount: "0",
-    });
+    updateData("survey", {});
 
     addDonate(
       {
@@ -159,6 +164,11 @@ export default function WebSocketService(
     if (data.hasOwnProperty("audioURL")) {
       Object.assign(dataToTrackDonate, {
         audioURL: data.audioURL,
+      });
+    }
+    if (data.hasOwnProperty("imgURL")) {
+      Object.assign(dataToTrackDonate, {
+        imgURL: data.imgURL,
       });
     }
     addDonate(dataToTrackDonate, true);

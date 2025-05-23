@@ -26,12 +26,13 @@ export async function POST(req: Request) {
     });
 
     if (!response.ok) {
-        return NextResponse.json({ msg: "credential_error" });
+       throw new Error();
     } else {
-      const data = await response.json();
+      await response.json();
       return NextResponse.json({ msg: "ok" });
     }
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ msg: "error" });
   }
 }

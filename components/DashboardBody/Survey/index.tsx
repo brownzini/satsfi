@@ -24,7 +24,7 @@ import { useData } from "@/contexts/useData";
 
 //Utils
 import { filterAmount } from "@/utils/inputFormat";
-import { OptionsProps, TimerProps } from "@/utils/types";
+import { OptionsProps } from "@/utils/types";
 import { useActiveWs } from "@/contexts/useActiveWs";
 import { updateConfig } from "@/app/firebase/services/Users";
 import DurationSurveyArea from "./DurationSurveyArea";
@@ -79,6 +79,7 @@ export default function Survey() {
       await cleanInDB();
       handleReset();
       dispatchMessage("[SUCESSO]: Enquete Finalizada", true);
+      localStorage.removeItem("survey");
     }
   };
 
@@ -360,7 +361,7 @@ export default function Survey() {
         test: {
           allow: true,
         },
-        trackDonate:  data.trackDonate,
+        trackDonate: data.trackDonate,
         blackList: data.blackList,
         donations: data.donations,
         qrCode: data.qrCode,
@@ -405,6 +406,7 @@ export default function Survey() {
       },
       amount: "0",
     });
+    localStorage.removeItem("options");
   };
 
   const calculatePercentageForOption = (
@@ -574,6 +576,9 @@ export default function Survey() {
     if (data.survey.options.length === 0) {
       setSurveyCreated(false);
     } else {
+      const getDonations = localStorage.getItem("options");
+      const options = getDonations ? JSON.parse(getDonations) : [];
+      setsurveySoloDonation(options);
       setSurveyCreated(false);
       setIsSurveyCreated(true);
       setSurveyTimerStatus(true);
