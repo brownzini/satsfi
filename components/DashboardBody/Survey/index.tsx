@@ -391,7 +391,7 @@ export default function Survey() {
     });
     localStorage.removeItem("survey");
     updateData("survey", {
-      allow: data.survey.allow,
+      allow: true,
       minCreateSurvey: data.survey.minCreateSurvey,
       durationTime: data.survey.durationTime,
 
