@@ -27,7 +27,7 @@ export default function WebSocketService(
   const encodedHandle = nEncode(handle);
 
   const channelID = keyHub;
-
+  console.log(encodedHandle);
   socket.on(channelID + "_viewer_call", (msg) => {
     const data = JSON.parse(msg);
     addDonate(
@@ -156,25 +156,12 @@ export default function WebSocketService(
       description: data.message,
       type: data.type,
     };
-    if(data.hasOwnProperty('audioURL')) {
+    if (data.hasOwnProperty("audioURL")) {
       Object.assign(dataToTrackDonate, {
-          audioURL: data.audioURL,
+        audioURL: data.audioURL,
       });
     }
     addDonate(dataToTrackDonate, true);
-  });
-
-  socket.on(encodedHandle + "_emitAddress", (msg) => {
-    if (msg === "getAddress" && config) {
-      const obsPassword = config.chromaKey.obsPassword;
-      socket.emit(
-        channelID + "_sentAddress",
-        JSON.stringify({
-          param: "_sentAddress",
-          obsPassword: obsPassword,
-        })
-      );
-    }
   });
 
   socket.on(encodedHandle + "_72206d6f6e7468732c20746865792064", (msg) => {
