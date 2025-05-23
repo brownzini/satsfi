@@ -389,6 +389,7 @@ export default function Survey() {
       percentage: "",
       amount: "",
     });
+    localStorage.removeItem("survey");
     updateData("survey", {
       allow: data.survey.allow,
       minCreateSurvey: data.survey.minCreateSurvey,
@@ -406,7 +407,37 @@ export default function Survey() {
       },
       amount: "0",
     });
-    localStorage.removeItem("options");
+
+    setTimeout(async () => {
+      await updateConfig(
+        data.generateKey.idString,
+        JSON.stringify({
+          config: data.config,
+          survey: {
+            allow: true,
+            minCreateSurvey: data.survey.minCreateSurvey,
+            durationTime: data.survey.durationTime,
+
+            surveyTtitle: data.survey.surveyTitle,
+            options: data.survey.options,
+            minToVote: data.survey.minToVote,
+
+            endTime: data.survey.endTime,
+
+            amount: data.survey.amount,
+          },
+          chromaKey: data.chromaKey,
+          call: data.call,
+          generateKey: data.generateKey,
+          isActiveHub: data.isActiveHub,
+          test: data.test,
+          trackDonate: data.trackDonate,
+          blackList: data.blackList,
+          donations: data.donations,
+          qrCode: data.qrCode,
+        })
+      );
+    }, 0);
   };
 
   const calculatePercentageForOption = (
