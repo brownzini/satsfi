@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 import { db } from "../firebase";
 
@@ -79,3 +79,8 @@ export const createNewHub = async (
     return false;
   }
 };
+
+export async function deleteData(handle: string) {
+  const docRef = doc(db, "users", handle);
+  await deleteDoc(docRef);
+}

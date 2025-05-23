@@ -26,7 +26,7 @@ export default function Test() {
 
     const normalLink = "https://satsfi.com.br/donates/"+handle+"-"+keyHub;
     const surveyLink = 'https://satsfi.com.br/survey/'+handle+"-"+keyHub;
-    const chromakeyLink = 'https://satsfi.com.br/chromakey/'+handle+"-"+keyHub;
+    const chromakeyLink = 'https://satsfi.com.br/background/'+handle+"-"+keyHub;
 
     const [allow, setAllow] = useState<boolean>(data.test.allow);
 

@@ -177,11 +177,9 @@ export default function Survey() {
           test: {
             allow: true,
           },
-          trackDonate: [],
-          blackList: {
-            wordsBlocked: "",
-          },
-          donations: [],
+          trackDonate: data.trackDonate,
+          blackList: data.blackList,
+          donations: data.donations,
           qrCode: data.qrCode,
         })
       );
@@ -283,11 +281,9 @@ export default function Survey() {
         test: {
           allow: true,
         },
-        trackDonate: [],
-        blackList: {
-          wordsBlocked: "",
-        },
-        donations: [],
+        trackDonate: data.trackDonate,
+        blackList: data.blackList,
+        donations: data.donations,
         qrCode: data.qrCode,
         isActiveHub: data.isActiveHub,
       })
@@ -364,11 +360,9 @@ export default function Survey() {
         test: {
           allow: true,
         },
-        trackDonate: [],
-        blackList: {
-          wordsBlocked: "",
-        },
-        donations: [],
+        trackDonate:  data.trackDonate,
+        blackList: data.blackList,
+        donations: data.donations,
         qrCode: data.qrCode,
         isActiveHub: data.isActiveHub,
       })

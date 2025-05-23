@@ -22,7 +22,8 @@ import { isOnlySpaces } from "@/utils/inputFormat";
 import { useData } from "@/contexts/useData";
 import { useMessage } from "@/contexts/useMessage";
 import { useHeader } from "@/contexts/useHeader";
-import { createNewHub } from "@/app/firebase/services/Users";
+import { createNewHub, deleteData } from "@/app/firebase/services/Users";
+import axios from "axios";
 
 export default function GenerateKey() {
   const { data, updateData, destroyHub } = useData();
@@ -49,14 +50,14 @@ export default function GenerateKey() {
         const cod1 = uuidv4().replace(/[_-]/g, "");
         const cod2 = uuidv4().replace(/[_-]/g, "");
         const cod3 = uuidv4().replace(/[_-]/g, "");
-        const hasHandle = (handle.length > 0) ? handle : "";
-        setKeyHub("satsfi_" + cod1 + cod2 + cod3 + "|"+hasHandle);
+        const hasHandle = handle.length > 0 ? handle : "";
+        setKeyHub("satsfi_" + cod1 + cod2 + cod3 + "|" + hasHandle);
       }
     } else {
       setKeyHubError(true);
       setTimeout(() => {
-         setKeyHubError(false);
-      },2000)
+        setKeyHubError(false);
+      }, 2000);
       dispatchMessage(
         "[ERRO]: Preencha o handle antes de gerar a chave !!",
         false
@@ -193,6 +194,7 @@ export default function GenerateKey() {
         isActiveHub: false,
       };
       const result = await createNewHub(handle, JSON.stringify(defaultData));
+
       if (result) {
         if (result === "exist") {
           setHandleError(true);
@@ -201,15 +203,13 @@ export default function GenerateKey() {
             false
           );
         } else {
-          updateData("generateKey", {
-            idString: handle,
-            addressLightning: lightningAddress,
-            keyHub: keyHub,
-          });
-          resetAllErrorFields();
-          dispatchMessage("[SUCESSO]: Seu hub foi criado com sucesso !!", true);
-          setActiveScreen("generateKey");
-          localStorage.setItem("sid", keyHub);
+          const response = await generateQueue();
+          if (!response) {
+              dispatchMessage(
+                "[ERRO]: Não foi possivel criar seu hub, tente mais tarde !!",
+                false
+              );
+          }
         }
       } else {
         dispatchMessage(
@@ -219,12 +219,48 @@ export default function GenerateKey() {
       }
     }
   };
-  
-  function toggleSetHandle(text:string) {
+
+  function changeScreenAndLocalData() {
+    updateData("generateKey", {
+      idString: handle,
+      addressLightning: lightningAddress,
+      keyHub: keyHub,
+    });
+    resetAllErrorFields();
+    dispatchMessage("[SUCESSO]: Seu hub foi criado com sucesso !!", true);
+    setActiveScreen("generateKey");
+    localStorage.setItem("sid", keyHub);
+  }
+
+  async function generateQueue() {
+    if (handle) {
+      const url = "/api/createAccount";
+      const response = await axios.post(
+        url,
+        { handle },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.data.msg === "ok") {
+        changeScreenAndLocalData();
+        return true;
+      } else {
+        await deleteData(handle);
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  function toggleSetHandle(text: string) {
     setHandle(text);
-    if(keyHub.length > 0) {
+    if (keyHub.length > 0) {
       const [ukeyHub, uhandle] = keyHub.split("|");
-      setKeyHub(ukeyHub+"|"+text);
+      setKeyHub(ukeyHub + "|" + text);
     }
   }
 
