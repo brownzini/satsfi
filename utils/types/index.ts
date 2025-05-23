@@ -96,7 +96,7 @@ export interface DonateProps {
     amount: string;
     description: string;
     type: "ai" | "default" | "survey" | "call" | "background";
-    narrator: string;
+    audioURL?: string;
     isCalling: boolean;
     callUrl: string,
     backgroundUrl: string;

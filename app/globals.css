@@ -1,14 +1,14 @@
 /* Inter  */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 /* Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 /* Open sans */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 /* Roboto */
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 * {
   box-sizing: border-box;
@@ -53,8 +53,8 @@ main {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -65,16 +65,16 @@ main {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #3C5774;
+  background-color: #3c5774;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #3C5774;
+  box-shadow: 0 0 1px #3c5774;
 }
 
 input:checked + .slider:before {
@@ -109,7 +109,7 @@ input:checked + .slider:before {
 
 @media only screen and (min-width: 2560px) {
   #myRange {
-     height: 16px;
+    height: 16px;
   }
 
   #myRange::-webkit-slider-thumb {
@@ -123,19 +123,71 @@ input:checked + .slider:before {
   }
 }
 
-
 @media only screen and (max-width: 1920px) {
-   #body-area svg {
+  #body-area svg {
     max-width: 84%;
-   }
+  }
 }
 
 @media only screen and (max-width: 1600px) {
   #body-area svg {
     max-width: 75%;
-   }
+  }
 }
 
+.audio-donate {
+  width: 84%;
+  height: 40%;
+  max-width: 700px;
+  max-height: 160px;
+  min-height: 160px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 6px 5px 3px rgb(0 0 0 / 14%);
+}
+
+.normal-donate {
+  width: 84%;
+  height: 100%;
+
+  max-width: 700px;
+
+  max-height: 250px;
+  min-height: 250px;
+
+  background-color: white;
+
+  border-radius: 5px;
+  box-shadow: 0px 6px 5px 3px rgb(0 0 0 / 14%);
+}
+
+.dd-normal {
+  width: 93%;
+  height: 88%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 3%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  border-radius: 7px;
+  max-height: 200px;
+  background-color: #fafaf0;
+}
+
+.dd-audio {
+  width: 93%;
+  height: 69%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 3%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  border-radius: 7px;
+  max-height: 200px;
+  background-color: #fafaf0;
+}
 .slider.round:before {
   border-radius: 50%;
 }
@@ -145,37 +197,37 @@ input:checked + .slider:before {
 }
 
 .rangeSlider {
-  -webkit-appearance: none;  
+  -webkit-appearance: none;
   appearance: none;
   width: 70%;
-  height: 7px; 
-  background: #3C5774;
-  outline: none; 
+  height: 7px;
+  background: #3c5774;
+  outline: none;
   opacity: 0.7;
-  -webkit-transition: .2s; 
-  transition: opacity .2s;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
   border-radius: 7px;
 }
 
 .rangeSlider:hover {
-  opacity: 1; 
+  opacity: 1;
 }
 
 .rangeSlider::-webkit-slider-thumb {
-  -webkit-appearance: none; 
+  -webkit-appearance: none;
   appearance: none;
-  width: 25px; 
-  height: 25px; 
-  background: #07CCA0; 
-  cursor: pointer; 
+  width: 25px;
+  height: 25px;
+  background: #07cca0;
+  cursor: pointer;
   border-radius: 50px;
 }
 
 .rangeSlider::-moz-range-thumb {
-  width: 25px; 
-  height: 25px; 
-  background: #07CCA0; 
-  cursor: pointer; 
+  width: 25px;
+  height: 25px;
+  background: #07cca0;
+  cursor: pointer;
   border-radius: 50px;
 }
 
@@ -185,7 +237,6 @@ input:checked + .slider:before {
   word-wrap: break-word;
 }
 
-
 #body-area svg {
   width: 84%;
 }
@@ -193,7 +244,7 @@ input:checked + .slider:before {
 .initial {
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, #461881, #7B1AF7);
+  background: linear-gradient(to right, #461881, #7b1af7);
 }
 
 .initialArea {
@@ -215,20 +266,20 @@ h2.description-title {
 
   color: white;
   font-size: 5rem;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: bold;
   line-height: 4.3rem;
-  
+
   margin-bottom: 3%;
 }
 
 .trueMoney {
-  color: #FAD40F;
+  color: #fad40f;
 }
 
 p.subTitle {
   font-size: 2rem;
-  font-family: 'inter';
+  font-family: "inter";
   font-weight: 200;
   color: white;
 }
@@ -239,7 +290,12 @@ p.subTitle {
 
   position: relative;
 
-  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;
 
   gap: 10%;
@@ -258,11 +314,11 @@ p.subTitle {
 }
 
 h1.logo-title {
-  color: #FFCA41;
+  color: #ffca41;
   font-size: 5rem;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: bold;
-  border-bottom: 5px solid #FFCA41;
+  border-bottom: 5px solid #ffca41;
 }
 
 .button-area {
@@ -279,16 +335,16 @@ button.launch-button {
   width: 100%;
   height: 100%;
   max-width: 250px;
-  
-  color: #FF9800;
+
+  color: #ff9800;
   font-size: 1.4rem;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: bold;
 
   background-color: transparent;
 
   border-radius: 12px;
-  border: 2px solid #FF9800;
+  border: 2px solid #ff9800;
 
   padding: 5%;
 
@@ -308,7 +364,7 @@ button.launch-button {
 
   transition: 1s;
 
-  color: #FF9800;
+  color: #ff9800;
   text-decoration: none;
 }
 
@@ -340,7 +396,7 @@ button.launch-button:hover {
 
   padding: 1%;
 
-  border: 1px solid #8105BC;
+  border: 1px solid #8105bc;
 
   background-color: white;
 
@@ -353,7 +409,7 @@ button.launch-button:hover {
 
   padding: 1%;
 
-  border: 1px solid #8105BC;
+  border: 1px solid #8105bc;
 
   background-color: white;
 
@@ -366,7 +422,7 @@ button.launch-button:hover {
 
   padding: 1%;
 
-  border: 1px solid #8105BC;
+  border: 1px solid #8105bc;
 
   background-color: white;
 
@@ -397,17 +453,17 @@ button.launch-button:hover {
 }
 
 .cardFooter h2 {
-  color: #945C92;
+  color: #945c92;
   font-weight: 300;
   font-size: 1rem;
   text-align: center;
-  font-family: 'Inter';
+  font-family: "Inter";
 }
 
 .cardHead h2 {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: bold;
-  background: linear-gradient(to right, #ED53E6, #8105BC);
+  background: linear-gradient(to right, #ed53e6, #8105bc);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -418,7 +474,7 @@ button.launch-button:hover {
 .howto {
   width: 100%;
   height: 100%;
-  background-color: #FBF7F4;
+  background-color: #fbf7f4;
 }
 
 .wrappedArea {
@@ -474,28 +530,28 @@ img#cellImage {
 
 .descriptionArea h2 {
   font-size: 3rem;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   font-weight: bold;
 }
 
 .descriptionArea h3 {
   font-size: 1.6rem;
-  font-family: 'Open sans';
+  font-family: "Open sans";
   font-weight: lighter;
 }
 
 #paperButton {
   width: 50%;
   height: 100%;
-  
+
   margin-top: 2%;
-  
+
   color: #45abdb;
   font-size: 1.4rem;
-  
+
   transition: 1s;
   background: transparent;
-  
+
   border-radius: 4px;
   border: 2px solid #45abdb;
 
@@ -518,7 +574,7 @@ img#cellImage {
 }
 
 #paperButton:hover {
-  color:white;
+  color: white;
   background-color: #45abdb;
 }
 
@@ -534,9 +590,9 @@ img#cellImage {
 
 .lightning-area h2 {
   font-size: 2rem;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 300;
-  background: linear-gradient(to right, #ED53E6, #8105BC);
+  background: linear-gradient(to right, #ed53e6, #8105bc);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -546,29 +602,29 @@ img#cellImage {
 .faq {
   width: 100%;
   height: 75%;
-  background-color: #240C42;
+  background-color: #240c42;
 }
 
 .icon-area {
   width: 100%;
   height: 25%;
-  border-bottom: 1px solid #FFCA41;
+  border-bottom: 1px solid #ffca41;
   padding-bottom: 5%;
   margin-bottom: 5%;
 }
 
 .icon-area h2 {
-  color: #FFCA41;
+  color: #ffca41;
   font-size: 4rem;
   font-weight: 300;
-  font-family: 'Inter';
+  font-family: "Inter";
 }
 
 .tou-area h2 {
-  color: #B7B8C3;
+  color: #b7b8c3;
   font-size: 2rem;
   font-weight: 300;
-  font-family: 'Inter';
+  font-family: "Inter";
 }
 
 @media only screen and (min-height: 900px) {
@@ -585,7 +641,7 @@ img#cellImage {
   .cardFooter h2 {
     font-size: 1.6rem;
   }
-  .wrappedArea  {
+  .wrappedArea {
     padding-left: 7%;
   }
   .titleArea {
@@ -611,15 +667,14 @@ img#cellImage {
   }
   .button-area-satsfi {
     width: 70%;
-
   }
-  .card-privacy  {
+  .card-privacy {
     width: 50%;
   }
-  .card-ai  {
+  .card-ai {
     width: 50%;
   }
-  .card-fee  {
+  .card-fee {
     width: 50%;
   }
 
@@ -654,11 +709,10 @@ img#cellImage {
     justify-content: flex-start;
     align-items: center;
   }
-
 }
 
 @media only screen and (max-width: 700px) {
-  .initialArea  {
+  .initialArea {
     flex-direction: column;
   }
 
@@ -676,11 +730,11 @@ img#cellImage {
     width: 75%;
     font-size: 1rem;
   }
-  
+
   .button-area-satsfi {
     width: 64%;
   }
-  
+
   button.launch-button {
     width: 100%;
   }
@@ -689,7 +743,7 @@ img#cellImage {
 
   .topic {
     width: 100%;
-    flex-direction: column;  
+    flex-direction: column;
   }
 
   .topic .card-privacy {
@@ -746,9 +800,8 @@ img#cellImage {
     padding-left: 5%;
     padding-right: 5%;
   }
-  .lightning-area h2{
+  .lightning-area h2 {
     font-size: 1.4rem;
     text-align: center;
   }
-
 }

@@ -28,33 +28,6 @@ export default function WebSocketService(
 
   const channelID = keyHub;
 
-  socket.on(channelID + "_remove_background", (msg) => {
-    const data = JSON.parse(msg);
-    addDonate(
-      {
-        date: getToday(),
-        type: "background",
-        value: feeConvert("backgroundDonation", data.amount),
-        donor_name: data.name,
-        message: data.message,
-      },
-      false
-    );
-  });
-
-  socket.on(encodedHandle + "_emitAddress", (msg) => {
-    if (msg === "getAddress" && config) {
-      const obsPassword = config.chromaKey.obsPassword;
-      socket.emit(
-        channelID + "_sentAddress",
-        JSON.stringify({
-          param: "_sentAddress",
-          obsPassword: obsPassword,
-        })
-      );
-    }
-  });
-
   socket.on(channelID + "_viewer_call", (msg) => {
     const data = JSON.parse(msg);
     addDonate(
@@ -66,6 +39,30 @@ export default function WebSocketService(
         message: "",
       },
       false
+    );
+  });
+
+  socket.on(channelID + "_remove_background", (msg) => {
+    const data = JSON.parse(msg);
+    addDonate(
+      {
+        date: getToday(),
+        type: data.type,
+        value: feeConvert("backgroundDonation", data.amount),
+        donor_name: data.name,
+        message: data.message,
+      },
+      false
+    );
+    addDonate(
+      {
+        date: getToday(),
+        type: data.type,
+        value: feeConvert("backgroundDonation", data.amount),
+        name: data.name,
+        message: data.message,
+      },
+      true
     );
   });
 
@@ -93,7 +90,6 @@ export default function WebSocketService(
   });
 
   socket.on(channelID + "_created_survey", (msg) => {
-
     const now = new Date();
     const data = JSON.parse(msg);
 
@@ -135,10 +131,6 @@ export default function WebSocketService(
         amount: data.amount,
         description: data.message,
         type: data.type,
-        narrator: "",
-        isCalling: false,
-        callUrl: "",
-        backgroundUrl: "",
       },
       true
     );
@@ -158,19 +150,31 @@ export default function WebSocketService(
       false
     );
 
-    addDonate(
-      {
-        name: data.name,
-        amount: data.amount,
-        description: data.message,
-        type: data.type,
-        narrator: "",
-        isCalling: false,
-        callUrl: "",
-        backgroundUrl: "",
-      },
-      true
-    );
+    const dataToTrackDonate = {
+      name: data.name,
+      amount: data.amount,
+      description: data.message,
+      type: data.type,
+    };
+    if(data.hasOwnProperty('audioURL')) {
+      Object.assign(dataToTrackDonate, {
+          audioURL: data.audioURL,
+      });
+    }
+    addDonate(dataToTrackDonate, true);
+  });
+
+  socket.on(encodedHandle + "_emitAddress", (msg) => {
+    if (msg === "getAddress" && config) {
+      const obsPassword = config.chromaKey.obsPassword;
+      socket.emit(
+        channelID + "_sentAddress",
+        JSON.stringify({
+          param: "_sentAddress",
+          obsPassword: obsPassword,
+        })
+      );
+    }
   });
 
   socket.on(encodedHandle + "_72206d6f6e7468732c20746865792064", (msg) => {
