@@ -96,49 +96,51 @@ export default function WebSocketService(
   socket.on(channelID + "_created_survey", (msg) => {
     const now = new Date();
     const data = JSON.parse(msg);
+    const canAdd = data.hasOwnProperty("notCIW");
+    if (!canAdd) {
+        addDonate(
+          {
+            date: getToday(),
+            type: "survey",
+            value: feeConvert("createSurveyDonation", data.amount),
+            donor_name: data.name,
+            message: data.message,
+          },
+          false
+        );
 
-    addDonate(
-      {
-        date: getToday(),
-        type: "survey",
-        value: feeConvert("createSurveyDonation", data.amount),
-        donor_name: data.name,
-        message: data.message,
-      },
-      false
-    );
+        const minTime = data.survey.minTime;
+        const [hour, minute] = minTime.split(":");
 
-    const minTime = data.survey.minTime;
-    const [hour, minute] = minTime.split(":");
+        localStorage.setItem(
+          "survey",
+          JSON.stringify({
+            allow: false,
+            surveyTitle: data.survey.title,
+            options: data.survey.options,
 
-    localStorage.setItem(
-      "survey",
-      JSON.stringify({
-        allow: false,
-        surveyTitle: data.survey.title,
-        options: data.survey.options,
+            endTime: {
+              day: now.getDate(),
+              hour: Number(hour),
+              minute: Number(minute),
+              second: now.getSeconds(),
+            },
+            amount: "0",
+          })
+        );
 
-        endTime: {
-          day: now.getDate(),
-          hour: Number(hour),
-          minute: Number(minute),
-          second: now.getSeconds(),
-        },
-        amount: "0",
-      })
-    );
+        updateData("survey", {});
 
-    updateData("survey", {});
-
-    addDonate(
-      {
-        name: data.name,
-        amount: data.amount,
-        description: data.message,
-        type: data.type,
-      },
-      true
-    );
+        addDonate(
+          {
+            name: data.name,
+            amount: data.amount,
+            description: data.message,
+            type: data.type,
+          },
+          true
+        );
+    }
   });
 
   socket.on(channelID + "_normal_donation", (msg) => {

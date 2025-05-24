@@ -29,10 +29,13 @@ import { useActiveWs } from "@/contexts/useActiveWs";
 import { updateConfig } from "@/app/firebase/services/Users";
 import DurationSurveyArea from "./DurationSurveyArea";
 import GenerationSurveyArea from "./GenerationSurveyArea";
+import { nEncode } from "@/utils/encrypt/encrypt";
+import { unescape } from "querystring";
+import axios from "axios";
 
 export default function Survey() {
   const { data, updateData } = useData();
-  const { surveySoloDonation, setsurveySoloDonation } = useActiveWs();
+  const { wsConfig, surveySoloDonation, setsurveySoloDonation } = useActiveWs();
 
   const [surveyStatus, setSurveyStatus] = useState<boolean>(data.survey.allow);
   const [minCreateSurvey, setMinCreateSurvey] = useState<string>(
@@ -80,6 +83,7 @@ export default function Survey() {
       handleReset();
       dispatchMessage("[SUCESSO]: Enquete Finalizada", true);
       localStorage.removeItem("survey");
+      await finishSurvey();
     }
   };
 
@@ -313,15 +317,85 @@ export default function Survey() {
     const isVotationOk = voteValidation();
     const isOptionsOk = optionsValidation();
 
-    if (isVotationOk && isOptionsOk) {
-      fillEmptyNameFields(options);
-      await defineTime();
-      setSurveyCreated(false);
-      setIsSurveyCreated(true);
-      setSurveyTimerStatus(true);
-      dispatchMessage("Enquete criada com sucesso!!", true);
+    const csHour =
+      typeof data.survey.endTime.hour === "number"
+        ? data.survey.endTime.hour.toString()
+        : undefined;
+    const csMinute =
+      typeof data.survey.endTime.minute === "number"
+        ? data.survey.endTime.minute.toString()
+        : undefined;
+
+    if (csHour && csMinute) {
+      const createdSurveyData = {
+        title: surveyTitle,
+        options,
+      };
+
+      const minTime = csHour + ":" +csMinute;
+
+      if (isVotationOk && isOptionsOk) {
+        const response = await insertSurvey(createdSurveyData, minTime);
+        if (response) {
+          fillEmptyNameFields(options);
+          await defineTime();
+          setSurveyCreated(false);
+          setIsSurveyCreated(true);
+          setSurveyTimerStatus(true);
+
+          dispatchMessage("Enquete criada com sucesso!!", true);
+        }
+      }
     }
   };
+
+  async function insertSurvey(survey: any, minTime: string) {
+    const { idString, keyHub } = data.generateKey;
+    if (keyHub) {
+      const url = "/api/insertSurvey";
+      const response = await axios.post(
+        url,
+        { handle: idString, keyHub, minTime, survey },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.data.msg === "ok") {
+        return true;
+      } else {
+        handleReset();
+        return false;
+      }
+    } else {
+      handleReset();
+      return false;
+    }
+  }
+
+  async function finishSurvey() {
+    const { idString, keyHub } = data.generateKey;
+    if (keyHub) {
+      const url = "/api/endSurvey";
+      const response = await axios.post(
+        url,
+        { handle: idString, keyHub },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.data.msg === "ok") {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   const removeMinCreateError = () => {
     setErrorMinCreate(false);
