@@ -26,7 +26,7 @@ const listInitial: HeaderContextValue = {
     qrCode: { status: false, name: "QR Code" },
     call: { status: false, name: "Chamadas Ao Vivo" },
     generateKey: { status: false, name: "Minha Chave" },
-    loan: { status: false, name: " Emprestimo" },
+    loan: { status: false, name: " Campanha" },
     chromaKey: { status: false, name: "Chroma Key" },
   },
   setScreens: (param) => {},
@@ -48,7 +48,7 @@ export function HeaderProvider({ children }: Props) {
     qrCode: { status: false, name: "QR Code" },
     call: { status: false, name: "Chamadas Ao Vivo" },
     chromaKey: { status: false, name: "Chroma Key" },
-    loan: { status: false, name: " Emprestimo" },
+    loan: { status: false, name: " Campanha" },
     generateKey: { status: false, name: "Minha Chave" },
   });
 

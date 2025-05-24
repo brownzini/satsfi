@@ -492,7 +492,7 @@ export default function GenerateKey() {
       <br />
       <ButtonArea>
         <Button havekey={userHaveKeyHub.toString()} onClick={handleClick}>
-          {userHaveKeyHub ? "DELETAR HUB" : "CRIAR HUB"}
+          {userHaveKeyHub ? "LOGOUT" : "CRIAR HUB"}
         </Button>
         <FileArea></FileArea>
       </ButtonArea>
