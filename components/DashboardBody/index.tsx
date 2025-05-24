@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 import {
-    BackArea,
-    BackButton,
-    Body,
-    RenderingContainer,
-    Wrapper,
+  BackArea,
+  BackButton,
+  Body,
+  RenderingContainer,
+  Wrapper,
 } from "./styles";
 
 //Screens
@@ -32,77 +32,110 @@ import { useHeader } from "@/contexts/useHeader";
 //Types
 import { ScreenProp } from "@/utils/types";
 import { useData } from "@/contexts/useData";
+import Loan from "./Loan";
 
 export default function DashboardBody() {
+  const { data } = useData();
+  const { screens, setActiveScreen } = useHeader();
 
-    const { data } = useData();
-    const { screens, setActiveScreen } = useHeader();
+  const [noBorder, setNoBorder] = useState<boolean>(true);
+  const [overviewBorderDatail, setOverviewBorderDatail] = useState<string>("");
 
-    const [noBorder, setNoBorder] = useState<boolean>(true);
-    const [overviewBorderDatail, setOverviewBorderDatail] = useState<string>('');
-
-    const renderingJSX = (page: string) => {
-        switch (page) {
-            case 'test': return (<Test />);
-            case 'call': return (<Call />);
-            case 'config': return (<Config />);
-            case 'survey': return (<Survey />);
-            case 'qrCode': return (<QRCode />);
-            case 'blackList': return (<BlackList />);
-            case 'chromaKey': return (<ChromaKey />);
-            case 'trackDonate': return (<TrackDonate />);
-            case 'generateKey': return (<GenerateKey />);
-            case 'importKey': return (<ImportKey />);
-            case 'overview': return (<Overview />);
-            case 'initial': return (<Initial />);
-            case 'start': return (<Start />);
-        }
+  const renderingJSX = (page: string) => {
+    switch (page) {
+      case "test":
+        return <Test />;
+      case "call":
+        return <Call />;
+      case "config":
+        return <Config />;
+      case "survey":
+        return <Survey />;
+      case "qrCode":
+        return <QRCode />;
+      case "blackList":
+        return <BlackList />;
+      case "chromaKey":
+        return <ChromaKey />;
+      case "trackDonate":
+        return <TrackDonate />;
+      case "generateKey":
+        return <GenerateKey />;
+      case "importKey":
+        return <ImportKey />;
+      case "overview":
+        return <Overview />;
+      case "initial":
+        return <Initial />;
+      case "start":
+        return <Start />;
+      case "loan":
+        return <Loan />;
     }
+  };
 
-    const renderActiveScreen = (screen: string) => {
-        return <RenderingContainer
-            key={screen}
-            className="flex"
-        >
-            {renderingJSX(screen)}
-        </RenderingContainer>
-    }
+  const renderActiveScreen = (screen: string) => {
+    return (
+      <RenderingContainer key={screen} className="flex">
+        {renderingJSX(screen)}
+      </RenderingContainer>
+    );
+  };
 
-    const haveBorderInScreen = (screen: string) => setNoBorder((screen === 'initial' || screen === 'importKey'));
+  const haveBorderInScreen = (screen: string) =>
+    setNoBorder(screen === "initial" || screen === "importKey");
 
-    const haveBackButton = (screens.generateKey.status && data.generateKey.keyHub === '');
+  const haveBackButton =
+    screens.generateKey.status && data.generateKey.keyHub === "";
 
-    useEffect(() => {
-        Object.keys(screens).map((screen) => (screens[screen as keyof ScreenProp].status) ? haveBorderInScreen(screen) : '');
-        Object.keys(screens).map((screen) => {
-            if (screens[screen as keyof ScreenProp].status) {
-                const isOverviewScreen = (screen === 'overview');
-                setOverviewBorderDatail((isOverviewScreen) ?
-                    `     border-left: 1px solid #E2DEF9;
+  useEffect(() => {
+    Object.keys(screens).map((screen) =>
+      screens[screen as keyof ScreenProp].status
+        ? haveBorderInScreen(screen)
+        : ""
+    );
+    Object.keys(screens).map((screen) => {
+      if (screens[screen as keyof ScreenProp].status) {
+        const isOverviewScreen = screen === "overview";
+        setOverviewBorderDatail(
+          isOverviewScreen
+            ? `     border-left: 1px solid #E2DEF9;
                         border-right: 1px solid #E2DEF9;
                         border-bottom: 1px solid #E2DEF9;
-                  ` : ' border: 1px solid #E2DEF9; ')
-            }
-        })
-    }, [screens]);
+                  `
+            : " border: 1px solid #E2DEF9; "
+        );
+      }
+    });
+  }, [screens]);
 
-    const handleBack = () => setActiveScreen('initial');
+  const handleBack = () => setActiveScreen("initial");
 
-    return (
-        <Body className="flex fd">
-            <MessageArea />
-            <Wrapper
-                className="flex fd"
-                styles={(noBorder) ? `
+  return (
+    <Body className="flex fd">
+      <MessageArea />
+      <Wrapper
+        className="flex fd"
+        styles={
+          noBorder
+            ? `
                     border:none;
                     background-color:white;
-                ` : overviewBorderDatail}
-            >
-                {(haveBackButton) && (<BackArea>
-                    <BackButton onClick={handleBack}>Voltar</BackButton>
-                </BackArea>)}
-                {Object.keys(screens).map((screen) => (screens[screen as keyof ScreenProp].status) && renderActiveScreen(screen))}
-            </Wrapper>
-        </Body>
-    );
+                `
+            : overviewBorderDatail
+        }
+      >
+        {haveBackButton && (
+          <BackArea>
+            <BackButton onClick={handleBack}>Voltar</BackButton>
+          </BackArea>
+        )}
+        {Object.keys(screens).map(
+          (screen) =>
+            screens[screen as keyof ScreenProp].status &&
+            renderActiveScreen(screen)
+        )}
+      </Wrapper>
+    </Body>
+  );
 }

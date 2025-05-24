@@ -12,15 +12,15 @@ export async function POST(req: Request) {
     const address = clientIp ? clientIp.replace("::ffff:", "") : "";
 
     const url =
-      process.env.INSERT_SURVEY_URL ?? "http://localhost:3002/users/endSurvey";
-    
+      process.env.END_SURVEY_URL ?? "http://localhost:3002/users/endSurvey";
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        type:"createSurvey",
+        type: "createSurvey",
         address,
         handle,
         keyHub,

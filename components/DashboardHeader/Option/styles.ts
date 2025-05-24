@@ -41,6 +41,7 @@ export const SvgContainer = styled.div<FontColorProp>`
     }
 
     z-index: 3;
+    gap: 5px;
 
     cursor: pointer;
 `;

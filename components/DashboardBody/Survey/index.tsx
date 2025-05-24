@@ -83,6 +83,7 @@ export default function Survey() {
       handleReset();
       dispatchMessage("[SUCESSO]: Enquete Finalizada", true);
       localStorage.removeItem("survey");
+      localStorage.removeItem("options");
       await finishSurvey();
     }
   };
@@ -332,7 +333,7 @@ export default function Survey() {
         options,
       };
 
-      const minTime = csHour + ":" +csMinute;
+      const minTime = csHour + ":" + csMinute;
 
       if (isVotationOk && isOptionsOk) {
         const response = await insertSurvey(createdSurveyData, minTime);
@@ -492,13 +493,17 @@ export default function Survey() {
             minCreateSurvey: data.survey.minCreateSurvey,
             durationTime: data.survey.durationTime,
 
-            surveyTtitle: data.survey.surveyTitle,
-            options: data.survey.options,
-            minToVote: data.survey.minToVote,
+            surveyTitle: "Enquete",
+            options: [],
+            minToVote: "",
 
-            endTime: data.survey.endTime,
-
-            amount: data.survey.amount,
+            endTime: {
+              day: 0,
+              hour: 0,
+              minute: 0,
+              second: 0,
+            },
+            amount: "0",
           },
           chromaKey: data.chromaKey,
           call: data.call,

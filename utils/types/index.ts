@@ -14,9 +14,9 @@ export type ScreenProp = {
     qrCode: FieldScreen;
     call: FieldScreen;
     generateKey: FieldScreen;
-    blackList: FieldScreen;
     chromaKey: FieldScreen;
     start: FieldScreen;
+    loan: FieldScreen;
 }
 
 
