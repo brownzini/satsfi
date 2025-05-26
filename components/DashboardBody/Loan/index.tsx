@@ -2,29 +2,59 @@ import { useCampaign } from "@/contexts/campaignContext";
 import FormCampaign from "./FormCampaign";
 import InitialCampaign from "./InitialCampaign";
 import { LoanContainer } from "./style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import DashboardCampaign from "./DashboardCampaign";
+import { useMessage } from "@/contexts/useMessage";
 
-export default function Loan() {
-  const { campaign } = useCampaign();
-  const [hasForms, setHasForms] = useState<boolean>(false);
+interface Props {
+  handle: string;
+}
 
-  const haveCampaign = (description: string) =>
-    description !== "" ? (
-      <>
-        {" "}
-        <h2> remover campanha </h2>{" "}
-      </>
-    ) : (
-      <>
-        {" "}
-        <h2> criar campanha kkkk </h2>{" "}
-      </>
-    );
-  const NotHaveCampaign = (campaign: any) =>
-    !campaign ? <InitialCampaign /> : haveCampaign(campaign.description);
+export default function Loan({ handle }: Props) {
+  const { campaign, setCampaign } = useCampaign();
+  const [screen, setScreen] = useState<string>("initial");
+  const { dispatchMessage } = useMessage();
+
+  useEffect(() => {
+    setScreen(campaign ? "dashboardCampaign" : "initial");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const RenderingScreens = (type: string) => {
+    switch (type) {
+      case "dashboardCampaign":
+        return (
+          <DashboardCampaign
+            handle={handle}
+            campaign={campaign}
+            setCampaign={setCampaign}
+            hasCampaign={campaign?.description !== ""}
+            setScreen={setScreen}
+            dispatchMessage={dispatchMessage}
+          />
+        );
+      case "createCampaign":
+        return (
+          <FormCampaign
+            handle={handle}
+            setScreen={setScreen}
+            dispatchMessage={dispatchMessage}
+          />
+        );
+      default:
+        return (
+          <InitialCampaign
+            dispatchMessage={dispatchMessage}
+            handle={handle}
+            setScreen={setScreen}
+          />
+        );
+    }
+  };
+
   return (
-    <LoanContainer className="flex fd">
-      {NotHaveCampaign(campaign)}
+    <LoanContainer onClick={() => console.log(campaign)} className="flex fd">
+      {RenderingScreens(screen)}
     </LoanContainer>
   );
 }

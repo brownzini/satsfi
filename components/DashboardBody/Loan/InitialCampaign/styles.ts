@@ -28,11 +28,12 @@ export const ImgWrapper = styled.div`
 
 export const Img = styled.img`
   width: 30%;
-  max-width: 200px;
+  max-width: 150px;
+  min-width: 150px;
   object-fit: cover;
   border-radius: 55%;
   @media (min-width: 1900px) {
-        max-width: 500px;
+    max-width: 250px;
   }
 `;
 

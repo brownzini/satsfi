@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Amount from "./Amount";
 import Description from "./Description";
 import Percent from "./Percent";
 import Period from "./Period";
 import {
+  BackButton,
   ButtonTermArea,
   CheckBox,
   CreateButton,
@@ -15,12 +16,20 @@ import {
   TitleTerm,
 } from "./styles";
 import { filterAmount } from "@/utils/inputFormat";
-import { useMessage } from "@/contexts/useMessage";
 import { updateLoan } from "@/app/firebase/services/Loan";
 import { useCampaign } from "@/contexts/campaignContext";
 
-export default function FormCampaign() {
-  const { dispatchMessage } = useMessage();
+interface Props {
+  handle: string;
+  setScreen: Dispatch<SetStateAction<string>>;
+  dispatchMessage: (msg: string, type: boolean, time?: number) => void;
+}
+
+export default function FormCampaign({
+  handle,
+  setScreen,
+  dispatchMessage,
+}: Props) {
   const { campaign, setCampaign } = useCampaign();
 
   const [description, setDescription] = useState<string>("");
@@ -73,10 +82,13 @@ export default function FormCampaign() {
   }
 
   function validationFields() {
+    const total_percent = campaign ? campaign?.total_percent * 100 : 95;
+
     const hasDescriptionNotOK = description.length > 100 || description === "";
-    const hasPercentNotOK = percent > 95 || percent <= 0;
+    const hasPercentNotOK = percent > total_percent || percent <= 0;
     const hasAmountNotOK = amount <= 0;
-    const hasPeriodNotOK = period === null || period === undefined;
+    const hasPeriodNotOK =
+      period === null || period === undefined || period < new Date();
 
     if (
       hasDescriptionNotOK ||
@@ -92,9 +104,10 @@ export default function FormCampaign() {
       if (!isChecked) setCheckBoxError(true);
 
       dispatchMessage(
-        "[ERRO]: Preencha Todos os campos corretamente !!",
+        "[ERRO]: A data não pode ser menor que o tempo atual !!",
         false
       );
+
       return false;
     } else {
       return true;
@@ -103,22 +116,36 @@ export default function FormCampaign() {
 
   async function handleSave() {
     const result = validationFields();
-    const access_code = localStorage.getItem("sid");
-    if (result && access_code) {
-      const [keyHub, handle] = access_code.split("|");
-      await updateLoan(handle, {
+
+    if (result) {
+      const open_in = new Date().toString();
+
+      const total_percent = campaign ? campaign.total_percent : 0.95;
+      const total_campaign = campaign ? campaign.total_campaign + 1 : 0;
+
+      const response = await updateLoan(handle, {
         description,
         percent_sale: percent / 100,
-        total_campaign: campaign ? campaign.total_campaign + 1 : 0,
+        total_campaign,
         sale_amount: amount,
         expiration_date: period,
+        open_in,
+        total_percent,
       });
-      setCampaign({
+
+      if (response) {
+        setCampaign({
           description,
-          total_percent: (campaign) ? campaign.total_percent : 0.95, 
-          total_campaign: campaign ? campaign.total_campaign + 1 : 0,
-          size: (campaign) ? campaign.size : 0,
-      });
+          total_percent,
+          total_campaign,
+          size: campaign ? campaign.size : 0,
+          open_in,
+        });
+        setScreen("dashboardCampaign");
+        dispatchMessage("[SUCESSO]: CAMPANHA CRIADA !!", true);
+      } else {
+        dispatchMessage("[ERRO]: NÃO FOI POSSIVEL CRIAR A CAMPANHA !!", true);
+      }
     }
   }
 
@@ -174,10 +201,11 @@ export default function FormCampaign() {
           />
           <TitleTerm>Concordo</TitleTerm>
         </TermArea>
-        <ButtonTermArea className="flex fd">
-          <CreateButton className="flex" onClick={handleSave}>
-            CRIAR
-          </CreateButton>
+        <ButtonTermArea className="flex">
+          <CreateButton onClick={handleSave}>CRIAR</CreateButton>
+          <BackButton onClick={() => setScreen("dashboardCampaign")}>
+            VOLTAR
+          </BackButton>
         </ButtonTermArea>
       </TermsContainer>
     </MainContent>

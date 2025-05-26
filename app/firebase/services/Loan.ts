@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 import { db } from "../firebase";
 
@@ -7,6 +7,18 @@ interface Props {
   total_percent: number;
   total_campaign: number;
   size: number;
+  open_in:string;
+}
+
+interface LoanProps {
+  description:string;
+  expiration_date:string;
+  open_in:string;
+  lenders: any[];
+  percent_sale:number;
+  sale_amount:number;
+  total_campaign:number;
+  total_percent:number;
 }
 
 export const getLoan = async (handle: string): Promise<Props | undefined> => {
@@ -23,6 +35,7 @@ export const getLoan = async (handle: string): Promise<Props | undefined> => {
           total_percent: collec.data()?.total_percent,
           total_campaign: collec.data()?.total_campaign,
           size: collec.data()?.lenders.length,
+          open_in: collec.data()?.open_in,
         };
       }
     } catch (err) {
@@ -46,6 +59,22 @@ export const updateLoan = async (
 
       await updateDoc(userDoc, data);
 
+      return true;
+    } catch (err) {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
+
+export const createNewLoan = async (
+  handle: string,
+  data: LoanProps,
+): Promise<boolean | string> => {
+  if (handle) {
+    try {
+      await setDoc(doc(collection(db, "loan"), handle), data );
       return true;
     } catch (err) {
       return false;

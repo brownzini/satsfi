@@ -70,7 +70,7 @@ export default function DashboardBody() {
       case "start":
         return <Start />;
       case "loan":
-        return <Loan />;
+        return <Loan handle={data.generateKey.idString}/>;
     }
   };
 

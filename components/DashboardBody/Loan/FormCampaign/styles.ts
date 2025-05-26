@@ -87,9 +87,10 @@ export const ButtonTermArea = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  gap: 2%;
 `;
 
-export const CreateButton = styled.div`
+export const CreateButton = styled.button`
   width: 100%;
   height: 70%;
   max-width: 250px;
@@ -111,6 +112,40 @@ export const CreateButton = styled.div`
 
   border-radius: 4px;
   border: none;
+
+  transition: 0.4s ease-in;
+
+  cursor: pointer;
+  user-select: none;
+
+  @media (min-width: 1900px) {
+    font-size: 2rem;
+    height: 50%;
+  }
+`;
+
+export const BackButton = styled.button`
+  width: 100%;
+  height: 70%;
+  max-width: 250px;
+
+  color: #c62c24;
+  font-size: 1.4rem;
+  font-family: "Roboto";
+  font-weight: bold;
+
+  text-align: center;
+
+  background-color: white;
+
+  &:hover {
+    color: white;
+    background-color: #c62c24;
+    border: none;
+  }
+
+  border-radius: 4px;
+  border: 1px solid #c62c24;
 
   transition: 0.4s ease-in;
 

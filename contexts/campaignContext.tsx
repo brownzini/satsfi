@@ -5,6 +5,7 @@ export type Campaign = {
   total_percent: number;
   total_campaign: number;
   size: number;
+  open_in?:string;
 };
 
 type CampaignContextType = {
