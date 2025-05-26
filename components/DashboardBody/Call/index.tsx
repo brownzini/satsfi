@@ -1,7 +1,5 @@
 import { useState } from "react";
-import {
-    Content,
-} from "./styles";
+import { Content, ControlArea, LinkArea } from "./styles";
 
 //Components
 import Field from "../Field";
@@ -9,66 +7,71 @@ import Field from "../Field";
 //Contexts
 import { useMessage } from "@/contexts/useMessage";
 import { useData } from "@/contexts/useData";
+import IntialCall from "./InitialCall";
 
 export default function Call() {
+  const { data, updateData } = useData();
 
-    const { data, updateData } = useData();
+  const [allow, setAllow] = useState<boolean>(data.call.allow);
+  const [minAmount, setMinAmount] = useState<string>(data.call.minAmount);
+  const [haveError, setHaveError] = useState<boolean>(false);
 
-    const [allow, setAllow] = useState<boolean>(data.call.allow);
-    const [minAmount, setMinAmount] = useState<string>(data.call.minAmount);
-    const [haveError, setHaveError] = useState<boolean>(false);
+  const link = "https://satsfi.com.br/chamada/" + data.generateKey.idString;
 
-    const link = 'https://www.google.com';
+  const { dispatchMessage } = useMessage();
 
-    const { dispatchMessage } = useMessage();
+  const hiddeError = () => {
+    haveError && setMinAmount("");
+    setHaveError(false);
+  };
 
-    const hiddeError = () => {
-        (haveError) && setMinAmount('');
-        setHaveError(false);
-    }
+  const voidFunction = (param: string) => {};
 
-    const voidFunction = (param:string) => { }
+  const hasNotChanged = () =>
+    data.call.allow === allow && data.call.minAmount === minAmount;
 
-    const hasNotChanged = () => (data.call.allow === allow && data.call.minAmount === minAmount);
+  const handleSave = () => {
+    const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
 
-    const handleSave = () => {
-        const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
-        
-        if(minAmount === '' || Number.isNaN(priceFiltered)) {
-            setMinAmount('Preencha o campo');
-            setHaveError(true);
-        } else if(priceFiltered < 12000 ) {
-            setMinAmount('Minimo é de 12,000 sats');
-            setHaveError(true);
-        } else {
-            const notChange = hasNotChanged();
-            if(!notChange) {
-               updateData('call', { 
-                   allow: allow,
-                   minAmount: minAmount,
-                });
-               dispatchMessage('[SUCESSO]: Alterações realizadas', true, 3000);
-            }
-        }
-    }
-
-    function copyTextToClipboard() {
-        if (!navigator.clipboard) {
-            return;
-        }
-        navigator.clipboard.writeText(link).then(function () {
-            dispatchMessage('Link copiado com sucesso!', true, 2000);
-        }, function (err) {
-            dispatchMessage('Erro ao copiar o texto', false, 2000);
+    if (minAmount === "" || Number.isNaN(priceFiltered)) {
+      setMinAmount("Preencha o campo");
+      setHaveError(true);
+    } else if (priceFiltered < 12000) {
+      setMinAmount("Minimo é de 12,000 sats");
+      setHaveError(true);
+    } else {
+      const notChange = hasNotChanged();
+      if (!notChange) {
+        updateData("call", {
+          allow: allow,
+          minAmount: minAmount,
         });
+        dispatchMessage("[SUCESSO]: Alterações realizadas", true, 3000);
+      }
     }
+  };
 
-    return (
-        <Content className="flex fd">
-                <Field
-                    type="title"
-                    text="Liberar chamada ao vivo:"
-                    center={`
+  function copyTextToClipboard() {
+    if (!navigator.clipboard) {
+      return;
+    }
+    navigator.clipboard.writeText(link).then(
+      function () {
+        dispatchMessage("Link copiado com sucesso!", true, 2000);
+      },
+      function (err) {
+        dispatchMessage("Erro ao copiar o texto", false, 2000);
+      }
+    );
+  }
+
+  return (
+    <Content className="flex">
+      <LinkArea className="flex fd">
+        <Field
+          type="title"
+          text="Liberar chamada ao vivo:"
+          center={`
                                 height: 10%;
                                 justify-content: flex-start;
                                 padding-left: 25%;
@@ -85,7 +88,7 @@ export default function Call() {
                                     height: 10%;
                                 }
                             `}
-                    styler={`
+          styler={`
                                 color: #3C5774;
                                 font-size: 1.2rem;
                                 font-family: "Inter";
@@ -103,32 +106,32 @@ export default function Call() {
                                     font-size: 2rem;
                                 }
                             `}
-                />
-                <Field
-                    type="toggle"
-                    center={`
+        />
+        <Field
+          type="toggle"
+          center={`
                             height: 10%;
                             justify-content: flex-start;
                             padding-left: 25%;
                         `}
-                    text="Permitir donate por audio e IA"
-                    styler={`
+          text="Permitir donate por audio e IA"
+          styler={`
                     
                         `}
-                    checked={allow}
-                    setChecked={setAllow}
-                />
-                <br />
-                <Field
-                    type="title"
-                    text="Valor minimo (FIXO):"
-                    center={`
+          checked={allow}
+          setChecked={setAllow}
+        />
+        <br />
+        <Field
+          type="title"
+          text="Valor minimo (FIXO):"
+          center={`
                         height: 10%;
                         justify-content: flex-start;
                         padding-left: 25%;
                     `}
-                    styler={`
-                        color: ${(!haveError) ? '#3C5774' : 'red'};
+          styler={`
+                        color: ${!haveError ? "#3C5774" : "red"};
                         transition: 0.5s;
                         font-size: 1.2rem;
                         font-family: "Inter";
@@ -148,15 +151,15 @@ export default function Call() {
                         }
 
                     `}
-                />
-                <Field
-                    type="input"
-                    center={`
+        />
+        <Field
+          type="input"
+          center={`
                         width: 100%;
                         height: 10%;
                         padding-left: 25%;
                     `}
-                    styler={`
+          styler={`
                         width: 75%;
                         height: 100%;
 
@@ -164,7 +167,7 @@ export default function Call() {
 
                         border-radius: 5px;
 
-                        color: ${(!haveError) ? '#6a5212' : 'red'};
+                        color: ${!haveError ? "#6a5212" : "red"};
                         font-family: "Roboto";
                         font-weight: 400;
                         font-size: 1.2rem;
@@ -187,18 +190,18 @@ export default function Call() {
                         }
                         
                     `}
-                    inputType="price"
-                    disabled={true}
-                    onClick={hiddeError}
-                    inputValue={minAmount}
-                    setInputValue={setMinAmount}
-                    placeholder="Minimo de 12,000 Sats"
-                />
+          inputType="price"
+          disabled={true}
+          onClick={hiddeError}
+          inputValue={minAmount}
+          setInputValue={setMinAmount}
+          placeholder="Minimo de 12,000 Sats"
+        />
 
-                <Field
-                    type="title"
-                    text="Link para acessar:"
-                    center={`
+        <Field
+          type="title"
+          text="Link para acessar:"
+          center={`
                                 height: 10%;
                                 justify-content: flex-start;
                                 padding-left: 25%;
@@ -207,7 +210,7 @@ export default function Call() {
                                     height: 10%;
                                 }
                             `}
-                    styler={`
+          styler={`
                                 color: #3C5774;
                                 font-size: 1.2rem;
                                 font-family: "Inter";
@@ -226,16 +229,16 @@ export default function Call() {
                                     margin-top:2%;
                                 }
                             `}
-                />
-                <Field
-                    type="input"
-                    center={`
+        />
+        <Field
+          type="input"
+          center={`
                             width: 100%;
                             height: 10%;
                             padding-left: 12%;
                             justify-content: center;
                         `}
-                    styler={`
+          styler={`
                             width: 70%;
                             height: 100%;
 
@@ -267,15 +270,15 @@ export default function Call() {
                             }
 
                         `}
-                    inputType="price"
-                    inputValue={link}
-                    setInputValue={voidFunction}
-                    onClick={copyTextToClipboard}
-                />
-                <br />
-                <Field
-                    type="button"
-                    center={`
+          inputType="price"
+          inputValue={link}
+          setInputValue={voidFunction}
+          onClick={copyTextToClipboard}
+        />
+        <br />
+        <Field
+          type="button"
+          center={`
                             width: 100%;
                             height: 20%;
                             justify-content: flex-start;
@@ -283,8 +286,8 @@ export default function Call() {
                             padding-left: 25%;
                            
                         `}
-                    text="Salvar"
-                    styler={`
+          text="Salvar"
+          styler={`
                             width: 25%;
                             height: 70%;
                             color: white;
@@ -316,9 +319,12 @@ export default function Call() {
                                 font-size: 2rem;
                             }
                         `}
-                    onClick={handleSave}
-                />
-      
-        </Content>
-    );
+          onClick={handleSave}
+        />
+      </LinkArea>
+      <ControlArea className="flex fd">
+            <IntialCall />
+      </ControlArea>
+    </Content>
+  );
 }

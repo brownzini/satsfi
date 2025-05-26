@@ -29,13 +29,12 @@ import { useActiveWs } from "@/contexts/useActiveWs";
 import { updateConfig } from "@/app/firebase/services/Users";
 import DurationSurveyArea from "./DurationSurveyArea";
 import GenerationSurveyArea from "./GenerationSurveyArea";
-import { nEncode } from "@/utils/encrypt/encrypt";
-import { unescape } from "querystring";
+
 import axios from "axios";
 
 export default function Survey() {
   const { data, updateData } = useData();
-  const { wsConfig, surveySoloDonation, setsurveySoloDonation } = useActiveWs();
+  const { surveySoloDonation, setsurveySoloDonation } = useActiveWs();
 
   const [surveyStatus, setSurveyStatus] = useState<boolean>(data.survey.allow);
   const [minCreateSurvey, setMinCreateSurvey] = useState<string>(
