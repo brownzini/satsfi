@@ -35,17 +35,17 @@ export const filterAmount = (value: string) => {
 
     //1 Bilhão - 10 Bilhões
     if (integerAmount >= 1000000000 && integerAmount < 10000000000) {
-        return (integerAmount / 1000000) + 'B';
+        return (integerAmount / 1000000000) + 'B';
     }
 
     //10 Bilhões - 100 Bilhões
     if (integerAmount >= 10000000000 && integerAmount < 100000000000) {
-        return (integerAmount / 1000000) + 'B';
+        return (integerAmount / 1000000000) + 'B';
     }
 
     //100 Bilhões - 1 Trilhão
     if (integerAmount >= 100000000000 && integerAmount < 1000000000000) {
-        return (integerAmount / 1000000) + 'B';
+        return (integerAmount / 1000000000) + 'B';
     }
 
 }
@@ -59,6 +59,6 @@ export const feeConvert = (type: string, amount:string) => {
         case 'call': return Math.floor(parseInt(amount) * 0.95).toString();
         case 'surveyDonation': return Math.floor(parseInt(amount) * 0.25).toString(); 
         case 'backgroundDonation': return Math.floor(parseInt(amount) * 0.95).toString();
-        default: return Math.floor(parseInt(amount) * 0.9).toString();
+        default: return Math.floor(parseInt(amount) * 0.95).toString();
     }
 }
