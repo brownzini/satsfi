@@ -19,6 +19,14 @@ export const TermsContainer = styled.div`
   align-items: center;
 
   gap: 10px;
+
+  @media (min-width: 1600px) {
+    margin-top: 2%;
+  }
+  @media (min-width: 1900px) {
+    margin-top: 5%;
+    gap: 0px;
+  }
 `;
 
 export const FieldContainer = styled.div`
@@ -44,6 +52,12 @@ export const FieldTitle = styled.h2`
   color: #3c5774;
   font-weight: bolder;
   font-family: "Inter", Courier, monospace;
+  @media (min-width: 1900px) {
+    font-size: 1.4rem;
+  }
+  @media (min-width: 3000px) {
+    font-size: 2rem;
+  }
 `;
 
 export const FieldInputContainer = styled.div`
@@ -52,13 +66,13 @@ export const FieldInputContainer = styled.div`
 `;
 
 interface ErrorProps {
-  haserror:string;
+  haserror: string;
 }
 
 export const FieldInput = styled.input<ErrorProps>`
   width: 100%;
   height: 100%;
-  border: 1px solid  ${(p) => (p.haserror === "true") ? "red" : "black"};
+  border: 1px solid ${(p) => (p.haserror === "true" ? "red" : "black")};
   outline: none;
 
   font-size: 1rem;
@@ -71,6 +85,12 @@ export const FieldInput = styled.input<ErrorProps>`
   padding-right: 5%;
   border-radius: 4px;
 
+  @media (min-width: 1900px) {
+    font-size: 1.6rem;
+  }
+  @media (min-width: 3000px) {
+    font-size: 2rem;
+  }
   cursor: pointer;
 `;
 
@@ -163,6 +183,22 @@ export const TitleTerm = styled.h3`
   font-weight: 400;
   font-family: "Inter", Courier, monospace;
   text-align: left;
+
+  @media (max-width: 900px) {
+    font-size: 0.80rem;
+  }
+  @media (min-width: 1024px) {
+    font-size: 1rem;
+  }
+  @media (min-width: 1900px) {
+    font-size: 1.6rem;
+  }
+  @media (min-width: 2500px) {
+    font-size: 2rem;
+  }
+  @media (min-width: 3000px) {
+    font-size: 2.5rem;
+  }
 `;
 
 export const SubTitleTerm = styled.h2`
@@ -170,29 +206,44 @@ export const SubTitleTerm = styled.h2`
   font-weight: bolder;
   font-family: "Inter", Courier, monospace;
   text-align: left;
+  @media (max-width: 900px) {
+    font-size: 1.1rem;
+  }
+  @media (min-width: 1024px) {
+    font-size: 1.4rem;
+  }
+  @media (min-width: 1900px) {
+    font-size: 2rem;
+  }
+  @media (min-width: 2500px) {
+    font-size: 2.5rem;
+  }
+  @media (min-width: 3000px) {
+    font-size: 3rem;
+  }
 `;
 interface ErrorProps {
-  haserror:string;
+  haserror: string;
 }
 
-export const CheckBox = styled.input.attrs({ type: 'checkbox' })<ErrorProps>`
+export const CheckBox = styled.input.attrs({ type: "checkbox" })<ErrorProps>`
   appearance: none;
   -webkit-appearance: none;
   width: 20px;
   height: 20px;
-  border: 2px solid ${(p) => (p.haserror === "true") ? "red" : "#555"};
+  border: 2px solid ${(p) => (p.haserror === "true" ? "red" : "#555")};
   border-radius: 4px;
   cursor: pointer;
   position: relative;
   margin-right: 8px;
 
   &:checked {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
+    background-color: #4caf50;
+    border-color: #4caf50;
   }
 
   &:checked::after {
-    content: '✔';
+    content: "✔";
     color: white;
     position: absolute;
     top: 0;
@@ -206,4 +257,3 @@ export const CheckBox = styled.input.attrs({ type: 'checkbox' })<ErrorProps>`
 
   transition: 0.4s ease;
 `;
-

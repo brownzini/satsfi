@@ -16,7 +16,7 @@ export const CardContainer = styled.div`
   height: 30%;
   position: relative;
   border-radius: 10px;
-  border: 1px solid #6F9BCB;
+  border: 1px solid #6f9bcb;
 `;
 
 export const CardWrapper = styled.div`
@@ -30,17 +30,30 @@ export const CardWrapper = styled.div`
 `;
 
 export const CardHeaderText = styled.div`
-    color: #6F9BCB;
-    font-weight: 300;
-    font-family: 'Inter', Courier, monospace;
+  color: #6f9bcb;
+  font-weight: 300;
+  font-family: "Inter", Courier, monospace;
+
+  @media (min-width: 1900px) {
+    font-size: 1.2rem;
+  }
+  @media (min-width: 2500px) {
+    font-size: 1.6rem;
+  }
 `;
 
 export const CardBodyText = styled.div`
-    color: #6F9BCB;
-    font-weight:bolder;
-    font-family: 'Inter', Courier, monospace;
-    text-align: center;
-    white-space: pre-line;
+  color: #6f9bcb;
+  font-weight: bolder;
+  font-family: "Inter", Courier, monospace;
+  text-align: center;
+  white-space: pre-line;
+  @media (min-width: 1900px) {
+    font-size: 1.2rem;
+  }
+  @media (min-width: 2500px) {
+    font-size: 1.6rem;
+  }
 `;
 
 export const BodyContent = styled.div`
@@ -77,7 +90,7 @@ export const BodyButton = styled.button`
   user-select: none;
 
   @media (min-width: 1900px) {
-    font-size: 2rem;
+    font-size: 1.2rem;
     height: 50%;
   }
 `;
@@ -94,12 +107,12 @@ export const FinishButton = styled.button`
 
   text-align: center;
 
-  background-color: #E64747;
+  background-color: #e64747;
 
   &:hover {
-    color: #E64747;
+    color: #e64747;
     background-color: white;
-    border: 1px solid #E64747;
+    border: 1px solid #e64747;
   }
 
   border-radius: 4px;
@@ -111,8 +124,11 @@ export const FinishButton = styled.button`
   user-select: none;
 
   @media (min-width: 1900px) {
-    font-size: 2rem;
+    font-size: 1.2rem;
     height: 50%;
+  }
+  @media (min-width: 2500px) {
+    font-size: 1.6rem;
   }
 `;
 
@@ -127,4 +143,10 @@ export const FooterText = styled.h2`
   font-weight: 200;
   font-family: "Inter", Courier, monospace;
   text-align: center;
+  @media (min-width: 1900px) {
+    font-size: 2rem;
+  }
+  @media (min-width: 2500px) {
+    font-size: 2.5rem;
+  }
 `;
