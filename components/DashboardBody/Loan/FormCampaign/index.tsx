@@ -16,13 +16,16 @@ import {
 } from "./styles";
 import { filterAmount } from "@/utils/inputFormat";
 import { useMessage } from "@/contexts/useMessage";
+import { updateLoan } from "@/app/firebase/services/Loan";
+import { useCampaign } from "@/contexts/campaignContext";
 
 export default function FormCampaign() {
   const { dispatchMessage } = useMessage();
+  const { campaign, setCampaign } = useCampaign();
 
   const [description, setDescription] = useState<string>("");
-  const [percent, setPercent] = useState<number>(100);
-  const [amount, setAmount] = useState<number>(16000);
+  const [percent, setPercent] = useState<number>(95);
+  const [amount, setAmount] = useState<number>(10000);
   const [period, setPeriod] = useState<Date | null>(null);
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -43,7 +46,7 @@ export default function FormCampaign() {
 
   function onChangeDescription(text: string) {
     if (description.length <= 100) {
-      setDescription(text);
+      setDescription(text.replace(/[,.]/g, ""));
     } else {
       setDescription(text.slice(0, -1));
     }
@@ -51,19 +54,29 @@ export default function FormCampaign() {
 
   function onChangePercent(text: number) {
     if (typeof text === "number") {
-      if (percent <= 100) {
-        setPercent(text);
+      if (percent <= 95) {
+        setPercent(Math.round(text));
       } else {
-        setPercent(100);
+        setPercent(95);
+      }
+    }
+  }
+
+  function onChangeAmount(text: number) {
+    if (typeof text === "number") {
+      if (amount > 0 && amount < 1000000000000) {
+        setAmount(Math.round(text));
+      } else {
+        setAmount(1);
       }
     }
   }
 
   function validationFields() {
-    const hasDescriptionNotOK = (description.length > 100 || description === "");
-    const hasPercentNotOK = (percent > 100 || percent <= 0);
+    const hasDescriptionNotOK = description.length > 100 || description === "";
+    const hasPercentNotOK = percent > 95 || percent <= 0;
     const hasAmountNotOK = amount <= 0;
-    const hasPeriodNotOK = (period === null || period === undefined);
+    const hasPeriodNotOK = period === null || period === undefined;
 
     if (
       hasDescriptionNotOK ||
@@ -90,8 +103,22 @@ export default function FormCampaign() {
 
   async function handleSave() {
     const result = validationFields();
-    if(result) {
-      console.log("pronto pra ir pro banco de dados")
+    const access_code = localStorage.getItem("sid");
+    if (result && access_code) {
+      const [keyHub, handle] = access_code.split("|");
+      await updateLoan(handle, {
+        description,
+        percent_sale: percent / 100,
+        total_campaign: campaign ? campaign.total_campaign + 1 : 0,
+        sale_amount: amount,
+        expiration_date: period,
+      });
+      setCampaign({
+          description,
+          total_percent: (campaign) ? campaign.total_percent : 0.95, 
+          total_campaign: campaign ? campaign.total_campaign + 1 : 0,
+          size: (campaign) ? campaign.size : 0,
+      });
     }
   }
 
@@ -112,7 +139,7 @@ export default function FormCampaign() {
         />
         <Amount
           amount={amount}
-          setAmount={setAmount}
+          setAmount={onChangeAmount}
           amountError={amountError}
           setAmountError={setAmountError}
         />
@@ -148,7 +175,9 @@ export default function FormCampaign() {
           <TitleTerm>Concordo</TitleTerm>
         </TermArea>
         <ButtonTermArea className="flex fd">
-          <CreateButton className="flex" onClick={handleSave}>CRIAR</CreateButton>
+          <CreateButton className="flex" onClick={handleSave}>
+            CRIAR
+          </CreateButton>
         </ButtonTermArea>
       </TermsContainer>
     </MainContent>

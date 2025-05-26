@@ -1,4 +1,11 @@
-import { collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 import { db } from "../firebase";
 
@@ -38,7 +45,6 @@ export const updateConfig = async (
   handle: string,
   data: any
 ): Promise<boolean> => {
-
   if (handle) {
     try {
       const userDoc = doc(db, "users", handle);

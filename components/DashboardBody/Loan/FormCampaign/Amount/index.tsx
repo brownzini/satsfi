@@ -30,7 +30,6 @@ export default function Amount({
           haserror={amountError.toString()}
           value={amount}
           onChange={(event) => setAmount(Number(event.target.value))}
-          placeholder="EX: Valor minimo 16,000 de satoshis ... "
           onClick={() => setAmountError(false)}
         />
       </FieldInputContainer>

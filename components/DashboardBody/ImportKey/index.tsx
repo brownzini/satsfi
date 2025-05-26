@@ -51,6 +51,7 @@ export default function ImportKey() {
       if (response) {
         setData(response);
         setActiveScreen("start");
+        localStorage.setItem("sid", accessCode);
       } else {
         setACError(false);
         dispatchMessage("[ERRO]: Hub inválido !!", false);
