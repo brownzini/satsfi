@@ -1,3 +1,4 @@
+import ViewerCalling from "../ViewerCalling";
 import {
   CallBody,
   CallHeader,
@@ -37,7 +38,11 @@ export default function IntialCall() {
         </RecivedCallsTotal>
       </CallHeader>
       <CallBody className="flex">
-        <NoCallMessage>Nenhuma ligação recebida até o momento</NoCallMessage>
+        {false ? (
+          <NoCallMessage>Nenhuma ligação recebida até o momento</NoCallMessage>
+        ) : (
+          <ViewerCalling />
+        )}
       </CallBody>
     </MainContainer>
   );
