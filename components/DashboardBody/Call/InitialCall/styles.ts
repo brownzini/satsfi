@@ -45,6 +45,10 @@ export const CallsTotalSubTitleArea = styled.div`
   width: 30%;
   height: 100%;
 `;
+export const RecivedCallsTotalSubTitleArea = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 export const CallsTotalSubTitle = styled.h2`
   font-weight: bolder;

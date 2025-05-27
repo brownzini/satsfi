@@ -323,7 +323,7 @@ export default function Call() {
         />
       </LinkArea>
       <ControlArea className="flex fd">
-            <IntialCall />
+            <IntialCall handle={data.generateKey.idString} />
       </ControlArea>
     </Content>
   );

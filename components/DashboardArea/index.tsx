@@ -11,10 +11,20 @@ import { ActiveWsProvider } from "@/contexts/useActiveWs";
 import { useEffect, useRef } from "react";
 import { getLoan } from "@/app/firebase/services/Loan";
 import { useCampaign } from "@/contexts/campaignContext";
+import { streamerSocket } from "@/utils/CallWebsocket";
+import { useCall } from "@/contexts/useCall";
 
 export default function DashboardArea() {
-
   const { setCampaign } = useCampaign();
+  const {
+    setUsername,
+    setStartCallHash,
+    setEndCallHash,
+    setIsCalling,
+    setFinishedCall,
+    setSocket,
+  } = useCall();
+
   const hasRun = useRef(false);
 
   useEffect(() => {
@@ -25,6 +35,15 @@ export default function DashboardArea() {
           const [keyHub, handle] = access_code.split("|");
           const loanData = await getLoan(handle);
           setCampaign(loanData);
+          const socket = streamerSocket({
+            handle,
+            setUsername,
+            setStartCallHash,
+            setEndCallHash,
+            setIsCalling,
+            setFinishedCall,
+          });
+          setSocket(socket);
         }
       } catch (error) {}
     };
