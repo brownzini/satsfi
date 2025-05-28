@@ -54,11 +54,15 @@ export const isOnlySpaces = (str: string) => {
     return str.trim().length === 0;
 };
 
-export const feeConvert = (type: string, amount:string) => {
+export const feeConvert = (type: string, amount:string, ddp:number) => {
+    const callValue = (type === "call") ? (Number(amount)*0.95)*ddp : 0.95*Number(amount);
+    const survey = (type === "surveyDonation") ? (Number(amount)*0.25)*ddp : 0.25*Number(amount);
+    const backgroundValue = (type === "backgroundDonation") ? (Number(amount)*0.90)*ddp : 0.9*Number(amount);
+    const normalValue = (type === "normal") ? (Number(amount)*0.95)*ddp : 0.95*Number(amount);
     switch (type) {
-        case 'call': return Math.floor(parseInt(amount) * 0.95).toString();
-        case 'surveyDonation': return Math.floor(parseInt(amount) * 0.25).toString(); 
-        case 'backgroundDonation': return Math.floor(parseInt(amount) * 0.95).toString();
-        default: return Math.floor(parseInt(amount) * 0.95).toString();
+        case 'call': return Math.floor(callValue).toString();
+        case 'surveyDonation': return Math.floor(survey).toString(); 
+        case 'backgroundDonation': return Math.floor(backgroundValue).toString();
+        default: return Math.floor(normalValue).toString();
     }
 }

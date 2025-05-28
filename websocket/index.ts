@@ -17,7 +17,7 @@ export default function WebSocketService(
   setsurveySoloDonation: React.Dispatch<
     React.SetStateAction<WebsocketSurveyProps[]>
   >,
-  surveySoloDonation: WebsocketSurveyProps[]
+  ddp:number,
 ) {
   const socket = io("http://localhost:8080", {
     auth: { keyHub: keyHub, handle: handle },
@@ -34,7 +34,7 @@ export default function WebSocketService(
       {
         date: getToday(),
         type: "call",
-        value: feeConvert("call", data.amount),
+        value: feeConvert("call", data.amount, ddp),
         donor_name: data.name,
         message: "",
       },
@@ -48,7 +48,7 @@ export default function WebSocketService(
       {
         date: getToday(),
         type: data.type,
-        value: feeConvert("backgroundDonation", data.amount),
+        value: feeConvert("backgroundDonation", data.amount, ddp),
         donor_name: data.name,
         message: data.message,
       },
@@ -58,7 +58,7 @@ export default function WebSocketService(
       {
         date: getToday(),
         type: data.type,
-        value: feeConvert("backgroundDonation", data.amount),
+        value: feeConvert("backgroundDonation", data.amount, ddp),
         name: data.name,
         message: data.message,
       },
@@ -73,7 +73,7 @@ export default function WebSocketService(
       {
         date: getToday(),
         type: "survey",
-        value: feeConvert("surveyDonation", data.amount),
+        value: feeConvert("surveyDonation", data.amount, ddp),
         donor_name: "",
         message: "",
       },
@@ -102,7 +102,7 @@ export default function WebSocketService(
           {
             date: getToday(),
             type: "survey",
-            value: feeConvert("createSurveyDonation", data.amount),
+            value: feeConvert("createSurveyDonation", data.amount, ddp),
             donor_name: data.name,
             message: data.message,
           },
@@ -150,7 +150,7 @@ export default function WebSocketService(
       {
         date: getToday(),
         type: "normal",
-        value: feeConvert("normalDonation", data.amount),
+        value: feeConvert("normalDonation", data.amount, ddp),
         donor_name: data.name,
         message: data.message,
       },

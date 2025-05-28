@@ -17,6 +17,7 @@ import { useData } from "@/contexts/useData";
 //Websocket
 import WebSocketService from "../../../websocket";
 import { useActiveWs } from "@/contexts/useActiveWs";
+import { useCampaign } from "@/contexts/campaignContext";
 
 type ButtonName = 'start' | 'stop';
 
@@ -37,7 +38,7 @@ export default function Start() {
         wsConfig, setWsConfig, setActiveWs, 
         surveySoloDonation, setsurveySoloDonation 
     } = useActiveWs();
-    
+    const { campaign } = useCampaign();
     const [buttonState, setButtonState] = useState<ButtonStateProps>({
         start: { 
             status: !wsConfig, 
@@ -97,6 +98,7 @@ export default function Start() {
         toggleButtonState(getNextButton);
 
         if (data.generateKey.keyHub && activedButton === 'start') {
+            const ddp = (campaign) ? campaign.total_percent : 1;
             const socket = WebSocketService(
                 data.generateKey.idString,
                 data.generateKey.keyHub,
@@ -104,7 +106,7 @@ export default function Start() {
                 addDonate,
                 updateData,
                 setsurveySoloDonation,
-                surveySoloDonation
+                ddp
             );
             setActiveWs(true);
             setWsConfig(socket);
