@@ -56,7 +56,7 @@ export default function TrackDonate() {
   return (
     <Container className="flex fd">
       <ContentContainer className="flex">
-        <DonationCard onClick={() => console.log(data)}>
+        <DonationCard>
           {data.trackDonate.length > 0 &&
             data.trackDonate.map((donate, index) =>
               RenderingCards(

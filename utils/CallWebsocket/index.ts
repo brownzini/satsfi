@@ -23,7 +23,7 @@ export function streamerSocket({
       handle,
     },
   });
-
+  
   socket.on("connect", () => {});
 
   socket.on(handle + "_connected_in_call", (data) => {

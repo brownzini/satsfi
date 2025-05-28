@@ -16,16 +16,35 @@ import {
   ViewerWrapperContainer,
 } from "./styles";
 import { createRoom } from "@/utils/call/createRoom";
-import { joinRoom } from "@/utils/call/joinRoom";
+import { useCall } from "@/contexts/useCall";
+import soundEffect from "@/utils/SoundEffect";
+import { cleanQueue } from "@/app/firebase/services/Queue";
 
-export default function InCall() {
+interface Props {
+  handle: string;
+}
+
+export default function InCall({ handle }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [peer, setPeer] = useState<any>(null);
 
+  const {
+    socket,
+    room_id,
+    username,
+    endCallHash,
+    setInCall,
+    setIsCalling,
+    setHasConnected,
+    setUsername,
+    setStartCallHash,
+    setEndCallHash,
+    setSocket,
+  } = useCall();
+
   useEffect(() => {
-    // if (hasConnected) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -37,23 +56,16 @@ export default function InCall() {
     }
 
     const peerConnection = createRoom({
-      room_id: "123",
+      room_id,
       setRemoteStream,
       ctx,
       canvas,
       volume: "100",
     });
-    
-    setPeer(peerConnection);
-    // joinRoom({
-    //   room_id: "123",
-    //   setRemoteStream,
-    //   ctx,
-    //   canvas,
-    //   volume: "100",
-    // });
 
-    // }
+    setPeer(peerConnection);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function setRemoteStream(stream: any) {
@@ -61,6 +73,36 @@ export default function InCall() {
     if (!video) return;
     video.srcObject = stream;
     video.play();
+  }
+
+  async function handleFinish() {
+    soundEffect("disconnected");
+
+    socket.emit(
+      handle + "_queue_list",
+      JSON.stringify({
+        msg: "finished_call",
+        token: endCallHash,
+        username,
+        cleanQueue: true,
+      })
+    );
+
+    const list: any = [];
+    await cleanQueue(handle, list);
+
+    if (peer) {
+      peer.disconnect();
+      peer.destroy();
+    }
+
+    setUsername("");
+    setInCall(false);
+    setIsCalling(false);
+    setHasConnected(false);
+    setStartCallHash("");
+    setEndCallHash("");
+    setSocket(null);
   }
 
   return (
@@ -73,7 +115,7 @@ export default function InCall() {
               <ImageContent src="https://res.cloudinary.com/dqq4f9a1l/image/upload/v1747089059/guy_happy_sdt69p.png" />
             </ImageArea>
             <ViewerNameContainer className="flex">
-              <ViewerName>Ronaldinho</ViewerName>
+              <ViewerName>{username}</ViewerName>
             </ViewerNameContainer>
           </ImageContainer>
         </ViewerWrapperContainer>
@@ -84,7 +126,7 @@ export default function InCall() {
         </AudioContainer>
       </BodyContainer>
       <FooterContainer className="flex">
-        <ButtonFooter>DESLIGAR CHAMADA</ButtonFooter>
+        <ButtonFooter onClick={handleFinish}>DESLIGAR CHAMADA</ButtonFooter>
       </FooterContainer>
     </MainContainer>
   );

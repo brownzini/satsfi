@@ -53,7 +53,7 @@ export default function Loan({ handle }: Props) {
   };
 
   return (
-    <LoanContainer onClick={() => console.log(campaign)} className="flex fd">
+    <LoanContainer className="flex fd">
       {RenderingScreens(screen)}
     </LoanContainer>
   );
