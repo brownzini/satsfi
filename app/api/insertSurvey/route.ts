@@ -1,5 +1,13 @@
 import { NextResponse } from "next/server";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '3kb', // Define o limite máximo do body
+    },
+  },
+};
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();

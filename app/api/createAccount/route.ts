@@ -1,5 +1,13 @@
 import { NextResponse } from "next/server";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '3kb', // Define o limite máximo do body
+    },
+  },
+};
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -15,7 +23,7 @@ export async function POST(req: Request) {
       ? clientIp.replace("::ffff:", "")
       : "";
 
-    const url = process.env.BG_REMOVE_URL ?? "http://localhost:3002/users/createUser/cqi13ioojdsx777";
+    const url = process.env.CREATE_USER_URL ?? "http://localhost:3002/users/createUser/cqi13ioojdsx777";
 
     const response = await fetch(url, {
       method: "POST",
@@ -32,6 +40,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ msg: "ok" });
     }
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ msg: "error" });
   }
 }
