@@ -40,13 +40,13 @@ export const ButtonArea = styled.div<Prop>`
 
   @keyframes LoadingButton {
     0% {
-      background-color:  ${(p) => (p.styler === "Iniciar") ? "#7b15aa" : "#DD4A4A"}; 
+      background-color:  ${(p) => (p.styler === "start") ? "#7b15aa" : "#DD4A4A"}; 
     }
     50% {
-      background-color:${(p) => (p.styler === "Iniciar") ? "#aa15a8" : "#F27C7C"};  ;
+      background-color:${(p) => (p.styler === "start") ? "#aa15a8" : "#F27C7C"};  ;
     }
     100% {
-     background-color:  ${(p) => (p.styler === "Iniciar") ? "#7b15aa" : "#DD4A4A"}; 
+     background-color:  ${(p) => (p.styler === "start") ? "#7b15aa" : "#DD4A4A"}; 
     }
   }
 

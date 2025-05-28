@@ -73,12 +73,12 @@ export const BodyButton = styled.button`
 
   text-align: center;
 
-  background-color: #6f9bcb;
+  background-color: #6fcb6f;
 
   &:hover {
-    color: #6f9bcb;
+    color: #6fcb6f;
     background-color: white;
-    border: 1px solid #6f9bcb;
+    border: 1px solid #6fcb6f;
   }
 
   border-radius: 4px;
