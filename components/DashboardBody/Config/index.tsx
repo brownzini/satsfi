@@ -105,7 +105,7 @@ export default function Config() {
             center={`
     height: 10%;
     justify-content: flex-start;
-    padding-left: 12%;
+    padding-left: 25%;
 
     @media only screen and (min-height: 900px) {
         height: 20%;
@@ -129,7 +129,7 @@ export default function Config() {
             center={`
     width: 100%;
     height: 10%;
-    padding-left: 12%;
+    padding-left: 25%;
 `}
             styler={`
     width: 70%;
@@ -164,7 +164,7 @@ export default function Config() {
             center={`
     height: 10%;
     justify-content: flex-start;
-    padding-left: 12%;
+    padding-left: 25%;
 `}
             text="Permitir donates"
             styler={`
@@ -183,7 +183,7 @@ export default function Config() {
             center={`
     height: 10%;
     justify-content: flex-start;
-    padding-left: 12%;
+    padding-left: 25%;
 `}
             styler={`
  
@@ -199,12 +199,12 @@ export default function Config() {
     width: 100%;
     height: 20%;
     justify-content: flex-start;
-    padding-left: 12%;
+    padding-left: 25%;
    
 `}
             text="Salvar"
             styler={`
-    width: 70%;
+    width: 25%;
     height: 70%;
     color: white;
     font-size: 1.4rem;
@@ -230,11 +230,7 @@ export default function Config() {
             onClick={validationField}
           />
         </Amounts>
-        <Setups className="flex fd">
-          <DescriptionArea>
-   
-          </DescriptionArea>
-        </Setups>
+       
       </WrapperContainer>
     </Container>
   );
