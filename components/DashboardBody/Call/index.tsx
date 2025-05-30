@@ -337,8 +337,11 @@ export default function Call() {
                                 font-size: 2.1rem;
                             }
 
-                            @media only screen and (min-width: 1600px) {
-                                font-size: 2rem;
+                            @media only screen and (min-width: 1500px) {
+                                font-size: 1.6rem;
+                            }
+                            @media only screen and (max-width: 1300px) {
+                                font-size: 1rem;
                             }
                         `}
           onClick={handleSave}
