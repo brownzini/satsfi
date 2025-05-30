@@ -40,7 +40,7 @@ export default function IntialCall({ handle }:Props) {
   return (
     <MainContainer className="flex fd">
 
-      {true && (
+      {isCalling && (
         <Audio autoPlay loop src={"/audio/calling.MP3"} />
       )}
 
