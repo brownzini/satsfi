@@ -87,7 +87,7 @@ export default function ViewerCalling({ handle, addCallToday }: Props) {
     <MainContainer className="flex fd">
       <NameContainer className="flex">
         <NameTitle className="dots">
-          <b>RONALDINHO </b> <br />
+          <b>{(username) ? username : "Alguém"} </b> <br />
           está te ligando<span className="loading-dots"></span>
         </NameTitle>
       </NameContainer>

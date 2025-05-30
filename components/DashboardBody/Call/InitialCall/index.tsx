@@ -13,17 +13,25 @@ import {
   RecivedCallsTotal,
   RecivedCallsTotalSubTitleArea,
   RecivedCallsTotalTitleArea,
+  Audio,
 } from "./styles";
 import InCall from "../InCall";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   handle:string;
 }
 
 export default function IntialCall({ handle }:Props) {
+
   const { isCalling, setIsCalling, inCall } = useCall();
+
   const [ callsToday, setCallsToday ] = useState<number>(0);
+  const [ username, setUsername ] = useState<string>("");
+  useEffect(() => {
+      const usernameStringed = localStorage.getItem("username");
+      setUsername((usernameStringed) ? usernameStringed : "");
+  },[])
 
   function addCallToday() {
     setCallsToday(callsToday+1);
@@ -31,6 +39,11 @@ export default function IntialCall({ handle }:Props) {
 
   return (
     <MainContainer className="flex fd">
+
+      {true && (
+        <Audio autoPlay loop src={"/audio/calling.MP3"} />
+      )}
+
       <CallHeader className="flex">
         <CallsTotal className="flex">
           <CallsTotalTitleArea
@@ -48,11 +61,12 @@ export default function IntialCall({ handle }:Props) {
 
         <RecivedCallsTotal className="flex fd">
           <RecivedCallsTotalTitleArea className="flex">
-            <CallsTotalTitle>Último a fazer uma ligação</CallsTotalTitle>
+            <CallsTotalTitle>{(username) ? "Último a fazer uma ligação" : "Não houve ligações"}</CallsTotalTitle>
           </RecivedCallsTotalTitleArea>
+          {(username) &&
           <RecivedCallsTotalSubTitleArea className="flex">
-            <CallsTotalSubTitle>Edinaldo Pereira</CallsTotalSubTitle>
-          </RecivedCallsTotalSubTitleArea>
+            <CallsTotalSubTitle>{username}</CallsTotalSubTitle>
+          </RecivedCallsTotalSubTitleArea>}
         </RecivedCallsTotal>
       </CallHeader>
       <CallBody className="flex">

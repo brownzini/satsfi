@@ -172,7 +172,7 @@ export default function GenerateKey() {
         trackDonate: [],
         call: {
           allow: true,
-          minAmount: "12,000",
+          minAmount: "12000",
         },
         generateKey: {
           idString: handle,

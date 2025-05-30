@@ -8,6 +8,7 @@ import Field from "../Field";
 import { useMessage } from "@/contexts/useMessage";
 import { useData } from "@/contexts/useData";
 import IntialCall from "./InitialCall";
+import { updateConfig } from "@/app/firebase/services/Users";
 
 export default function Call() {
   const { data, updateData } = useData();
@@ -16,7 +17,7 @@ export default function Call() {
   const [minAmount, setMinAmount] = useState<string>(data.call.minAmount);
   const [haveError, setHaveError] = useState<boolean>(false);
 
-  const link = "https://satsfi.com.br/chamada/" + data.generateKey.idString;
+  const link = "https://satsfi.com.br/" + data.generateKey.idString;
 
   const { dispatchMessage } = useMessage();
 
@@ -30,18 +31,39 @@ export default function Call() {
   const hasNotChanged = () =>
     data.call.allow === allow && data.call.minAmount === minAmount;
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
 
     if (minAmount === "" || Number.isNaN(priceFiltered)) {
       setMinAmount("Preencha o campo");
       setHaveError(true);
     } else if (priceFiltered < 12000) {
-      setMinAmount("Minimo é de 12,000 sats");
+      setMinAmount("Minimo é de 12.000 sats");
       setHaveError(true);
     } else {
       const notChange = hasNotChanged();
       if (!notChange) {
+        await updateConfig(
+          data.generateKey.idString,
+          JSON.stringify({
+            config: data.config,
+            survey: data.survey,
+            chromaKey: data.chromaKey,
+            call: {
+              allow,
+              minAmount: data.call.minAmount,
+            },
+            generateKey: data.generateKey,
+            isActiveHub: data.isActiveHub,
+            test: {
+              allow: true,
+            },
+            trackDonate: data.trackDonate,
+            blackList: data.blackList,
+            donations: data.donations,
+            qrCode: data.qrCode,
+          })
+        );
         updateData("call", {
           allow: allow,
           minAmount: minAmount,
@@ -323,7 +345,7 @@ export default function Call() {
         />
       </LinkArea>
       <ControlArea className="flex fd">
-            <IntialCall handle={data.generateKey.idString} />
+        <IntialCall handle={data.generateKey.idString} />
       </ControlArea>
     </Content>
   );

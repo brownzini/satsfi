@@ -24,6 +24,10 @@ export const NameTitle = styled.h2`
   color: #533b69;
   text-align: center;
   font-size: 1.2rem;
+
+  @media (min-width: 2500px) {
+    font-size: 2rem;
+  }
 `;
 
 export const ConfirmButton = styled.button`
@@ -49,6 +53,10 @@ export const ConfirmButton = styled.button`
   }
 
   cursor: pointer;
+
+  @media (min-width: 2500px) {
+    font-size: 2rem;
+  }
 `;
 
 export const RejectButton = styled.button`
@@ -71,6 +79,10 @@ export const RejectButton = styled.button`
 
   &:hover {
     background-color: #822121;
+  }
+
+  @media (min-width: 2500px) {
+    font-size: 2rem;
   }
 
   cursor: pointer;

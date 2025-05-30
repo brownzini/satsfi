@@ -103,6 +103,8 @@ export default function InCall({ handle }: Props) {
     setStartCallHash("");
     setEndCallHash("");
     setSocket(null);
+    localStorage.removeItem("room_id");
+    localStorage.removeItem("endHash");
   }
 
   return (
@@ -115,7 +117,7 @@ export default function InCall({ handle }: Props) {
               <ImageContent src="https://res.cloudinary.com/dqq4f9a1l/image/upload/v1747089059/guy_happy_sdt69p.png" />
             </ImageArea>
             <ViewerNameContainer className="flex">
-              <ViewerName>{username}</ViewerName>
+              <ViewerName>{(username) ? username : "Alguém"}</ViewerName>
             </ViewerNameContainer>
           </ImageContainer>
         </ViewerWrapperContainer>

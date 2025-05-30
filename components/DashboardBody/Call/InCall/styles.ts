@@ -19,6 +19,9 @@ export const ImageContainer = styled.div`
   width: 50%;
   height: 75%;
   position: relative;
+  @media (min-width: 1000px) {
+    height: 100%;
+  }
 `;
 
 export const ImageContent = styled.img`
@@ -36,6 +39,10 @@ export const ImageArea = styled.div`
   border-radius: 100%;
   border: 10px solid #2d9f6c;
   position: relative;
+
+  @media (min-width: 1000px) {
+    width: 50%;
+  }
 `;
 
 export const ViewerNameContainer = styled.div`
@@ -74,7 +81,7 @@ export const CanvasArea = styled.canvas`
 `;
 
 export const Video = styled.video`
- display: none;
+  display: none;
 `;
 
 export const FooterContainer = styled.div`
@@ -103,6 +110,14 @@ export const ButtonFooter = styled.button`
 
   &:hover {
     background-color: #c53030;
+  }
+
+  @media (min-width: 1000px) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: 1900px) {
+    font-size: 1.4rem;
   }
 
   cursor: pointer;
