@@ -20,3 +20,13 @@ export const updateQueueInCall = async (handle: string, inCall: string | ""): Pr
     return false;
   }
 };
+
+export const updateStatusQueue = async (handle: string, status:boolean): Promise<boolean> => {
+  const streamerDoc = doc(qdb, "queue", handle);
+  try {
+    await updateDoc(streamerDoc, {status});
+    return true;
+  } catch (error) {
+    return false;
+  }
+};

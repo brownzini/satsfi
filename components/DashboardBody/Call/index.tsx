@@ -9,6 +9,7 @@ import { useMessage } from "@/contexts/useMessage";
 import { useData } from "@/contexts/useData";
 import IntialCall from "./InitialCall";
 import { updateConfig } from "@/app/firebase/services/Users";
+import { updateStatusQueue } from "@/app/firebase/services/Queue";
 
 export default function Call() {
   const { data, updateData } = useData();
@@ -43,32 +44,44 @@ export default function Call() {
     } else {
       const notChange = hasNotChanged();
       if (!notChange) {
-        await updateConfig(
+        const response = await updateStatusQueue(
           data.generateKey.idString,
-          JSON.stringify({
-            config: data.config,
-            survey: data.survey,
-            chromaKey: data.chromaKey,
-            call: {
-              allow,
-              minAmount: data.call.minAmount,
-            },
-            generateKey: data.generateKey,
-            isActiveHub: data.isActiveHub,
-            test: {
-              allow: true,
-            },
-            trackDonate: data.trackDonate,
-            blackList: data.blackList,
-            donations: data.donations,
-            qrCode: data.qrCode,
-          })
+          allow
         );
-        updateData("call", {
-          allow: allow,
-          minAmount: minAmount,
-        });
-        dispatchMessage("[SUCESSO]: Alterações realizadas", true, 3000);
+        if (response) {
+          await updateConfig(
+            data.generateKey.idString,
+            JSON.stringify({
+              config: data.config,
+              survey: data.survey,
+              chromaKey: data.chromaKey,
+              call: {
+                allow,
+                minAmount: data.call.minAmount,
+              },
+              generateKey: data.generateKey,
+              isActiveHub: data.isActiveHub,
+              test: {
+                allow: true,
+              },
+              trackDonate: data.trackDonate,
+              blackList: data.blackList,
+              donations: data.donations,
+              qrCode: data.qrCode,
+            })
+          );
+          updateData("call", {
+            allow: allow,
+            minAmount: minAmount,
+          });
+          dispatchMessage("[SUCESSO]: Alterações realizadas", true, 3000);
+        } else {
+          dispatchMessage(
+            "[ERRO]: Não foi possivel alterar o estado da fila",
+            true,
+            1000
+          );
+        }
       }
     }
   };
