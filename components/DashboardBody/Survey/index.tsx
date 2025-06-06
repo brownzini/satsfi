@@ -726,7 +726,7 @@ export default function Survey() {
                             padding-left: 12%;
                         `}
           styler={` `}
-          checked={surveyStatus}
+          checked={true}
           setChecked={setSurveyStatus}
         />
         <br />

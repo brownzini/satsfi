@@ -188,7 +188,7 @@ export default function Config() {
             styler={`
  
 `}
-            checked={allowDonate}
+            checked={true}
             setChecked={setAllowDonate}
           />
           <br />
@@ -230,7 +230,6 @@ export default function Config() {
             onClick={validationField}
           />
         </Amounts>
-       
       </WrapperContainer>
     </Container>
   );

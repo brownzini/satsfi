@@ -153,7 +153,7 @@ export default function Call() {
           styler={`
                     
                         `}
-          checked={allow}
+          checked={true}
           setChecked={setAllow}
         />
         <br />

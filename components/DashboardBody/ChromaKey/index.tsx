@@ -116,8 +116,9 @@ export default function ChromaKey() {
           styler={`
                     
                         `}
-          checked={allow}
+          checked={true}
           setChecked={setAllow}
+          disabled
         />
         <br />
         <Field
@@ -184,7 +185,7 @@ export default function ChromaKey() {
                             font-weight: 400;
                             font-size: 1.2rem;
 
-                            padding-left: 1%;
+                            padding-left: 5%;
 
                             @media only screen and (min-width: 1600px) {
                                 font-size: 1.6rem;
@@ -259,7 +260,7 @@ export default function ChromaKey() {
                             font-weight: 400;
                             font-size: 1.2rem;
 
-                            padding-left: 1%;
+                            padding-left: 5%;
 
                             @media only screen and (min-width: 1600px) {
                                 font-size: 1.6rem;
