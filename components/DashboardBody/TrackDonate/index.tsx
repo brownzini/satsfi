@@ -7,17 +7,20 @@ import Card from "./Card";
 import { useData } from "@/contexts/useData";
 import SurveyCard from "./SurveyCard";
 import BackgroundCard from "./BackgroundCard";
+import { useState } from "react";
 
 export default function TrackDonate() {
   const { data } = useData();
-
+  const [loading, setLoading] = useState<boolean>(false);
   const RenderingCards = (
     type: string,
     index: number,
     name: string,
     amount: string,
     description: string,
-    audioURL?: string | undefined,
+    audioURL: string | null,
+    imgURL: string | null,
+    ytURL: string | null
   ) => {
     if (type === "createSurvey") {
       return (
@@ -37,6 +40,10 @@ export default function TrackDonate() {
           amount={amount}
           description={description}
           audioURL={audioURL}
+          imgURL={imgURL}
+          ytURL={ytURL}
+          loading={loading} 
+          setLoading={setLoading}
         />
       );
     }
@@ -65,7 +72,9 @@ export default function TrackDonate() {
                 donate.name,
                 donate.amount,
                 donate.description,
-                donate.audioURL
+                (donate.audioURL) ? donate.audioURL : null,
+                (donate.imgURL) ? donate.imgURL : null,
+                (donate.ytURL) ? donate.ytURL : null,
               )
             )}
         </DonationCard>

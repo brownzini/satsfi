@@ -40,7 +40,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ msg: "ok" });
     }
   } catch (error) {
-    console.log(error)
     return NextResponse.json({ msg: "error" });
   }
 }

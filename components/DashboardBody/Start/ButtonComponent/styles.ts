@@ -4,12 +4,10 @@ interface Prop {
   styler: string;
 }
 
-export const Container = styled.div<Prop>`
+export const Container = styled.div`
   width: 100%;
   height: 100%;
-
-  ${(p) => p.styler};
-
+  justify-content: flex-start;
   gap: 12px;
 
   transition: cubic-bezier(0.165, 0.84, 0.44, 1) ease;
@@ -36,19 +34,7 @@ export const ButtonArea = styled.div<Prop>`
 
   border-radius: 4px;
 
-  animation: LoadingButton 2s ease infinite;
-
-  @keyframes LoadingButton {
-    0% {
-      background-color:  ${(p) => (p.styler === "start") ? "#7b15aa" : "#DD4A4A"}; 
-    }
-    50% {
-      background-color:${(p) => (p.styler === "start") ? "#aa15a8" : "#F27C7C"};  ;
-    }
-    100% {
-     background-color:  ${(p) => (p.styler === "start") ? "#7b15aa" : "#DD4A4A"}; 
-    }
-  }
+  background-color: ${(p) => (p.styler === "start" ? "#7b15aa" : "#DD4A4A")};
 
   gap: 10px;
 

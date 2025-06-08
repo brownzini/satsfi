@@ -1,122 +1,122 @@
 type FieldScreen = {
-    status: boolean;
-    name: string;
-}
+  status: boolean;
+  name: string;
+};
 
 export type ScreenProp = {
-    initial: FieldScreen;
-    importKey: FieldScreen;
-    overview: FieldScreen;
-    config: FieldScreen;
-    survey: FieldScreen;
-    test: FieldScreen;
-    trackDonate: FieldScreen;
-    qrCode: FieldScreen;
-    call: FieldScreen;
-    generateKey: FieldScreen;
-    chromaKey: FieldScreen;
-    start: FieldScreen;
-    loan: FieldScreen;
-}
-
+  initial: FieldScreen;
+  importKey: FieldScreen;
+  overview: FieldScreen;
+  config: FieldScreen;
+  survey: FieldScreen;
+  test: FieldScreen;
+  trackDonate: FieldScreen;
+  qrCode: FieldScreen;
+  call: FieldScreen;
+  generateKey: FieldScreen;
+  chromaKey: FieldScreen;
+  start: FieldScreen;
+  loan: FieldScreen;
+};
 
 export interface TimerProps {
-    day?: number;
-    hour?: number;
-    minute: number;
-    second: number;
+  day?: number;
+  hour?: number;
+  minute: number;
+  second: number;
 }
 
 export interface ConfigProps {
-    allow:boolean;
-    minDonate: string;
-    alertVolume: number;
-    durationAlert: number;
+  allow: boolean;
+  minDonate: string;
+  alertVolume: number;
+  durationAlert: number;
 }
 
 export interface SurveyProps {
-    allow:boolean; //Allow
-    minCreateSurvey: string;
-    durationTime: number;
-    
-    surveyTitle:string;
-    options:OptionsProps[];
-    minToVote:string;
+  allow: boolean; //Allow
+  minCreateSurvey: string;
+  durationTime: number;
 
-    endTime: TimerProps;
-    amount: string;
+  surveyTitle: string;
+  options: OptionsProps[];
+  minToVote: string;
+
+  endTime: TimerProps;
+  amount: string;
 }
 
 export interface OptionsProps {
-    id: string;
-    name: string;
-    votes: string;
+  id: string;
+  name: string;
+  votes: string;
 }
 
 export interface WebsocketSurveyProps {
-    id: string;
-    name?:string;
-    amount: string;
+  id: string;
+  name?: string;
+  amount: string;
 }
 
 export interface WinnerProps {
-    id: string;
-    name:string;
-    percentage: string;
-    amount: string;
+  id: string;
+  name: string;
+  percentage: string;
+  amount: string;
 }
 
 export interface TestProps {
-    allow:boolean;
+  allow: boolean;
 }
 
 export interface DonationProps {
-    donator: string;
-    amount:string;
-    content: string;
+  donator: string;
+  amount: string;
+  content: string;
 }
 
 export interface CallProps {
-    allow: boolean;
-    minAmount:string;
+  allow: boolean;
+  minAmount: string;
 }
 
 export interface GenerateKeyProps {
-    idString: string;
-    addressLightning:string;
-    keyHub: string;
+  idString: string;
+  addressLightning: string;
+  keyHub: string;
 }
 
 export interface BlackListProps {
-    wordsBlocked: string;
+  wordsBlocked: string;
 }
 
 export interface DonateProps {
-    name: string;
-    amount: string;
-    description: string;
-    type: "ai" | "default" | "survey" | "call" | "background";
-    audioURL?: string;
-    isCalling: boolean;
-    callUrl: string,
-    backgroundUrl: string;
+  name: string;
+  amount: string;
+  description: string;
+  type: "ai" | "default" | "survey" | "call" | "background";
+  isCalling: boolean;
+  callUrl: string;
+  backgroundUrl: string;
+  audioURL?: string;
+  imgURL?: string;
+  ytURL?: string;
 }
 
 export interface ChromaKeyProps {
-    allow: boolean;
-    obsPassword?:string;
+  allow: boolean;
+  obsPassword?: string;
 }
 
 export interface AllDonationsProps {
-    date: string;
-    type: string;
-    value: string;
-    donor_name:string;
-    message:string;
+  date: string;
+  type: string;
+  value: string;
+  donor_name: string;
+  message: string;
 }
 
 export interface QRCodeProps {
-    bgColor: string;
-    fontColor:string;
+  bgColor: string;
+  fontColor: string;
 }
-

@@ -17,9 +17,9 @@ export default function WebSocketService(
   setsurveySoloDonation: React.Dispatch<
     React.SetStateAction<WebsocketSurveyProps[]>
   >,
-  ddp:number,
+  ddp: number
 ) {
-  const socket = io("http://localhost:8080", {
+  const socket = io(process.env.NEXT_PUBLIC_SATSFI_MESSENGER, {
     auth: { keyHub: keyHub, handle: handle },
     transports: ["websocket"],
   });
@@ -98,48 +98,48 @@ export default function WebSocketService(
     const data = JSON.parse(msg);
     const canAdd = data.hasOwnProperty("notCIW");
     if (!canAdd) {
-        addDonate(
-          {
-            date: getToday(),
-            type: "survey",
-            value: feeConvert("createSurveyDonation", data.amount, ddp),
-            donor_name: data.name,
-            message: data.message,
+      addDonate(
+        {
+          date: getToday(),
+          type: "survey",
+          value: feeConvert("createSurveyDonation", data.amount, ddp),
+          donor_name: data.name,
+          message: data.message,
+        },
+        false
+      );
+
+      const minTime = data.survey.minTime;
+      const [hour, minute] = minTime.split(":");
+
+      localStorage.setItem(
+        "survey",
+        JSON.stringify({
+          allow: false,
+          surveyTitle: data.survey.title,
+          options: data.survey.options,
+
+          endTime: {
+            day: now.getDate(),
+            hour: Number(hour),
+            minute: Number(minute),
+            second: now.getSeconds(),
           },
-          false
-        );
+          amount: "0",
+        })
+      );
 
-        const minTime = data.survey.minTime;
-        const [hour, minute] = minTime.split(":");
+      updateData("survey", {});
 
-        localStorage.setItem(
-          "survey",
-          JSON.stringify({
-            allow: false,
-            surveyTitle: data.survey.title,
-            options: data.survey.options,
-
-            endTime: {
-              day: now.getDate(),
-              hour: Number(hour),
-              minute: Number(minute),
-              second: now.getSeconds(),
-            },
-            amount: "0",
-          })
-        );
-
-        updateData("survey", {});
-
-        addDonate(
-          {
-            name: data.name,
-            amount: data.amount,
-            description: data.message,
-            type: data.type,
-          },
-          true
-        );
+      addDonate(
+        {
+          name: data.name,
+          amount: data.amount,
+          description: data.message,
+          type: data.type,
+        },
+        true
+      );
     }
   });
 
@@ -162,17 +162,11 @@ export default function WebSocketService(
       amount: data.amount,
       description: data.message,
       type: data.type,
+      audioURL: data.audioURL,
+      imgURL: data.imgURL,
+      ytURL: data.ytURL,
     };
-    if (data.hasOwnProperty("audioURL")) {
-      Object.assign(dataToTrackDonate, {
-        audioURL: data.audioURL,
-      });
-    }
-    if (data.hasOwnProperty("imgURL")) {
-      Object.assign(dataToTrackDonate, {
-        imgURL: data.imgURL,
-      });
-    }
+
     addDonate(dataToTrackDonate, true);
   });
 

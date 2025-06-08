@@ -31,15 +31,11 @@ export default function ButtonComponent({
   return (
     <Container
       className="flex fd"
-      styler={
-        getActiveButton() === "stop"
-          ? `animation: hit 0.5s ease;`
-          : "animation: none;"
-      }
+      onClick={() => console.log(buttonState)}
     >
       <ButtonArea
         className="flex"
-        styler={getActiveButton()}
+        styler={(buttonState.start.status) ? "start" : "stop"}
         onClick={handleClick}
       >
         <SvgArea styler="70%">

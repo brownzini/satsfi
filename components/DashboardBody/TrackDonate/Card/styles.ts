@@ -84,7 +84,7 @@ export const Body = styled.div`
 
 export const DescriptionArea = styled.div`
   overflow-y: scroll;
-
+  position: relative;
   &:-webkit-scrollbar {
     display: none;
   }
@@ -105,4 +105,46 @@ export const DescriptionTitle = styled.h2`
 
 export const Audio = styled.audio`
   width: 84%;
+`;
+
+type Props = {
+  actived: string;
+};
+
+export const Image = styled.img`
+  width: 93%;
+  height: 93%;
+  object-fit: contain;
+  cursor: pointer;
+  transition: 0.5s ease;
+  border-radius: 5px;
+`;
+
+export const ButtonArea = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+export const LoadImageButton = styled.button`
+  width: 50%;
+  height: 50%;
+
+  background-color: transparent;
+
+  border: 1px solid #1a2e59;
+  border-radius: 4px;
+
+  color: #1a2e59;
+  font-size: 1.2rem;
+  font-family: "Inter";
+  font-weight: bold;
+
+  transition: 0.7s;
+
+  &:hover {
+    color: white;
+    background-color: #1a2e59;
+  }
+
+  cursor: pointer;
 `;
