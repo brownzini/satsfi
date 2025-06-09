@@ -13,6 +13,8 @@ import { getLoan } from "@/app/firebase/services/Loan";
 import { useCampaign } from "@/contexts/campaignContext";
 import { streamerSocket } from "@/utils/CallWebsocket";
 import { useCall } from "@/contexts/useCall";
+import { useMessage } from "@/contexts/useMessage";
+import getBtcPrice from "@/utils/getBtcPrice";
 
 export default function DashboardArea() {
   const { setCampaign } = useCampaign();
@@ -24,7 +26,7 @@ export default function DashboardArea() {
     setFinishedCall,
     setSocket,
   } = useCall();
-
+  const { setBtcPrice } = useMessage();
   const hasRun = useRef(false);
 
   useEffect(() => {
@@ -44,6 +46,8 @@ export default function DashboardArea() {
             setFinishedCall,
           });
           setSocket(socket);
+          const response = await getBtcPrice();
+          setBtcPrice(response);
         }
       } catch (error) {}
     };

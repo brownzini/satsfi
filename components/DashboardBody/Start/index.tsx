@@ -17,6 +17,7 @@ import { useActiveWs } from "@/contexts/useActiveWs";
 import { useCampaign } from "@/contexts/campaignContext";
 import Field from "../Field";
 import getBtcPrice from "@/utils/getBtcPrice";
+import { useMessage } from "@/contexts/useMessage";
 
 type ButtonName = "start" | "stop";
 
@@ -35,6 +36,7 @@ export default function Start() {
   const { wsConfig, setWsConfig, setActiveWs, setsurveySoloDonation } =
     useActiveWs();
   const { campaign } = useCampaign();
+  const { btcPrice }= useMessage()
 
   const [buttonState, setButtonState] = useState<ButtonStateProps>({
     start: {
@@ -48,7 +50,7 @@ export default function Start() {
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [btcPrice, setBtcPrice] = useState<number>(0);
+
   const [minAmount, setMinAmount] = useState<string>("0");
 
   const toggleButtonState = (buttonName: ButtonName) => {
@@ -121,28 +123,32 @@ export default function Start() {
     }
   };
 
-  useEffect(() => {
-    async function getPrice() {
-     const response = await getBtcPrice();
-     setBtcPrice(response);
-    }
-    getPrice()
-  }, []);
-
   const handleRenderingPrice = (minAmount: string) => {
     const toNumber = Number(minAmount.replace(/[,.]/g, ""));
-    const converted = Number(toNumber * btcPrice);
-    return minAmount + " satoshis = R$ "+converted;
+    const converted = Number(toNumber * btcPrice).toFixed(2);;
+    return "Converter -> R$ " + converted+'\n';
   };
 
   return (
-    <Container className="flex fd">
+    <Container className="flex">
+      {!isLoading ? (
+        <ButtonComponent
+          buttonState={buttonState}
+          getActiveButton={getActiveButton}
+          getButtonName={getButtonName}
+          handleClick={handleClick}
+        />
+      ) : (
+        <SvgArea className="flex">
+          <SvgModel name="loading" width="50%" height="50%" />
+        </SvgArea>
+      )}
       <ConvertSatoshis className="flex fd">
         <Field
           type="title"
           center={`
                   width: 100%;
-                  height: 10%;
+                  height: 20%;
                   justify-content: flex-start;
                   padding-left: 25%;
               
@@ -163,12 +169,11 @@ export default function Start() {
                   }
               `}
         />
-        <br />
         <Field
           type="input"
           center={`
             width: 100%;
-            height: 20%;
+            height: 12%;
             padding-left: 25%;
         `}
           styler={`
@@ -197,18 +202,6 @@ export default function Start() {
           placeholder="Digite qualquer valor"
         />
       </ConvertSatoshis>
-      {!isLoading ? (
-        <ButtonComponent
-          buttonState={buttonState}
-          getActiveButton={getActiveButton}
-          getButtonName={getButtonName}
-          handleClick={handleClick}
-        />
-      ) : (
-        <SvgArea className="flex">
-          <SvgModel name="loading" width="50%" height="50%" />
-        </SvgArea>
-      )}
     </Container>
   );
 }

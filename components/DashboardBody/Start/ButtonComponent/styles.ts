@@ -7,7 +7,7 @@ interface Prop {
 export const Container = styled.div`
   width: 100%;
   height: 100%;
-  justify-content: flex-start;
+
   gap: 12px;
 
   transition: cubic-bezier(0.165, 0.84, 0.44, 1) ease;

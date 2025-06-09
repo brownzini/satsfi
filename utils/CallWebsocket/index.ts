@@ -16,7 +16,7 @@ export function streamerSocket({
   setIsCalling,
   setFinishedCall,
 }: Props) {
-  const socket = io(process.env.NEXT_PUBLIC_MESSENGER_URL, {
+  const socket = io(process.env.NEXT_PUBLIC_QUEUE_MESSEGER_SERVER_ADDRESS, {
     transports: ["websocket"],
     auth: {
       keyHub: handle,
