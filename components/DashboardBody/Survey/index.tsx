@@ -291,7 +291,8 @@ export default function Survey() {
         donations: data.donations,
         qrCode: data.qrCode,
         isActiveHub: data.isActiveHub,
-      })
+      }),
+      "streamerCreateSurvey"
     );
 
     updateData("survey", {
@@ -440,7 +441,8 @@ export default function Survey() {
         donations: data.donations,
         qrCode: data.qrCode,
         isActiveHub: data.isActiveHub,
-      })
+      }),
+      "streamerCreateSurvey"
     );
   };
 
@@ -513,7 +515,8 @@ export default function Survey() {
           blackList: data.blackList,
           donations: data.donations,
           qrCode: data.qrCode,
-        })
+        }),
+        "streamerCreateSurvey"
       );
     }, 0);
   };

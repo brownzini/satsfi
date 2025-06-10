@@ -37,15 +37,15 @@ export default function DashboardArea() {
           const [keyHub, handle] = access_code.split("|");
           const loanData = await getLoan(handle);
           setCampaign(loanData);
-          const socket = streamerSocket({
-            handle,
-            setUsername,
-            setStartCallHash,
-            setEndCallHash,
-            setIsCalling,
-            setFinishedCall,
-          });
-          setSocket(socket);
+          // const socket = streamerSocket({
+          //   handle,
+          //   setUsername,
+          //   setStartCallHash,
+          //   setEndCallHash,
+          //   setIsCalling,
+          //   setFinishedCall,
+          // });
+          // setSocket(socket);
           const response = await getBtcPrice();
           setBtcPrice(response);
         }

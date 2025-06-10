@@ -43,19 +43,20 @@ export const getUserProfile = async (
 
 export const updateConfig = async (
   handle: string,
-  data: any
+  data: any,
+  type?: string
 ): Promise<boolean> => {
   if (handle) {
     try {
       const userDoc = doc(db, "users", handle);
-      const collec = await getDoc(userDoc);
-
-      if (!collec.data()) return false;
-
-      let parsedData: any = collec.data();
-      parsedData.jsonData = data;
-      await updateDoc(userDoc, parsedData);
-
+      const walletAddress = JSON.parse(data).generateKey.addressLightning;
+      await updateDoc(userDoc, {
+        jsonData: data,
+        surveyCreatorWallet:
+          type === "streamerCreateSurvey"
+            ? walletAddress
+            : JSON.parse(data).surveyCreatorWallet,
+      });
       return true;
     } catch (err) {
       return false;

@@ -24,8 +24,6 @@ export default function WebSocketService(
     transports: ["websocket"],
   });
 
-  const encodedHandle = nEncode(handle);
-
   const channelID = keyHub;
 
   socket.on(channelID + "_viewer_call", (msg) => {
@@ -168,12 +166,6 @@ export default function WebSocketService(
     };
 
     addDonate(dataToTrackDonate, true);
-  });
-
-  socket.on(encodedHandle + "_72206d6f6e7468732c20746865792064", (msg) => {
-    if (msg === "getStreamerKeyHub") {
-      socket.emit(encodedHandle + "_get_keyhub", keyHub);
-    }
   });
 
   return socket;
