@@ -81,7 +81,7 @@ export default function Config() {
         dispatchMessage(
           dbResponse
             ? "[SUCESSO]: Alterações salvas !"
-            : "[ERRO]: Não foi possível alterar o valor kkkk",
+            : "[ERRO]: Não foi possível fazer a alteração",
           dbResponse,
           3000
         );

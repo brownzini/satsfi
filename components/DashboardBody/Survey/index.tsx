@@ -319,16 +319,16 @@ export default function Survey() {
       }),
       "streamerCreateSurvey"
     );
-    if(dbResponse) {
+    if (dbResponse) {
       updateData("survey", {
         allow: data.survey.allow,
         minCreateSurvey: data.survey.minCreateSurvey,
         durationTime: data.survey.durationTime,
-  
+
         surveyTitle: surveyTitle,
         options: options,
         minToVote: minToVote,
-  
+
         endTime: {
           day: moreOneDay,
           hour: moreOneHour,
@@ -338,6 +338,7 @@ export default function Survey() {
         amount: "0",
       });
     }
+    return dbResponse;
   };
 
   const handleCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -372,13 +373,20 @@ export default function Survey() {
       if (isVotationOk && isOptionsOk) {
         const response = await insertSurvey(createdSurveyData, minTime);
         if (response) {
-          fillEmptyNameFields(options);
-          await defineTime();
-          setSurveyCreated(false);
-          setIsSurveyCreated(true);
-          setSurveyTimerStatus(true);
-
-          dispatchMessage("Enquete criada com sucesso!!", true);
+          const dbResponse = await defineTime();
+          if (dbResponse) {
+            fillEmptyNameFields(options);
+            setSurveyCreated(false);
+            setIsSurveyCreated(true);
+            setSurveyTimerStatus(true);
+          }
+          dispatchMessage(
+            dbResponse
+              ? "[SUCESSO]: Enquete criada com sucesso !"
+              : "[ERRO]: Não foi possível criar a a enquete",
+            dbResponse,
+            3000
+          );
         }
       }
     }

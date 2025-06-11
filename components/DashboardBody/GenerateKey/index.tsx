@@ -34,6 +34,8 @@ export default function GenerateKey() {
     data.generateKey.addressLightning
   );
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [handleError, setHandleError] = useState<boolean>(false);
   const [keyHubError, setKeyHubError] = useState<boolean>(false);
   const [addressError, setAddressError] = useState<boolean>(false);
@@ -205,10 +207,10 @@ export default function GenerateKey() {
         } else {
           const response = await generateQueue();
           if (!response) {
-              dispatchMessage(
-                "[ERRO]: Não foi possivel criar seu hub, tente mais tarde !!",
-                false
-              );
+            dispatchMessage(
+              "[ERRO]: Não foi possivel criar seu hub, tente mais tarde !!",
+              false
+            );
           }
         }
       } else {
@@ -233,25 +235,29 @@ export default function GenerateKey() {
   }
 
   async function generateQueue() {
-    if (handle) {
-      const url = "/api/createAccount";
-      const response = await axios.post(
-        url,
-        { handle },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+    try {
+      if (handle) {
+        const url = "/api/createAccount";
+        const response = await axios.post(
+          url,
+          { handle },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data.msg === "ok") {
+          changeScreenAndLocalData();
+          return true;
+        } else {
+          await deleteData(handle);
+          return false;
         }
-      );
-      if (response.data.msg === "ok") {
-        changeScreenAndLocalData();
-        return true;
       } else {
-        await deleteData(handle);
         return false;
       }
-    } else {
+    } catch (err) {
       return false;
     }
   }
@@ -269,15 +275,24 @@ export default function GenerateKey() {
     lightningAddress === data.generateKey.addressLightning &&
     keyHub === data.generateKey.keyHub;
 
-  const handleClick = () => {
-    if (!hasChanged && !userHaveKeyHub) {
-      handleSave();
-    } else if (hasChanged && userHaveKeyHub) {
-      destroyHub();
-      setHandle("");
-      setKeyHub("");
-      setLightningAddress("");
-      localStorage.removeItem("sid");
+  const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (event.detail > 1) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 10 * 1000);
+      return;
+    }
+    if (!loading) {
+      if (!hasChanged && !userHaveKeyHub) {
+        await handleSave();
+      } else if (hasChanged && userHaveKeyHub) {
+        destroyHub();
+        setHandle("");
+        setKeyHub("");
+        setLightningAddress("");
+        localStorage.removeItem("sid");
+      }
     }
   };
 
@@ -491,7 +506,11 @@ export default function GenerateKey() {
       />
       <br />
       <ButtonArea>
-        <Button havekey={userHaveKeyHub.toString()} onClick={handleClick}>
+        <Button
+          havekey={userHaveKeyHub.toString()}
+          disabled={loading}
+          onClick={(event: any) => handleClick(event)}
+        >
           {userHaveKeyHub ? "LOGOUT" : "CRIAR HUB"}
         </Button>
         <FileArea></FileArea>
