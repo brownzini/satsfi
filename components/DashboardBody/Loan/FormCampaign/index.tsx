@@ -104,7 +104,7 @@ export default function FormCampaign({
       if (!isChecked) setCheckBoxError(true);
 
       dispatchMessage(
-        "[ERRO]: A data não pode ser menor que o tempo atual !!",
+        "[ERRO]: Não é possivel criar a campanha nessa configuração !!",
         false
       );
 
@@ -128,7 +128,7 @@ export default function FormCampaign({
         percent_sale: percent / 100,
         total_campaign,
         sale_amount: amount,
-        expiration_date: period,
+        expiration_date: period+"",
         open_in,
         total_percent,
       });

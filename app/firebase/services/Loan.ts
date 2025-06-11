@@ -7,18 +7,18 @@ interface Props {
   total_percent: number;
   total_campaign: number;
   size: number;
-  open_in:string;
+  open_in: string;
 }
 
 interface LoanProps {
-  description:string;
-  expiration_date:string;
-  open_in:string;
+  description: string;
+  expiration_date: string;
+  open_in: string;
   lenders: any[];
-  percent_sale:number;
-  sale_amount:number;
-  total_campaign:number;
-  total_percent:number;
+  percent_sale: number;
+  sale_amount: number;
+  total_campaign: number;
+  total_percent: number;
 }
 
 export const getLoan = async (handle: string): Promise<Props | undefined> => {
@@ -39,7 +39,7 @@ export const getLoan = async (handle: string): Promise<Props | undefined> => {
         };
       }
     } catch (err) {
-        return undefined;
+      return undefined;
     }
   } else {
     return undefined;
@@ -55,11 +55,24 @@ export const updateLoan = async (
       const userDoc = doc(db, "loan", handle);
       const collec = await getDoc(userDoc);
 
-      if (!collec.data()) return false;
+      if (!collec.data()) {
+        return false;
+      }
 
-      await updateDoc(userDoc, data);
-
-      return true;
+      const streamerData = collec.data();
+      if (streamerData) {
+        if (data.percent_sale < streamerData.total_percent) {
+          Object.assign(data, {
+            total_percent: streamerData.total_percent,
+          })
+          await updateDoc(userDoc, data);
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
     } catch (err) {
       return false;
     }
@@ -70,11 +83,11 @@ export const updateLoan = async (
 
 export const createNewLoan = async (
   handle: string,
-  data: LoanProps,
+  data: LoanProps
 ): Promise<boolean | string> => {
   if (handle) {
     try {
-      await setDoc(doc(collection(db, "loan"), handle), data );
+      await setDoc(doc(collection(db, "loan"), handle), data);
       return true;
     } catch (err) {
       return false;

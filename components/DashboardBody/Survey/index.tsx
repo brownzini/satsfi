@@ -182,9 +182,9 @@ export default function Survey() {
           test: {
             allow: true,
           },
-          trackDonate: data.trackDonate,
+          trackDonate: [],
           blackList: data.blackList,
-          donations: data.donations,
+          donations: [],
           qrCode: data.qrCode,
         })
       );
@@ -286,9 +286,9 @@ export default function Survey() {
         test: {
           allow: true,
         },
-        trackDonate: data.trackDonate,
+        trackDonate: [],
         blackList: data.blackList,
-        donations: data.donations,
+        donations: [],
         qrCode: data.qrCode,
         isActiveHub: data.isActiveHub,
       }),
@@ -436,9 +436,9 @@ export default function Survey() {
         test: {
           allow: true,
         },
-        trackDonate: data.trackDonate,
+        trackDonate: [],
         blackList: data.blackList,
-        donations: data.donations,
+        donations: [],
         qrCode: data.qrCode,
         isActiveHub: data.isActiveHub,
       }),
@@ -511,9 +511,9 @@ export default function Survey() {
           generateKey: data.generateKey,
           isActiveHub: data.isActiveHub,
           test: data.test,
-          trackDonate: data.trackDonate,
+          trackDonate: [],
           blackList: data.blackList,
-          donations: data.donations,
+          donations: [],
           qrCode: data.qrCode,
         }),
         "streamerCreateSurvey"

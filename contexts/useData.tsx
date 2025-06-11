@@ -201,9 +201,9 @@ export function DataProvider({ children }: Props) {
           generateKey: data.generateKey,
           isActiveHub: data.isActiveHub,
           test: data.test,
-          trackDonate: data.trackDonate,
+          trackDonate: [],
           blackList: data.blackList,
-          donations: data.donations,
+          donations: [],
           qrCode: data.qrCode,
         })
       );

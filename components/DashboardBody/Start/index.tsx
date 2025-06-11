@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { Container, ConvertSatoshis, SvgArea } from "./styles";
-
-//Component
-import ButtonComponent from "./ButtonComponent";
+import {
+  Container,
+  ConvertSatoshis,
+  ImageArea,
+  WrapperImageArea,
+  Image,
+} from "./styles";
 
 //Utils
 import SvgModel from "@/utils/svg";
@@ -16,8 +19,8 @@ import WebSocketService from "../../../websocket";
 import { useActiveWs } from "@/contexts/useActiveWs";
 import { useCampaign } from "@/contexts/campaignContext";
 import Field from "../Field";
-import getBtcPrice from "@/utils/getBtcPrice";
 import { useMessage } from "@/contexts/useMessage";
+import { filterAmount } from "@/utils/inputFormat";
 
 type ButtonName = "start" | "stop";
 
@@ -36,73 +39,14 @@ export default function Start() {
   const { wsConfig, setWsConfig, setActiveWs, setsurveySoloDonation } =
     useActiveWs();
   const { campaign } = useCampaign();
-  const { btcPrice }= useMessage()
+  const { btcPrice } = useMessage();
 
-  const [buttonState, setButtonState] = useState<ButtonStateProps>({
-    start: {
-      status: !wsConfig,
-      color: "#D16EFF, #7B15AA",
-    },
-    stop: {
-      status: wsConfig,
-      color: "#F27C7C, #DD4A4A",
-    },
-  });
+  const [minAmount, setMinAmount] = useState<string>("1");
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const [minAmount, setMinAmount] = useState<string>("0");
-
-  const toggleButtonState = (buttonName: ButtonName) => {
-    setButtonState((prevState) => {
-      const newState = { ...prevState };
-
-      for (let key in newState) {
-        newState[key as ButtonName].status = false;
-      }
-
-      newState[buttonName].status = true;
-
-      return newState;
-    });
-  };
-
-  const getActiveButton = (): ButtonName => {
-    for (let key in buttonState) {
-      if (buttonState[key as ButtonName].status) {
-        return key as ButtonName;
-      }
-    }
-    return "start";
-  };
-
-  const getButtonName = () => {
-    const name = getActiveButton();
-    switch (name) {
-      case "start":
-        return "Iniciar";
-      case "stop":
-        return "Parar";
-    }
-  };
-
-  const handleActiveHub = (param: string) =>
-    updateData("isActiveHub", param === "start");
-
-  const handleClick = () => {
-    const activedButton = getActiveButton();
-    const getNextButton = activedButton === "start" ? "stop" : "start";
-
-    handleActiveHub(activedButton);
-
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-    toggleButtonState(getNextButton);
-
-    if (data.generateKey.keyHub && activedButton === "start") {
-      const ddp = campaign ? campaign.total_percent : 1;
+  useEffect(() => {
+    const hasSessionInSocket = sessionStorage.getItem("ws");
+    if (!hasSessionInSocket) {
+      const ddp = campaign ? campaign.total_percent : 0.95;
       const socket = WebSocketService(
         data.generateKey.idString,
         data.generateKey.keyHub,
@@ -114,35 +58,33 @@ export default function Start() {
       );
       setActiveWs(true);
       setWsConfig(socket);
-    } else {
-      if (wsConfig) {
-        wsConfig.close();
-        setWsConfig(null);
-        setActiveWs(false);
-      }
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleRenderingPrice = (minAmount: string) => {
-    const toNumber = Number(minAmount.replace(/[,.]/g, ""));
-    const converted = Number(toNumber * btcPrice).toFixed(2);;
-    return "Converter -> R$ " + converted+'\n';
+    const toNumber =
+      minAmount !== "" ? Number(minAmount.replace(/[,.]/g, "")) : 1;
+    const converted = (toNumber * btcPrice).toFixed(2);
+    const strAmount = minAmount !== "" ? minAmount.replace(/[,.]/g, "") : "1";
+    return (
+      "Hoje " +
+      filterAmount(strAmount) +
+      " de satoshis valem R$ " +
+      filterAmount(converted) +
+      "\n"
+    );
   };
 
   return (
     <Container className="flex">
-      {!isLoading ? (
-        <ButtonComponent
-          buttonState={buttonState}
-          getActiveButton={getActiveButton}
-          getButtonName={getButtonName}
-          handleClick={handleClick}
-        />
-      ) : (
-        <SvgArea className="flex">
-          <SvgModel name="loading" width="50%" height="50%" />
-        </SvgArea>
-      )}
+      <ImageArea className="flex">
+        <WrapperImageArea className="flex fd">
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <Image src="https://res.cloudinary.com/dqq4f9a1l/image/upload/v1749599347/mascote_welcome_i0cat5.png" />
+        </WrapperImageArea>
+      </ImageArea>
+
       <ConvertSatoshis className="flex fd">
         <Field
           type="title"

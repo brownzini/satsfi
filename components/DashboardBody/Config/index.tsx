@@ -80,9 +80,9 @@ export default function Config() {
             test: {
               allow: true,
             },
-            trackDonate: data.trackDonate,
+            trackDonate: [],
             blackList: data.blackList,
-            donations: data.donations,
+            donations: [],
             qrCode: data.qrCode,
             isActiveHub: data.isActiveHub,
           })

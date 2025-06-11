@@ -35,7 +35,7 @@ const ActiveWsContext = React.createContext<DataContextValue>(listInitial);
 export function ActiveWsProvider({ children }: Props) {
 
     const [activeWs, setActiveWs] = React.useState<boolean>(false);
-    const [wsConfig, setWsConfig] = React.useState<any>(false);
+    const [wsConfig, setWsConfig] = React.useState<any>(null);
     const [amountChanged, setAmountChanged] = React.useState<number>(0);
     const [surveySoloDonation, setsurveySoloDonation] = React.useState<WebsocketSurveyProps[]>([]);
 

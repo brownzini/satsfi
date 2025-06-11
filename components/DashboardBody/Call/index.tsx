@@ -64,9 +64,9 @@ export default function Call() {
               test: {
                 allow: true,
               },
-              trackDonate: data.trackDonate,
+              trackDonate: [],
               blackList: data.blackList,
-              donations: data.donations,
+              donations: [],
               qrCode: data.qrCode,
             })
           );
