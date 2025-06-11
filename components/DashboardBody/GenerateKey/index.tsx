@@ -509,7 +509,7 @@ export default function GenerateKey() {
         <Button
           havekey={userHaveKeyHub.toString()}
           disabled={loading}
-          onClick={(event: any) => handleClick(event)}
+          onClick={async (event: any) => await handleClick(event)}
         >
           {userHaveKeyHub ? "LOGOUT" : "CRIAR HUB"}
         </Button>

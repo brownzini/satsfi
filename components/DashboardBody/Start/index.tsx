@@ -56,14 +56,18 @@ export default function Start() {
     const toNumber =
       minAmount !== "" ? Number(minAmount.replace(/[,.]/g, "")) : 1;
     const converted = (toNumber * btcPrice).toFixed(2);
+
     const strAmount = minAmount !== "" ? minAmount.replace(/[,.]/g, "") : "1";
-    return (
-      "Hoje " +
-      filterAmount(strAmount) +
-      " satoshis valem R$ " +
-      filterAmount(converted) +
-      "\n"
-    );
+
+    const completeAmount = filterAmount(strAmount)
+      ? filterAmount(strAmount)
+      : "0";
+    const completeBRL = filterAmount(converted) ? filterAmount(converted) : "0";
+
+    const content =
+      "Hoje " + completeAmount + " satoshis valem R$ " + completeBRL;
+
+    return content;
   };
 
   return (
@@ -79,10 +83,11 @@ export default function Start() {
         <Field
           type="title"
           center={`
+ 
                   width: 100%;
                   height: 20%;
-                  justify-content: flex-start;
-                  padding-left: 25%;
+                  justify-content: center;
+                  align-items: center;
               
                   @media only screen and (min-height: 900px) {
                       height: 20%;
@@ -104,12 +109,11 @@ export default function Start() {
         <Field
           type="input"
           center={`
-            width: 100%;
+            width: 75%;
             height: 12%;
-            padding-left: 25%;
         `}
           styler={`
-            width: 70%;
+            width: 100%;
             height: 100%;
         
             border-radius: 5px;
