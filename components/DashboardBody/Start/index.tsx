@@ -21,7 +21,7 @@ import { filterAmount } from "@/utils/inputFormat";
 
 export default function Start() {
   const { data, updateData, addDonate } = useData();
-  const { activeWs, setWsConfig, setActiveWs, setsurveySoloDonation } =
+  const { setWsConfig, setActiveWs, setsurveySoloDonation } =
     useActiveWs();
   const { campaign } = useCampaign();
   const { btcPrice } = useMessage();

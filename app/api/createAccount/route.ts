@@ -16,7 +16,7 @@ const limiter = rateLimit({
 
 export async function POST(req: Request, res: NextResponse) {
   try {
-    limiter.check(res, 1, "CACHE_TOKEN");
+    limiter.check(res, 3, "CACHE_TOKEN");
 
     const body = await req.json();
     const { handle } = body;
