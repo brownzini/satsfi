@@ -25,10 +25,6 @@ interface Props {
 }
 
 export default function InCall({ handle }: Props) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const [peer, setPeer] = useState<any>(null);
 
   const {
     socket,
@@ -43,6 +39,13 @@ export default function InCall({ handle }: Props) {
     setEndCallHash,
     setSocket,
   } = useCall();
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const [peer, setPeer] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -75,7 +78,16 @@ export default function InCall({ handle }: Props) {
     video.play();
   }
 
-  async function handleFinish() {
+  async function handleFinish(event: React.MouseEvent<HTMLButtonElement>) {
+
+    if (event.detail > 1) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 10 * 1000);
+      return;
+    }
+
     soundEffect("disconnected");
 
     socket.emit(
@@ -117,7 +129,7 @@ export default function InCall({ handle }: Props) {
               <ImageContent src="https://res.cloudinary.com/dqq4f9a1l/image/upload/v1747089059/guy_happy_sdt69p.png" />
             </ImageArea>
             <ViewerNameContainer className="flex">
-              <ViewerName>{(username) ? username : "Alguém"}</ViewerName>
+              <ViewerName>{username ? username : "Alguém"}</ViewerName>
             </ViewerNameContainer>
           </ImageContainer>
         </ViewerWrapperContainer>
@@ -128,7 +140,13 @@ export default function InCall({ handle }: Props) {
         </AudioContainer>
       </BodyContainer>
       <FooterContainer className="flex">
-        <ButtonFooter onClick={handleFinish}>DESLIGAR CHAMADA</ButtonFooter>
+        <ButtonFooter
+          onClick={async (event: React.MouseEvent<HTMLButtonElement>) =>
+            await handleFinish(event)
+          }
+        >
+          DESLIGAR CHAMADA
+        </ButtonFooter>
       </FooterContainer>
     </MainContainer>
   );

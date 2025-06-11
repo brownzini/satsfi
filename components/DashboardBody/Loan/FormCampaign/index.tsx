@@ -37,6 +37,8 @@ export default function FormCampaign({
   const [amount, setAmount] = useState<number>(10000);
   const [period, setPeriod] = useState<Date | null>(null);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const [descriptionError, setDescriptionError] = useState<boolean>(false);
@@ -114,7 +116,15 @@ export default function FormCampaign({
     }
   }
 
-  async function handleSave() {
+  async function handleSave(event: React.MouseEvent<HTMLButtonElement>) {
+    if (event.detail > 1) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 10 * 1000);
+      return;
+    }
+
     const result = validationFields();
 
     if (result) {
@@ -128,7 +138,7 @@ export default function FormCampaign({
         percent_sale: percent / 100,
         total_campaign,
         sale_amount: amount,
-        expiration_date: period+"",
+        expiration_date: period + "",
         open_in,
         total_percent,
       });
@@ -202,7 +212,9 @@ export default function FormCampaign({
           <TitleTerm>Concordo</TitleTerm>
         </TermArea>
         <ButtonTermArea className="flex">
-          <CreateButton onClick={handleSave}>CRIAR</CreateButton>
+          <CreateButton disabled={loading} onClick={async (event: any) => await handleSave(event)}>
+            CRIAR
+          </CreateButton>
           <BackButton onClick={() => setScreen("dashboardCampaign")}>
             VOLTAR
           </BackButton>

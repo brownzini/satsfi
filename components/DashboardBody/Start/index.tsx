@@ -8,9 +8,6 @@ import {
   Image,
 } from "./styles";
 
-//Utils
-import SvgModel from "@/utils/svg";
-
 //Contexts
 import { useData } from "@/contexts/useData";
 
@@ -22,21 +19,9 @@ import Field from "../Field";
 import { useMessage } from "@/contexts/useMessage";
 import { filterAmount } from "@/utils/inputFormat";
 
-type ButtonName = "start" | "stop";
-
-interface ButtonProps {
-  status: boolean;
-  color: string;
-}
-
-interface ButtonStateProps {
-  start: ButtonProps;
-  stop: ButtonProps;
-}
-
 export default function Start() {
   const { data, updateData, addDonate } = useData();
-  const { wsConfig, setWsConfig, setActiveWs, setsurveySoloDonation } =
+  const { activeWs, setWsConfig, setActiveWs, setsurveySoloDonation } =
     useActiveWs();
   const { campaign } = useCampaign();
   const { btcPrice } = useMessage();
@@ -45,7 +30,9 @@ export default function Start() {
 
   useEffect(() => {
     const hasSessionInSocket = sessionStorage.getItem("ws");
-    if (!hasSessionInSocket) {
+    const index = hasSessionInSocket ? Number(hasSessionInSocket) : 0;
+    const incrementedIndex = index + 1;
+    if (incrementedIndex === 1) {
       const ddp = campaign ? campaign.total_percent : 0.95;
       const socket = WebSocketService(
         data.generateKey.idString,
@@ -58,6 +45,9 @@ export default function Start() {
       );
       setActiveWs(true);
       setWsConfig(socket);
+      sessionStorage.setItem("ws", incrementedIndex.toString());
+    } else {
+      sessionStorage.setItem("ws", "0");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -70,7 +60,7 @@ export default function Start() {
     return (
       "Hoje " +
       filterAmount(strAmount) +
-      " de satoshis valem R$ " +
+      " satoshis valem R$ " +
       filterAmount(converted) +
       "\n"
     );

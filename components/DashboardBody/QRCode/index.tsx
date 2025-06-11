@@ -225,10 +225,10 @@ export default function QRCodeScreen() {
             fontcolor={data.qrCode.fontColor}
             fontSize="1rem"
           >
-            <HeaderText>{"satsfi.com.br/" + handle}</HeaderText>
+            <HeaderText>{process.env.NEXT_PUBLIC_VIEWER_URL + handle}</HeaderText>
           </HeaderArea>
           <BodyArea id="body-area" className="flex">
-            <QRCode value={"https://satsfi.com.br/" + handle} />
+            <QRCode value={process.env.NEXT_PUBLIC_VIEWER_URL + handle} />
           </BodyArea>
           <FooterArea
             className="flex"

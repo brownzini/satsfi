@@ -72,7 +72,7 @@ export default function IntialCall({ handle }:Props) {
       <CallBody className="flex">
         {isCalling || inCall ? (
           inCall && !isCalling ? (
-            <InCall  handle={handle} />
+            <InCall handle={handle} />
           ) : (
             <ViewerCalling addCallToday={addCallToday} handle={handle} />
           )

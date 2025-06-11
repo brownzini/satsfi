@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   BodyButton,
   BodyContent,
@@ -32,6 +32,7 @@ export default function DashboardCampaign({
   setScreen,
   dispatchMessage,
 }: Props) {
+  const [loading, setLoading] = useState<boolean>(false);
   const formatedDate = (date: string | undefined) => {
     const formatedTotal = (total: number) => (total < 10 ? "0" + total : total);
     if (date) {
@@ -61,7 +62,16 @@ export default function DashboardCampaign({
       </CardContainer>
     );
   };
-  async function handleFinish() {
+  async function handleFinish(event: React.MouseEvent<HTMLButtonElement>) {
+    
+    if (event.detail > 1) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 10 * 1000);
+      return;
+    }
+
     const total_campaign = campaign ? campaign.total_campaign : 0;
     const total_percent = campaign ? campaign.total_percent : 0.95;
 
@@ -107,7 +117,12 @@ export default function DashboardCampaign({
             NOVA CAMPANHA
           </BodyButton>
         ) : (
-          <FinishButton onClick={handleFinish}>ENCERRAR CAMPANHA</FinishButton>
+          <FinishButton
+            disabled={loading}
+            onClick={async (event: any) => await handleFinish(event)}
+          >
+            ENCERRAR CAMPANHA
+          </FinishButton>
         )}
       </BodyContent>
       <FooterContent className="flex">

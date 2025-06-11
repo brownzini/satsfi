@@ -1,6 +1,5 @@
 import { WebsocketSurveyProps } from "@/utils/types";
 import { DataProps } from "../contexts/useData";
-import { nEncode } from "../utils/encrypt/encrypt";
 import { io } from "socket.io-client";
 import { getToday } from "../utils/Date";
 import { feeConvert } from "../utils/inputFormat";

@@ -45,11 +45,11 @@ interface Props {
   removeOption: (id: string) => void;
   errorOptions: boolean;
   handleReset: () => void;
-  handleCreate: () => Promise<void>;
+  handleCreate: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   isSurveyCreated: boolean;
   titleAreaRendering: () => "Enquete expira em" | "Vencedor da enquete";
   timerRendering: () => JSX.Element;
-  handleClickSurvey: () => Promise<void>;
+  handleClickSurvey: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
 export default function GenerationSurveyArea({
@@ -253,7 +253,7 @@ export default function GenerationSurveyArea({
             </OptionsWrapper>
             <SaveButtoArea className="flex">
               <BackButton onClick={handleReset}>VOLTAR</BackButton>
-              <CreateButton onClick={handleCreate}>CRIAR</CreateButton>
+              <CreateButton onClick={async (event:any) => await handleCreate(event)}>CRIAR</CreateButton>
             </SaveButtoArea>
           </RightSideArea>
         </GenerationWrapper>
@@ -290,7 +290,7 @@ export default function GenerationSurveyArea({
                                     }
                                 `
               }
-              onClick={handleClickSurvey}
+              onClick={async (event:any) => await handleClickSurvey(event)}
             >
               {!isSurveyCreated ? "Gerar nova Enquete" : "Finalizar Enquete"}
             </Button>

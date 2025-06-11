@@ -2,10 +2,6 @@ import { useState } from "react";
 import {
   Amounts,
   Container,
-  DescriptionArea,
-  PercentArea,
-  Setups,
-  VolumeTitle,
   WrapperContainer,
 } from "./styles";
 
@@ -21,12 +17,9 @@ export default function Config() {
 
   const [minAmount, setMinAmount] = useState<string>(data.config.minDonate);
   const [allowDonate, setAllowDonate] = useState<boolean>(data.config.allow);
-  const [donationVolume, setDonationVolume] = useState<number>(
-    data.config.alertVolume
-  );
-  const [durationDonate, setDurationDonate] = useState<number>(
-    data.config.durationAlert
-  );
+
+  const donationVolume = data.config.alertVolume;
+  const durationDonate = data.config.durationAlert
 
   const [haveError, setHaveError] = useState<boolean>(false);
 
@@ -102,15 +95,7 @@ export default function Config() {
         <Amounts className="flex fd">
           <Field
             type="title"
-            center={`
-    height: 10%;
-    justify-content: flex-start;
-    padding-left: 25%;
-
-    @media only screen and (min-height: 900px) {
-        height: 20%;
-    }
-`}
+            center={`height: 10%;justify-content: flex-start;padding-left: 25%;@media only screen and (min-height: 900px) {height: 20%;}`}
             text="Mínimo de satoshi por donate"
             styler={`
     transition: 0.5s ease;

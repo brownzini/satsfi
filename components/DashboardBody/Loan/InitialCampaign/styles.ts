@@ -58,7 +58,7 @@ export const FooterContainer = styled.div`
   align-items: flex-start;
 `;
 
-export const CreateButton = styled.div`
+export const CreateButton = styled.button`
   width: 100%;
   height: 70%;
   max-width: 250px;

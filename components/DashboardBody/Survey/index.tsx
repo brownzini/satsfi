@@ -59,6 +59,8 @@ export default function Survey() {
   const [errorMinToVote, setErrorMinToVote] = useState<boolean>(false);
   const [errorOptions, setErrorOptions] = useState<boolean>(false);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [winnerOption, setWinnerOption] = useState({
     id: "",
     name: "",
@@ -69,7 +71,17 @@ export default function Survey() {
 
   const { dispatchMessage } = useMessage();
 
-  const handleClickSurvey = async () => {
+  const handleClickSurvey = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    if (event.detail > 1) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 10 * 1000);
+      return;
+    }
+
     if (!isSurveyCreated && data.survey.options.length > 0) {
       setSurveyCreated(false);
       setIsSurveyCreated(true);
@@ -138,27 +150,18 @@ export default function Survey() {
   };
 
   // Right Side
-  const handleSave = async () => {
+  const handleSave = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (event.detail > 1) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 10 * 1000);
+      return;
+    }
+
     const hasNotChanged = notChanged();
     if (createValidation() && !hasNotChanged) {
-      updateData("survey", {
-        allow: surveyStatus,
-        minCreateSurvey: minCreateSurvey,
-        durationTime: durationTime,
-
-        surveyTitle: data.survey.surveyTitle,
-        options: data.survey.options,
-        minToVote: data.survey.minToVote,
-
-        endTime: {
-          day: data.survey.endTime.day,
-          hour: data.survey.endTime.hour,
-          minute: data.survey.endTime.minute,
-          second: data.survey.endTime.second,
-        },
-        amount: data.survey.amount,
-      });
-      await updateConfig(
+      const response = await updateConfig(
         data.generateKey.idString,
         JSON.stringify({
           config: data.config,
@@ -188,7 +191,29 @@ export default function Survey() {
           qrCode: data.qrCode,
         })
       );
-      dispatchMessage("[SUCESSO]: Detalhes de Enquete foram salvos", true);
+      if (response) {
+        updateData("survey", {
+          allow: surveyStatus,
+          minCreateSurvey: minCreateSurvey,
+          durationTime: durationTime,
+
+          surveyTitle: data.survey.surveyTitle,
+          options: data.survey.options,
+          minToVote: data.survey.minToVote,
+
+          endTime: {
+            day: data.survey.endTime.day,
+            hour: data.survey.endTime.hour,
+            minute: data.survey.endTime.minute,
+            second: data.survey.endTime.second,
+          },
+          amount: data.survey.amount,
+        });
+        dispatchMessage("[SUCESSO]: Detalhes de Enquete foram salvos", true);
+      } else {
+        dispatchMessage("[ERRO]: Não foi possível salvar a mudança", true);
+      }
+      setLoading(false);
     }
   };
 
@@ -314,7 +339,15 @@ export default function Survey() {
     });
   };
 
-  const handleCreate = async () => {
+  const handleCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (event.detail > 1) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 10 * 1000);
+      return;
+    }
+
     const isVotationOk = voteValidation();
     const isOptionsOk = optionsValidation();
 
@@ -819,30 +852,32 @@ export default function Survey() {
           surveyStatus={surveyStatus}
         />
         <SaveArea>
-          <SaveButton onClick={handleSave}>SALVAR</SaveButton>
+          <SaveButton onClick={async (event: any) => await handleSave(event)}>
+            SALVAR
+          </SaveButton>
         </SaveArea>
       </ControlArea>
       <GenerationSurveyArea
-        surveyCreated={surveyCreated}
+        options={options}
+        minToVote={minToVote}
+        addOption={addOption}
         errorTitle={errorTitle}
         surveyTitle={surveyTitle}
-        setSurveyTitle={setSurveyTitle}
-        removeErrorTitle={removeErrorTitle}
-        errorMinToVote={errorMinToVote}
-        minToVote={minToVote}
+        handleReset={handleReset}
         setMinToVote={setMinToVote}
-        addOption={addOption}
-        removeMinToVoteError={removeMinToVoteError}
-        options={options}
         handleChange={handleChange}
+        handleCreate={handleCreate}
         removeOption={removeOption}
         errorOptions={errorOptions}
-        handleReset={handleReset}
-        handleCreate={handleCreate}
-        isSurveyCreated={isSurveyCreated}
-        titleAreaRendering={titleAreaRendering}
+        surveyCreated={surveyCreated}
+        setSurveyTitle={setSurveyTitle}
+        errorMinToVote={errorMinToVote}
         timerRendering={timerRendering}
+        isSurveyCreated={isSurveyCreated}
+        removeErrorTitle={removeErrorTitle}
         handleClickSurvey={handleClickSurvey}
+        titleAreaRendering={titleAreaRendering}
+        removeMinToVoteError={removeMinToVoteError}
       />
     </Container>
   );

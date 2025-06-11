@@ -8,8 +8,8 @@ import Field from "../Field";
 import { useMessage } from "@/contexts/useMessage";
 import { useData } from "@/contexts/useData";
 import IntialCall from "./InitialCall";
-import { updateConfig } from "@/app/firebase/services/Users";
-import { updateStatusQueue } from "@/app/firebase/services/Queue";
+// import { updateConfig } from "@/app/firebase/services/Users";
+// import { updateStatusQueue } from "@/app/firebase/services/Queue";
 
 export default function Call() {
   const { data, updateData } = useData();
@@ -29,62 +29,62 @@ export default function Call() {
 
   const voidFunction = (param: string) => {};
 
-  const hasNotChanged = () =>
-    data.call.allow === allow && data.call.minAmount === minAmount;
+  // const hasNotChanged = () =>
+  //   data.call.allow === allow && data.call.minAmount === minAmount;
 
-  const handleSave = async () => {
-    const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
+  // const handleSave = async () => {
+  //   const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
 
-    if (minAmount === "" || Number.isNaN(priceFiltered)) {
-      setMinAmount("Preencha o campo");
-      setHaveError(true);
-    } else if (priceFiltered < 12000) {
-      setMinAmount("Minimo é de 12.000 sats");
-      setHaveError(true);
-    } else {
-      const notChange = hasNotChanged();
-      if (!notChange) {
-        const response = await updateStatusQueue(
-          data.generateKey.idString,
-          allow
-        );
-        if (response) {
-          await updateConfig(
-            data.generateKey.idString,
-            JSON.stringify({
-              config: data.config,
-              survey: data.survey,
-              chromaKey: data.chromaKey,
-              call: {
-                allow,
-                minAmount: data.call.minAmount,
-              },
-              generateKey: data.generateKey,
-              isActiveHub: data.isActiveHub,
-              test: {
-                allow: true,
-              },
-              trackDonate: [],
-              blackList: data.blackList,
-              donations: [],
-              qrCode: data.qrCode,
-            })
-          );
-          updateData("call", {
-            allow: allow,
-            minAmount: minAmount,
-          });
-          dispatchMessage("[SUCESSO]: Alterações realizadas", true, 3000);
-        } else {
-          dispatchMessage(
-            "[ERRO]: Não foi possivel alterar o estado da fila",
-            true,
-            1000
-          );
-        }
-      }
-    }
-  };
+  //   if (minAmount === "" || Number.isNaN(priceFiltered)) {
+  //     setMinAmount("Preencha o campo");
+  //     setHaveError(true);
+  //   } else if (priceFiltered < 12000) {
+  //     setMinAmount("Minimo é de 12.000 sats");
+  //     setHaveError(true);
+  //   } else {
+  //     const notChange = hasNotChanged();
+  //     if (!notChange) {
+  //       const response = await updateStatusQueue(
+  //         data.generateKey.idString,
+  //         allow
+  //       );
+  //       if (response) {
+  //         await updateConfig(
+  //           data.generateKey.idString,
+  //           JSON.stringify({
+  //             config: data.config,
+  //             survey: data.survey,
+  //             chromaKey: data.chromaKey,
+  //             call: {
+  //               allow,
+  //               minAmount: data.call.minAmount,
+  //             },
+  //             generateKey: data.generateKey,
+  //             isActiveHub: data.isActiveHub,
+  //             test: {
+  //               allow: true,
+  //             },
+  //             trackDonate: [],
+  //             blackList: data.blackList,
+  //             donations: [],
+  //             qrCode: data.qrCode,
+  //           })
+  //         );
+  //         updateData("call", {
+  //           allow: allow,
+  //           minAmount: minAmount,
+  //         });
+  //         dispatchMessage("[SUCESSO]: Alterações realizadas", true, 3000);
+  //       } else {
+  //         dispatchMessage(
+  //           "[ERRO]: Não foi possivel alterar o estado da fila",
+  //           true,
+  //           1000
+  //         );
+  //       }
+  //     }
+  //   }
+  // };
 
   function copyTextToClipboard() {
     if (!navigator.clipboard) {
@@ -109,7 +109,7 @@ export default function Call() {
           center={`
                                 height: 10%;
                                 justify-content: flex-start;
-                                padding-left: 25%;
+                                padding-left: 16%;
 
                                 @media only screen and (min-width: 2560px) {
                                     height: 10%;
@@ -147,9 +147,8 @@ export default function Call() {
           center={`
                             height: 10%;
                             justify-content: flex-start;
-                            padding-left: 25%;
+                            padding-left: 16%;
                         `}
-          text="Permitir donate por audio e IA"
           styler={`
                     
                         `}
@@ -163,7 +162,7 @@ export default function Call() {
           center={`
                         height: 10%;
                         justify-content: flex-start;
-                        padding-left: 25%;
+                        padding-left: 16%;
                     `}
           styler={`
                         color: ${!haveError ? "#3C5774" : "red"};
@@ -192,7 +191,7 @@ export default function Call() {
           center={`
                         width: 100%;
                         height: 10%;
-                        padding-left: 25%;
+                        padding-left: 16%;
                     `}
           styler={`
                         width: 75%;
@@ -239,7 +238,7 @@ export default function Call() {
           center={`
                                 height: 10%;
                                 justify-content: flex-start;
-                                padding-left: 25%;
+                                padding-left: 16%;
 
                                 @media only screen and (min-width: 2560px) {
                                     height: 10%;
@@ -270,7 +269,7 @@ export default function Call() {
           center={`
                             width: 100%;
                             height: 10%;
-                            padding-left: 12%;
+                            padding-left: 1%;
                             justify-content: center;
                         `}
           styler={`
@@ -310,8 +309,8 @@ export default function Call() {
           setInputValue={voidFunction}
           onClick={copyTextToClipboard}
         />
-        <br />
-        <Field
+
+        {/* <Field
           type="button"
           center={`
                             width: 100%;
@@ -358,7 +357,7 @@ export default function Call() {
                             }
                         `}
           onClick={handleSave}
-        />
+        /> */}
       </LinkArea>
       <ControlArea className="flex fd">
         <IntialCall handle={data.generateKey.idString} />

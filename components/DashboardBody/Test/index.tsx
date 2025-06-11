@@ -24,9 +24,9 @@ export default function Test() {
 
     const [keyHub, handle] = data.generateKey.keyHub.split("|");
 
-    const normalLink = "https://satsfi.com.br/donates/"+handle+"-"+keyHub;
-    const surveyLink = 'https://satsfi.com.br/survey/'+handle+"-"+keyHub;
-    const chromakeyLink = 'https://satsfi.com.br/background/'+handle+"-"+keyHub;
+    const normalLink = process.env.NEXT_PUBLIC_WIDGET_URL+"donates/"+handle+"-"+keyHub;
+    const surveyLink = process.env.NEXT_PUBLIC_WIDGET_URL+"survey/"+handle+"-"+keyHub;
+    const chromakeyLink = process.env.NEXT_PUBLIC_WIDGET_URL+"background/"+handle+"-"+keyHub;
 
     const [allow, setAllow] = useState<boolean>(data.test.allow);
 
@@ -208,7 +208,7 @@ export default function Test() {
                         justify-content: flex-start;
                         padding-left: 12%;
                     `}
-                    text="Link do Chroma Key:"
+                    text="Widget Chroma Key:"
                     styler={`
                         color: #3C5774;
                         font-size: 1.4rem;

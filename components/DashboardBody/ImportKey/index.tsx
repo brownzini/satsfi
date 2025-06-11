@@ -35,7 +35,7 @@ export default function ImportKey() {
         setLoading(true);
         setTimeout(() => {
           setLoading(false);
-        }, 60 * 1000);
+        }, 10 * 1000);
         return;
       }
 

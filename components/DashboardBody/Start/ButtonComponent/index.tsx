@@ -29,13 +29,10 @@ export default function ButtonComponent({
   handleClick,
 }: Props) {
   return (
-    <Container
-      className="flex fd"
-      onClick={() => console.log(buttonState)}
-    >
+    <Container className="flex fd">
       <ButtonArea
         className="flex"
-        styler={(buttonState.start.status) ? "start" : "stop"}
+        styler={buttonState.start.status ? "start" : "stop"}
         onClick={handleClick}
       >
         <SvgArea styler="70%">
