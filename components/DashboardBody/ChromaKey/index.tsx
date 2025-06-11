@@ -44,11 +44,8 @@ export default function ChromaKey() {
     const validationChange = hasChange();
     if (validationChange && !controlClick) {
       setControlClick(true);
-      updateData("chromaKey", {
-        allow: allow,
-        obsPassword: password,
-      });
-      await updateConfig(
+
+      const dbResponse = await updateConfig(
         data.generateKey.idString,
         JSON.stringify({
           config: data.config,
@@ -69,10 +66,22 @@ export default function ChromaKey() {
           isActiveHub: data.isActiveHub,
         })
       );
+      if (dbResponse) {
+        updateData("chromaKey", {
+          allow: allow,
+          obsPassword: password,
+        });
+        dispatchMessage(
+          dbResponse
+            ? "[SUCESSO]: Alterações salvas !"
+            : "[ERRO]: Não foi possível alterar o valor kkkk",
+          dbResponse,
+          3000
+        );
+      }
       setTimeout(() => {
         setControlClick(false);
       }, 30000);
-      dispatchMessage("[SUCESSO]: Seus Dados foram registrados", true);
     }
   };
 

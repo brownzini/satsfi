@@ -211,7 +211,7 @@ export default function Survey() {
         });
         dispatchMessage("[SUCESSO]: Detalhes de Enquete foram salvos", true);
       } else {
-        dispatchMessage("[ERRO]: Não foi possível salvar a mudança", true);
+        dispatchMessage("[ERRO]: Não foi possível salvar a mudança", false);
       }
       setLoading(false);
     }
@@ -283,7 +283,7 @@ export default function Survey() {
 
     const seconds = now.getSeconds();
 
-    await updateConfig(
+    const dbResponse = await updateConfig(
       data.generateKey.idString,
       JSON.stringify({
         config: data.config,
@@ -319,24 +319,25 @@ export default function Survey() {
       }),
       "streamerCreateSurvey"
     );
-
-    updateData("survey", {
-      allow: data.survey.allow,
-      minCreateSurvey: data.survey.minCreateSurvey,
-      durationTime: data.survey.durationTime,
-
-      surveyTitle: surveyTitle,
-      options: options,
-      minToVote: minToVote,
-
-      endTime: {
-        day: moreOneDay,
-        hour: moreOneHour,
-        minute: filterMinute,
-        second: seconds,
-      },
-      amount: "0",
-    });
+    if(dbResponse) {
+      updateData("survey", {
+        allow: data.survey.allow,
+        minCreateSurvey: data.survey.minCreateSurvey,
+        durationTime: data.survey.durationTime,
+  
+        surveyTitle: surveyTitle,
+        options: options,
+        minToVote: minToVote,
+  
+        endTime: {
+          day: moreOneDay,
+          hour: moreOneHour,
+          minute: filterMinute,
+          second: seconds,
+        },
+        amount: "0",
+      });
+    }
   };
 
   const handleCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {

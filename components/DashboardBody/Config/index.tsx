@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  Amounts,
-  Container,
-  WrapperContainer,
-} from "./styles";
+import { Amounts, Container, WrapperContainer } from "./styles";
 
 //Components
 import Field from "../Field";
@@ -19,7 +15,7 @@ export default function Config() {
   const [allowDonate, setAllowDonate] = useState<boolean>(data.config.allow);
 
   const donationVolume = data.config.alertVolume;
-  const durationDonate = data.config.durationAlert
+  const durationDonate = data.config.durationAlert;
 
   const [haveError, setHaveError] = useState<boolean>(false);
 
@@ -40,8 +36,11 @@ export default function Config() {
   };
 
   const validationField = async () => {
+    const cacheAmount = data.config.minDonate + "";
+    const localAmount = minAmount.replace(/[,.]/g, "");
+
     const hasNotChanged = notChanged();
-    const priceFiltered = parseInt(minAmount.replace(/[,.]/g, ""));
+    const priceFiltered = parseInt(localAmount);
     if (minAmount === "" || Number.isNaN(priceFiltered)) {
       setMinAmount("Preencha o campo");
       setHaveError(true);
@@ -49,22 +48,13 @@ export default function Config() {
       setMinAmount("Valor minimo é de 500 sats");
       setHaveError(true);
     } else if (!hasNotChanged) {
-      updateData("config", {
-        allow: allowDonate,
-        minDonate: minAmount.replace(/[,.]/g, ""),
-        alertVolume: donationVolume,
-        durationAlert: durationDonate,
-      });
-      if (
-        data.config.minDonate.replace(/[,.]/g, "") !==
-        minAmount.replace(/[,.]/g, "")
-      ) {
-        await updateConfig(
+      if (cacheAmount.replace(/[,.]/g, "") !== localAmount) {
+        const dbResponse = await updateConfig(
           data.generateKey.idString,
           JSON.stringify({
             config: {
               allow: true,
-              minDonate: Number(minAmount.replace(/[,.]/g, "")),
+              minDonate: localAmount,
             },
             survey: data.survey,
             chromaKey: data.chromaKey,
@@ -80,8 +70,22 @@ export default function Config() {
             isActiveHub: data.isActiveHub,
           })
         );
+        if (dbResponse) {
+          updateData("config", {
+            allow: allowDonate,
+            minDonate: localAmount,
+            alertVolume: donationVolume,
+            durationAlert: durationDonate,
+          });
+        }
+        dispatchMessage(
+          dbResponse
+            ? "[SUCESSO]: Alterações salvas !"
+            : "[ERRO]: Não foi possível alterar o valor kkkk",
+          dbResponse,
+          3000
+        );
       }
-      dispatchMessage("[SUCESSO]: Alterações salvas", true, 3000);
     }
   };
 

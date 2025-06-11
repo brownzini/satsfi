@@ -50,13 +50,15 @@ export const updateConfig = async (
     try {
       const userDoc = doc(db, "users", handle);
       const walletAddress = JSON.parse(data).generateKey.addressLightning;
-      await updateDoc(userDoc, {
+      const baseData = {
         jsonData: data,
-        surveyCreatorWallet:
-          type === "streamerCreateSurvey"
-            ? walletAddress
-            : JSON.parse(data).surveyCreatorWallet,
-      });
+      };
+      if(type === "streamerCreateSurvey") {
+        Object.assign(baseData, {
+           surveyCreatorWallet:walletAddress
+        });
+      }
+      await updateDoc(userDoc, baseData);
       return true;
     } catch (err) {
       return false;
