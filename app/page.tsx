@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import Image from 'next/image';
+import Link from "next/link";
+import Image from "next/image";
 
 import SvgModel from "@/utils/svg";
 
@@ -8,13 +8,16 @@ export default function Home() {
     <main>
       <section className="initial flex">
         <div className="initialArea flex">
-
           <div className="description-area">
             <h2 className="description-title">
-              Receba doações <br />com <span className="trueMoney">dinheiro</span><br /> de verdade
+              Receba <br /> doações com{" "}
+              <span className="trueMoney">bitcoin</span>
+              <br /> ao vivo sem complicações
             </h2>
             <p className="subTitle">
-              Tenha suas doações recebidas em <span className="trueMoney">satoshis</span> de uma forma que seus doadores não precisem cair em doxxing
+              e faça seus viewers perceberem que vale a pena doar. De uma forma
+              super simples assim como em outros serviços que você está
+              acostumado.
             </p>
           </div>
 
@@ -24,69 +27,61 @@ export default function Home() {
             </div>
             <div className="button-area-satsfi flex">
               <button className="launch-button">
-                <Link
-                  id="link-initial-button-style"
-                  href="/"
-                >
-                  Iniciar
+                <Link id="link-initial-button-style" href="/dashboard">
+                  INICIAR
                 </Link>
               </button>
             </div>
           </div>
-
         </div>
       </section>
       <section className="topic flex">
-
         <div className="card-privacy flex fd">
           <div className="cardHead">
-            <h2> Privacidade </h2>
+            <h2> Informações </h2>
           </div>
           <div className="cardBody flex">
-            <SvgModel
-              name="privacity"
-              width="75%"
-              height="75%"
-            />
+            <SvgModel name="privacity" width="75%" height="75%" />
           </div>
           <div className="cardFooter flex">
-            <h2>Seus seguidores que contribuem com doações podem permanecer completamente em anonimato. Além das próprias doações ficarem salvas com você e não no sistema</h2>
+            <h2>
+              {" "}
+              Quem doou ? Quanto doou ? Sobre oque falou ? Não fica salvo, assim
+              como seu saldo.{" "}
+            </h2>
           </div>
         </div>
 
         <div className="card-ai flex fd">
           <div className="cardHead">
-            <h2> Inteligência artificial </h2>
+            <h2> Saques ? </h2>
           </div>
           <div className="cardBody flex">
-            <SvgModel
-              name="brain-ai"
-              width="75%"
-              height="75%"
-            />
+            <SvgModel name="no_withdraw" width="75%" height="75%" />
           </div>
           <div className="cardFooter flex">
             <h2>
-              Seus seguidores podem utilizar o modelo de inteligência artificial na exibição de doações assim como diversos outros serviços</h2>
+              {" "}
+              Não tem saques pois todas as transações são direcionadas ao seu
+              endereço lightning{" "}
+            </h2>
           </div>
         </div>
 
         <div className="card-fee flex fd">
           <div className="cardHead">
-            <h2> Taxa 2.50%  </h2>
+            <h2> Direito de participação </h2>
           </div>
           <div className="cardBody flex">
-            <SvgModel
-              name="fee"
-              width="100%"
-              height="100%"
-            />
+            <SvgModel name="fee" width="100%" height="100%" />
           </div>
           <div className="cardFooter flex">
-            <h2>Seus seguidores podem utilizar o modelo de inteligência artificial na exibição de doações</h2>
+            <h2>  É um modo onde viewers
+              podem participar dos ganhos de doações através de enquetes,
+              mídias e campanhas{" "}
+            </h2>
           </div>
         </div>
-
       </section>
       <section className="howto flex">
         <div className="wrappedArea flex">
@@ -98,35 +93,32 @@ export default function Home() {
               src="/img/cell.jpg"
               alt="cell"
             />
-            <video
-              id="video"
-              disablePictureInPicture
-              controls={false}
-              playsInline
-              autoPlay
-              loop
-              muted
-            >
-              <source src={''} />
-            </video>
+            {false && (
+              <video
+                id="video"
+                disablePictureInPicture
+                controls={false}
+                playsInline
+                autoPlay
+                loop
+                muted
+              >
+                <source src={""} />
+              </video>
+            )}
           </div>
           <div className="descriptionArea flex fd">
             <div className="titleArea wh100">
-              <h2>Como usar ?</h2>
+              <h2>Funcionalidades</h2>
               <h3>
-                1° - Abra a pagina inicial <br />
-                2° - Crie seu hub de acordo com suas preferências de configuração <br />
-                3° - Importe o hub com a chave gerada e gerêncie suas doações <br />
-                4° - Utilizar
+                <b>Donate normal</b> - Mensagem | Gravar Audio | Audio de video
+                do youtubue <br />
+                <b>Enquete</b> - Criar enquete e votar <br />
+                <b>Chroma Key</b> - Trocar fundo da webcam do streamer <br />
+                <b>Chamadas</b> - Falar ao vivo com o streamer <br />
+                <b>Campanha</b> - Você pode comprar uma porcentagem das doações{" "}
+                <br />
               </h3>
-              <button id="paperButton">
-                <Link
-                  id="link-paper-button-style"
-                  href="/"
-                >
-                  Ler paper
-                </Link>
-              </button>
             </div>
           </div>
         </div>
@@ -140,7 +132,9 @@ export default function Home() {
             <h2>SatsFI</h2>
           </div>
           <div className="tou-area">
-            <h2>Termos de uso</h2>
+            <Link id="link-initial-button-style" href="/terms">
+              <h2>Termos de uso</h2>
+            </Link>
           </div>
         </div>
       </section>

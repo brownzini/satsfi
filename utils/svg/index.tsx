@@ -185,6 +185,7 @@ export default function SvgModel({
           viewBox="0 0 30 30"
           id="Layer_1"
           version="1.1"
+          fill="#76d3e8"
         >
           <path
             className="st2"
@@ -930,6 +931,14 @@ export default function SvgModel({
             fill="#ffffff"
           />
         </BaseSvg>
+      );
+    case "no_withdraw":
+      return (
+        <Svg fill="#8105bc" width={width} height={height} viewBox="0 0 16 16">
+          <g>
+            <path d="M7.82,8.07,5.1,5.36,2.7,4.43l1-.43-1-1L1,3.77H1V5.46L7.72,8.05ZM8,11.52a.87.87,0,0,0,.28,0l2.12-.82L9.18,9.44,8,9.89,1,7.19V8.87l6.73,2.6a.87.87,0,0,0,.28,0Zm5.22-1.95L15,8.88V7.19L12,8.35,10.75,7.1,15,5.46V3.77L8.21,1a.61.61,0,0,0-.42,0l-2.22.89L4.65,1H2.59L15,13.42V11.35ZM6.51,2.87,8,2.27l5.32,2.15L9.53,5.88ZM8,13.37l-7-2.7v1.68L7.72,15a.77.77,0,0,0,.56,0l4.64-1.79L11.7,11.94Z" />
+          </g>
+        </Svg>
       );
     default:
       return (
