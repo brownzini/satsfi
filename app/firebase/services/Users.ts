@@ -79,7 +79,14 @@ export const createNewHub = async (
 
       if (collec.data()) return "exist";
 
-      await setDoc(doc(collection(db, "users"), handle), { jsonData: data });
+      await setDoc(doc(collection(db, "users"), handle), { 
+            jsonData: data,
+            galery: [],
+            ddp_proposal: [],
+            receivingWallet: JSON.parse(data).generateKey.addressLightning,
+            surveyCreatorWallet: JSON.parse(data).generateKey.addressLightning
+      });
+      
       return true;
     } catch (err) {
       return false;
