@@ -546,7 +546,7 @@ img#cellImage {
 .titleArea {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
   padding-right: 10%;
 }
@@ -650,6 +650,13 @@ img#cellImage {
   font-family: "Inter";
 }
 
+#email-footer {
+  color: #b7b8c3;
+  font-size: 2rem;
+  font-weight: 300;
+  font-family: "Inter";
+}
+
 @media only screen and (max-width: 700px) {
   .initialArea {
     flex-direction: column;
@@ -720,7 +727,6 @@ img#cellImage {
     flex-direction: column;
   }
   .titleArea {
-    justify-content: center;
     align-items: center;
     padding-left: 10%;
   }
@@ -749,46 +755,17 @@ img#cellImage {
   }
 }
 
-@media only screen and (min-height: 900px) {
-  .initialArea .description-area h2.description-title {
-    font-size: 7rem;
-    line-height: 5.7rem;
-  }
-  h1.logo-title {
-    font-size: 7rem;
-  }
-  .cardHead h2 {
-    font-size: 3rem;
-  }
-  .cardFooter h2 {
-    font-size: 1.6rem;
-  }
-  .wrappedArea {
-    padding-left: 7%;
-  }
-  .titleArea {
-    padding-right: 0;
-  }
-  .titleArea h2 {
-    font-size: 4rem;
-  }
-  .titleArea h3 {
-    width: 75%;
-    font-size: 1.9rem;
-  }
-  #paperButton {
-    height: 20%;
-  }
-}
-
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1250px) {
   h2.description-title {
     width: 100%;
     font-size: 3rem;
-    line-height: 2.5rem;
+    line-height: 2rem;
   }
   .button-area-satsfi {
     width: 70%;
+  }
+  .cardFooter h2 {
+    font-size: 1.4rem;
   }
   .card-privacy {
     width: 50%;
@@ -805,12 +782,11 @@ img#cellImage {
   }
 
   img#cellImage {
-    width: 93%;
+    width: 75%;
     height: auto;
   }
 
   .titleArea {
-    justify-content: center;
     align-items: center;
     padding-left: 5%;
     padding-right: 5%;
@@ -833,6 +809,12 @@ img#cellImage {
   }
 }
 
+@media only screen and (min-width: 1500px) {
+  .cardFooter h2 {
+    font-size: 1.4rem;
+  }
+}
+
 @media only screen and (min-width: 1900px) {
   button.launch-button {
     font-size: 2rem;
@@ -850,6 +832,9 @@ img#cellImage {
   }
   .tou-area h2 {
     font-size: 3rem;
+  }
+  .titleArea h3 {
+    font-size: 2.1rem;
   }
 }
 
@@ -872,9 +857,12 @@ img#cellImage {
     font-size: 2rem;
   }
   h1.logo-title {
-    font-size:10rem;
+    font-size: 10rem;
   }
   p.subTitle {
     font-size: 4rem;
+  }
+  .titleArea h3 {
+    font-size: 3rem;
   }
 }

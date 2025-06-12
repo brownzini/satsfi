@@ -76,9 +76,10 @@ export default function Home() {
             <SvgModel name="fee" width="100%" height="100%" />
           </div>
           <div className="cardFooter flex">
-            <h2>  É um modo onde viewers
-              podem participar dos ganhos de doações através de enquetes,
-              mídias e campanhas{" "}
+            <h2>
+              {" "}
+              É um modo onde viewers podem participar dos ganhos de doações
+              através de enquetes, mídias e campanhas{" "}
             </h2>
           </div>
         </div>
@@ -135,7 +136,9 @@ export default function Home() {
             <Link id="link-initial-button-style" href="/terms">
               <h2>Termos de uso</h2>
             </Link>
+            <br />
           </div>
+            <h2 id="email-footer">satsfisuporte@outlook.com.br</h2>
         </div>
       </section>
     </main>
