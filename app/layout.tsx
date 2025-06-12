@@ -3,7 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "SatsFI",
-  description: "Created by Brownzini",
+  description: "Satsfi",
+  icons: "/icon/logo.svg",
 };
 
 export default function RootLayout({
