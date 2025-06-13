@@ -19,9 +19,6 @@
 html,
 body {
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow-x: hidden;
   scroll-behavior: smooth;
   background-color: transparent;
