@@ -9,7 +9,7 @@ import { HeaderProvider } from "@/contexts/useHeader";
 import { DataProvider } from "@/contexts/useData";
 import { ActiveWsProvider } from "@/contexts/useActiveWs";
 import { useEffect, useRef } from "react";
-import { getLoan } from "@/app/firebase/services/Loan";
+import { getLoan } from "@/firebase/services/Loan";
 import { useCampaign } from "@/contexts/campaignContext";
 import { streamerSocket } from "@/utils/CallWebsocket";
 import { useCall } from "@/contexts/useCall";
@@ -36,18 +36,18 @@ export default function DashboardArea() {
         if (access_code) {
           const [keyHub, handle] = access_code.split("|");
           const loanData = await getLoan(handle);
-          setCampaign(loanData);
-          const socket = streamerSocket({
-            handle,
-            setUsername,
-            setStartCallHash,
-            setEndCallHash,
-            setIsCalling,
-            setFinishedCall,
-          });
-          setSocket(socket);
-          const response = await getBtcPrice();
-          setBtcPrice(response);
+          // setCampaign(loanData);
+          // const socket = streamerSocket({
+          //   handle,
+          //   setUsername,
+          //   setStartCallHash,
+          //   setEndCallHash,
+          //   setIsCalling,
+          //   setFinishedCall,
+          // });
+          // setSocket(socket);
+          // const response = await getBtcPrice();
+          // setBtcPrice(response);
         }
       } catch (error) {}
     };

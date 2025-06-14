@@ -18,7 +18,7 @@ import {
 import { createRoom } from "@/utils/call/createRoom";
 import { useCall } from "@/contexts/useCall";
 import soundEffect from "@/utils/SoundEffect";
-import { cleanQueue } from "@/app/firebase/services/Queue";
+import { cleanQueue } from "@/firebase/services/Queue";
 
 interface Props {
   handle: string;

@@ -1,5 +1,4 @@
 import { LRUCache } from 'lru-cache'
-import { NextResponse } from 'next/server';
 
 export function rateLimit(options = { uniqueTokenPerInterval: 500, interval: 60000 }) {
   const tokenCache = new LRUCache<string, number>({

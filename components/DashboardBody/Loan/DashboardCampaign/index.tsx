@@ -12,7 +12,7 @@ import {
   HeaderContent,
   MainContent,
 } from "./styles";
-import { updateLoan } from "@/app/firebase/services/Loan";
+import { updateLoan } from "@/firebase/services/Loan";
 import { Campaign } from "@/contexts/campaignContext";
 
 interface Props {

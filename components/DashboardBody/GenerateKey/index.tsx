@@ -22,7 +22,7 @@ import { isOnlySpaces } from "@/utils/inputFormat";
 import { useData } from "@/contexts/useData";
 import { useMessage } from "@/contexts/useMessage";
 import { useHeader } from "@/contexts/useHeader";
-import { createNewHub, deleteData } from "@/app/firebase/services/Users";
+import { createNewHub } from "@/firebase/services/Users";
 import axios from "axios";
 
 export default function GenerateKey() {
@@ -196,23 +196,8 @@ export default function GenerateKey() {
         isActiveHub: false,
       };
       const result = await createNewHub(handle, JSON.stringify(defaultData));
-
       if (result) {
-        if (result === "exist") {
-          setHandleError(true);
-          dispatchMessage(
-            "[ERRO]: Já existe um hub associado a este nome !!",
-            false
-          );
-        } else {
-          const response = await generateQueue();
-          if (!response) {
-            dispatchMessage(
-              "[ERRO]: Não foi possivel criar seu hub, tente mais tarde !!",
-              false
-            );
-          }
-        }
+          changeScreenAndLocalData();
       } else {
         dispatchMessage(
           "[ERRO]: Não foi possivel criar seu hub, tente mais tarde !!",
@@ -232,34 +217,6 @@ export default function GenerateKey() {
     dispatchMessage("[SUCESSO]: Seu hub foi criado com sucesso !!", true);
     setActiveScreen("generateKey");
     localStorage.setItem("sid", keyHub);
-  }
-
-  async function generateQueue() {
-    try {
-      if (handle) {
-        const url = "/api/createAccount";
-        const response = await axios.post(
-          url,
-          { handle },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (response.data.msg === "ok") {
-          changeScreenAndLocalData();
-          return true;
-        } else {
-          await deleteData(handle);
-          return false;
-        }
-      } else {
-        return false;
-      }
-    } catch (err) {
-      return false;
-    }
   }
 
   function toggleSetHandle(text: string) {

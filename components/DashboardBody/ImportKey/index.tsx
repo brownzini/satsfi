@@ -13,7 +13,7 @@ import {
 import { useData } from "@/contexts/useData";
 import { useHeader } from "@/contexts/useHeader";
 import Field from "../Field";
-import { getUserProfile } from "@/app/firebase/services/Users";
+import { getUserProfile } from "@/firebase/services/Users";
 import { useMessage } from "@/contexts/useMessage";
 
 export default function ImportKey() {

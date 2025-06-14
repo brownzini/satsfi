@@ -2,9 +2,10 @@ import { rateLimit } from "@/utils/middleware/rateLimit";
 import { NextResponse } from "next/server";
 
 export const config = {
+  runtime: "edge",
   api: {
     bodyParser: {
-      sizeLimit: "3kb", // Define o limite máximo do body
+      sizeLimit: "3kb",
     },
   },
 };
@@ -14,18 +15,17 @@ const limiter = rateLimit({
   uniqueTokenPerInterval: 500,
 });
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request): Promise<Response> {
   try {
-    limiter.check(res, 3, "CACHE_TOKEN");
+    const forwarded = req.headers.get("x-forwarded-for");
+    const clientIp = forwarded ? forwarded.split(",")[0].trim() : "unknown_ip";
+    const address = clientIp.replace("::ffff:", "");
+
+    // Use o IP como token de limitação
+    await limiter.check(address, 3, "CACHE_TOKEN");
 
     const body = await req.json();
     const { handle } = body;
-
-    const forwarded = req.headers.get("x-forwarded-for");
-
-    const clientIp = forwarded ? forwarded.split(",")[0].trim() : null;
-
-    const address = clientIp ? clientIp.replace("::ffff:", "") : "";
 
     const url =
       process.env.CREATE_USER_URL ??
@@ -41,10 +41,10 @@ export async function POST(req: Request, res: NextResponse) {
 
     if (!response.ok) {
       return NextResponse.json({ msg: "Not_valid_req" }, { status: 401 });
-    } else {
-      await response.json();
-      return NextResponse.json({ msg: "ok" }, { status: 200 });
     }
+
+    await response.json();
+    return NextResponse.json({ msg: "ok" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ msg: "Too many requests" }, { status: 429 });
   }

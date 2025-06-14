@@ -16,7 +16,7 @@ import {
 
 //Context
 import { useHeader } from "./useHeader";
-import { updateConfig } from "@/app/firebase/services/Users";
+import { updateConfig } from "@/firebase/services/Users";
 
 export interface DataProps {
   config: ConfigProps;

@@ -26,7 +26,7 @@ import { useData } from "@/contexts/useData";
 import { filterAmount } from "@/utils/inputFormat";
 import { OptionsProps } from "@/utils/types";
 import { useActiveWs } from "@/contexts/useActiveWs";
-import { updateConfig } from "@/app/firebase/services/Users";
+import { updateConfig } from "@/firebase/services/Users";
 import DurationSurveyArea from "./DurationSurveyArea";
 import GenerationSurveyArea from "./GenerationSurveyArea";
 

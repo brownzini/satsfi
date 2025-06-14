@@ -17,7 +17,7 @@ import { useHeader } from "@/contexts/useHeader";
 //Types
 import { ScreenProp } from "@/utils/types";
 import { useData } from "@/contexts/useData";
-import { getUserProfile } from "@/app/firebase/services/Users";
+import { getUserProfile } from "@/firebase/services/Users";
 
 export default function DashboardHeader() {
   const [screenStatus, setScreenStatus] = useState<boolean>(false);

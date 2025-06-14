@@ -17,7 +17,7 @@ import Field from "../Field";
 //Contexts
 import { useMessage } from "@/contexts/useMessage";
 import { useData } from "@/contexts/useData";
-import { updateConfig } from "@/app/firebase/services/Users";
+import { updateConfig } from "@/firebase/services/Users";
 
 export default function ChromaKey() {
   const { data, updateData } = useData();

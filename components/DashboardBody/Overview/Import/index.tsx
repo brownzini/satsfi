@@ -38,7 +38,7 @@ const CSVImporter = ({ setDonates }:Prop) => {
 
       Papa.parse(file, {
         complete: (result:any) => {
-          console.log(result)
+          
           const donate:any = result.data;
           
           setDonates((prevData:any) => [...prevData, ...donate]);

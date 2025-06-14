@@ -15,18 +15,17 @@ const limiter = rateLimit({
   uniqueTokenPerInterval: 500,
 });
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
   try {
-    limiter.check(res, 20, "CACHE_TOKEN");
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "";
+
+    // Limite com IP ou token fixo
+    await limiter.check(ip, 20, "CACHE_TOKEN"); // <- provavelmente precisa do IP aqui
 
     const body = await req.json();
     const { handle, keyHub } = body;
 
-    const forwarded = req.headers.get("x-forwarded-for");
-
-    const clientIp = forwarded ? forwarded.split(",")[0].trim() : null;
-
-    const address = clientIp ? clientIp.replace("::ffff:", "") : "";
+    const address = ip.replace("::ffff:", "");
 
     const url =
       process.env.END_SURVEY_URL ?? "http://localhost:3002/users/endSurvey";
@@ -46,11 +45,11 @@ export async function POST(req: Request, res: NextResponse) {
 
     if (!response.ok) {
       return NextResponse.json({ msg: "Not_valid_req" }, { status: 401 });
-    } else {
-      await response.json();
-      return NextResponse.json({ msg: "ok" }, { status: 200 });
     }
+
+    await response.json();
+    return NextResponse.json({ msg: "ok" }, { status: 200 });
   } catch (error) {
-     return NextResponse.json({ msg: "Too many requests" }, { status: 429 });
+    return NextResponse.json({ msg: "Too many requests" }, { status: 429 });
   }
 }

@@ -10,7 +10,7 @@ import {
 
 import soundEffect from "@/utils/SoundEffect";
 import { v4 as uuidv4 } from "uuid";
-import { cleanQueue, updateQueueInCall } from "@/app/firebase/services/Queue";
+import { cleanQueue, updateQueueInCall } from "@/firebase/services/Queue";
 import { useState } from "react";
 
 interface Props {

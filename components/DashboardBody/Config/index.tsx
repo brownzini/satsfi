@@ -6,7 +6,7 @@ import Field from "../Field";
 
 import { useData } from "@/contexts/useData";
 import { useMessage } from "@/contexts/useMessage";
-import { updateConfig } from "@/app/firebase/services/Users";
+import { updateConfig } from "@/firebase/services/Users";
 
 export default function Config() {
   const { data, updateData } = useData();

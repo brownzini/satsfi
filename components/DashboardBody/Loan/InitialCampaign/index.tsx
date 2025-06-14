@@ -1,4 +1,4 @@
-import { createNewLoan } from "@/app/firebase/services/Loan";
+import { createNewLoan } from "@/firebase/services/Loan";
 import {
   BodyContainer,
   CreateButton,

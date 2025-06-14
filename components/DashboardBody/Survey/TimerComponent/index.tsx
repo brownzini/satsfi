@@ -66,6 +66,7 @@ export default function TimerComponent({
         
         setRemainingTime(result);
         setDeadline({ hour: (data.survey.endTime.hour) ? data.survey.endTime.hour : hour, minute: futureMinute, second: second });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

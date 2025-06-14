@@ -16,7 +16,7 @@ import {
   TitleTerm,
 } from "./styles";
 import { filterAmount } from "@/utils/inputFormat";
-import { updateLoan } from "@/app/firebase/services/Loan";
+import { updateLoan } from "@/firebase/services/Loan";
 import { useCampaign } from "@/contexts/campaignContext";
 
 interface Props {

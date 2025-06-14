@@ -79,6 +79,7 @@ export default function BlackList() {
          const validateWords = data.blackList.wordsBlocked;
          const desCompacted = decompressList(data.blackList.wordsBlocked);
          setWordList((isOnlySpaces(validateWords)) ? [] : desCompacted);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
     return (
