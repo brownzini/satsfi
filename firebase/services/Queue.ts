@@ -1,32 +1,51 @@
-import { doc, updateDoc } from "firebase/firestore";
-import { qdb } from "../queueFirebase";
+import axios from "axios";
 
-export const cleanQueue = async (handle: string, list: any[]): Promise<boolean> => {
-  const streamerDoc = doc(qdb, "queue", handle);
-  try {
-    await updateDoc(streamerDoc, {list});
-    return true;
-  } catch (error) {
+export const cleanQueue = async (
+  handle: string,
+  list: any[]
+): Promise<boolean> => {
+  if (handle) {
+    try {
+      const result = await axios.post(
+        process.env.NEXT_PUBLIC_PAYMENT_PROCESSOR_URL + "cleanQueue",
+        { handle, list },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = result.data.response;
+      return data;
+    } catch (err) {
+      return false;
+    }
+  } else {
     return false;
   }
 };
 
-export const updateQueueInCall = async (handle: string, inCall: string | ""): Promise<boolean> => {
-  const streamerDoc = doc(qdb, "queue", handle);
-  try {
-    await updateDoc(streamerDoc, {inCall});
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
-export const updateStatusQueue = async (handle: string, status:boolean): Promise<boolean> => {
-  const streamerDoc = doc(qdb, "queue", handle);
-  try {
-    await updateDoc(streamerDoc, {status});
-    return true;
-  } catch (error) {
+export const updateQueueInCall = async (
+  handle: string,
+  inCall: string | ""
+): Promise<boolean> => {
+  if (handle) {
+    try {
+      const result = await axios.post(
+        process.env.NEXT_PUBLIC_PAYMENT_PROCESSOR_URL + "updateQueueInCall",
+        { handle, inCall },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = result.data.response;
+      return data;
+    } catch (err) {
+      return false;
+    }
+  } else {
     return false;
   }
 };

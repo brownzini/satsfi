@@ -36,7 +36,6 @@ export const updateConfig = async (
 ): Promise<boolean> => {
   if (handle) {
     try {
-      console.log(handle)
       const walletAddress = JSON.parse(userData).generateKey.addressLightning;
       const baseData = {
         jsonData: userData,

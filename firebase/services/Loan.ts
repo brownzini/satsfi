@@ -1,6 +1,4 @@
-import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-
-import { db } from "../firebase";
+import axios from "axios";
 
 interface Props {
   description: string;
@@ -24,19 +22,20 @@ interface LoanProps {
 export const getLoan = async (handle: string): Promise<Props | undefined> => {
   if (handle) {
     try {
-      const userDoc = doc(db, "loan", handle);
-      const collec = await getDoc(userDoc);
-
-      if (!collec.data()) {
-        return undefined;
+      const result = await axios.post(
+        process.env.NEXT_PUBLIC_PAYMENT_PROCESSOR_URL + "campaign",
+        { handle },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = result.data.response;
+      if (data !== null) {
+        return data;
       } else {
-        return {
-          description: collec.data()?.description,
-          total_percent: collec.data()?.total_percent,
-          total_campaign: collec.data()?.total_campaign,
-          size: collec.data()?.lenders.length,
-          open_in: collec.data()?.open_in,
-        };
+        return undefined;
       }
     } catch (err) {
       return undefined;
@@ -46,33 +45,23 @@ export const getLoan = async (handle: string): Promise<Props | undefined> => {
   }
 };
 
-export const updateLoan = async (
+export const createNewLoan = async (
   handle: string,
-  data: any
-): Promise<boolean> => {
+  data: LoanProps
+): Promise<boolean | string> => {
   if (handle) {
     try {
-      const userDoc = doc(db, "loan", handle);
-      const collec = await getDoc(userDoc);
-
-      if (!collec.data()) {
-        return false;
-      }
-
-      const streamerData = collec.data();
-      if (streamerData) {
-        if (data.percent_sale < streamerData.total_percent) {
-          Object.assign(data, {
-            total_percent: streamerData.total_percent,
-          })
-          await updateDoc(userDoc, data);
-          return true;
-        } else {
-          return false;
+      const result = await axios.post(
+        process.env.NEXT_PUBLIC_PAYMENT_PROCESSOR_URL + "createCampaign",
+        { handle, data },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      } else {
-        return false;
-      }
+      );
+      const response = result.data.response;
+      return response;
     } catch (err) {
       return false;
     }
@@ -81,14 +70,23 @@ export const updateLoan = async (
   }
 };
 
-export const createNewLoan = async (
+export const updateLoan = async (
   handle: string,
-  data: LoanProps
-): Promise<boolean | string> => {
+  data: any
+): Promise<boolean> => {
   if (handle) {
     try {
-      await setDoc(doc(collection(db, "loan"), handle), data);
-      return true;
+      const result = await axios.post(
+        process.env.NEXT_PUBLIC_PAYMENT_PROCESSOR_URL + "updateCampaign",
+        { handle, data },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const response = result.data.response;
+      return response;
     } catch (err) {
       return false;
     }
