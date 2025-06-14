@@ -267,7 +267,7 @@ export default function Overview() {
 
             const monthResultAmount = filterAmount(getValuesByMonth(donates).toString());
             const totalResultAmount = filterAmount(calculateTotalValue().toString());
-
+            console.log(calculateTotalValue().toString())
             if (monthResultAmount) {
                 setMonthAmount(monthResultAmount);
             }
@@ -317,7 +317,7 @@ export default function Overview() {
                             <MonthlyCardBody className="flex">
                                 <MonthlyCardBodyTitleArea className="flex">
                                     <MonthlyCardBodyArea className="flex">
-                                        <MonthlyCardBodyTitle>{totalAmount} sats</MonthlyCardBodyTitle>
+                                        <MonthlyCardBodyTitle>{totalAmount}</MonthlyCardBodyTitle>
                                     </MonthlyCardBodyArea>
                                 </MonthlyCardBodyTitleArea>
                             </MonthlyCardBody>

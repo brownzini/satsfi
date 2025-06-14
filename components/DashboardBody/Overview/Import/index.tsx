@@ -27,6 +27,7 @@ const CSVImporter = ({ setDonates }:Prop) => {
     const files = event.target.files;
 
     for (let i = 0; i < files.length; i++) {
+    
       const file = files[i];
       const fileName = file.name;
 
@@ -37,13 +38,13 @@ const CSVImporter = ({ setDonates }:Prop) => {
 
       Papa.parse(file, {
         complete: (result:any) => {
-      
-          const donate:any = result.data[0];
+          console.log(result)
+          const donate:any = result.data;
           
-          setDonates((prevData:any) => [...prevData, donate]);
+          setDonates((prevData:any) => [...prevData, ...donate]);
           setData(prevData => ({
               ...prevData,
-              donations: [...prevData.donations || [], donate]
+              donations: [...prevData.donations || [],  ...donate]
           }));
 
           setFileInputKey(Date.now());

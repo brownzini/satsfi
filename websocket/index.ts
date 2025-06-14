@@ -31,7 +31,7 @@ export default function WebSocketService(
       {
         date: getToday(),
         type: "call",
-        value: feeConvert("call", data.amount, ddp),
+        value: feeConvert("call", "1", ddp),
         donor_name: data.name,
         message: "",
       },
@@ -45,7 +45,7 @@ export default function WebSocketService(
       {
         date: getToday(),
         type: data.type,
-        value: feeConvert("backgroundDonation", data.amount, ddp),
+        value: feeConvert("backgroundDonation", "1", ddp),
         donor_name: data.name,
         message: data.message,
       },
@@ -70,7 +70,7 @@ export default function WebSocketService(
       {
         date: getToday(),
         type: "survey",
-        value: feeConvert("surveyDonation", data.amount, ddp),
+        value: feeConvert("surveyDonation", "1", ddp),
         donor_name: "",
         message: "",
       },
@@ -99,7 +99,7 @@ export default function WebSocketService(
         {
           date: getToday(),
           type: "survey",
-          value: feeConvert("createSurveyDonation", data.amount, ddp),
+          value: feeConvert("createSurveyDonation", "1", ddp),
           donor_name: data.name,
           message: data.message,
         },
@@ -147,7 +147,7 @@ export default function WebSocketService(
       {
         date: getToday(),
         type: "normal",
-        value: feeConvert("normalDonation", data.amount, ddp),
+        value: feeConvert("normalDonation", "1", ddp),
         donor_name: data.name,
         message: data.message,
       },
