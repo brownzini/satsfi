@@ -37,7 +37,6 @@ export default function InCall({ handle }: Props) {
     setUsername,
     setStartCallHash,
     setEndCallHash,
-    setSocket,
   } = useCall();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -114,7 +113,6 @@ export default function InCall({ handle }: Props) {
     setHasConnected(false);
     setStartCallHash("");
     setEndCallHash("");
-    setSocket(null);
     localStorage.removeItem("room_id");
     localStorage.removeItem("endHash");
   }

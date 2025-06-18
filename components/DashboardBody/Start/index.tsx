@@ -34,17 +34,17 @@ export default function Start() {
     const incrementedIndex = index + 1;
     if (incrementedIndex === 1) {
       const ddp = campaign ? campaign.total_percent : 0.95;
-      // const socket = WebSocketService(
-      //   data.generateKey.idString,
-      //   data.generateKey.keyHub,
-      //   data,
-      //   addDonate,
-      //   updateData,
-      //   setsurveySoloDonation,
-      //   ddp
-      // );
-      // setActiveWs(true);
-      // setWsConfig(socket);
+      const socket = WebSocketService(
+        data.generateKey.idString,
+        data.generateKey.keyHub,
+        data,
+        addDonate,
+        updateData,
+        setsurveySoloDonation,
+        ddp
+      );
+      setActiveWs(true);
+      setWsConfig(socket);
       sessionStorage.setItem("ws", incrementedIndex.toString());
     } else {
       sessionStorage.setItem("ws", "0");
