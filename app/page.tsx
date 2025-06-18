@@ -94,7 +94,7 @@ export default function Home() {
               src="/img/cell.jpg"
               alt="cell"
             />
-            {false && (
+       
               <video
                 id="video"
                 disablePictureInPicture
@@ -104,9 +104,9 @@ export default function Home() {
                 loop
                 muted
               >
-                <source src={""} />
+                <source src={"https://res.cloudinary.com/dqq4f9a1l/video/upload/f_auto:video/preview_daxwyz"} />
               </video>
-            )}
+         
           </div>
           <div className="descriptionArea flex fd">
             <div className="titleArea wh100">

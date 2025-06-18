@@ -523,10 +523,10 @@ img#cellImage {
 
 #video {
   position: absolute;
-  top: 3%;
-  left: 8.7%;
-  width: 82.7%;
-  height: 93%;
+  top: 4%;
+  left: 9%;
+  width: 82%;
+  height: 91%;
   object-fit: cover;
   z-index: 2;
 }
@@ -655,6 +655,17 @@ img#cellImage {
 }
 
 @media only screen and (max-width: 700px) {
+  #video {
+    position: absolute;
+    top: 4%;
+    left: 17%;
+    width: 66%;
+    height: 90%;
+    object-fit: cover;
+    z-index: 2;
+    border-radius: 5px;
+  }
+
   .initialArea {
     flex-direction: column;
   }
@@ -753,6 +764,18 @@ img#cellImage {
 }
 
 @media only screen and (max-width: 1250px) {
+
+  #video {
+    position: absolute;
+    top:5%;
+    left: 17%;
+    width: 66%;
+    height: 90%;
+    object-fit: cover;
+    z-index: 2;
+    border-radius: 5px;
+  }
+
   h2.description-title {
     width: 100%;
     font-size: 3rem;
