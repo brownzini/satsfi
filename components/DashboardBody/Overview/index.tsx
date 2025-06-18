@@ -267,7 +267,6 @@ export default function Overview() {
 
             const monthResultAmount = filterAmount(getValuesByMonth(donates).toString());
             const totalResultAmount = filterAmount(calculateTotalValue().toString());
-            console.log(calculateTotalValue().toString())
             if (monthResultAmount) {
                 setMonthAmount(monthResultAmount);
             }
