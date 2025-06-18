@@ -229,7 +229,7 @@ export default function Call() {
           onClick={hiddeError}
           inputValue={minAmount}
           setInputValue={setMinAmount}
-          placeholder="Minimo de 12,000 Sats"
+          placeholder="Minimo de 7,000 Sats"
         />
 
         <Field

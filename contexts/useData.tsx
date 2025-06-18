@@ -139,7 +139,7 @@ export function DataProvider({ children }: Props) {
     trackDonate: [],
     call: {
       allow: true,
-      minAmount: "12,000",
+      minAmount: "7,000",
     },
     generateKey: {
       idString: "",
@@ -288,7 +288,7 @@ export function DataProvider({ children }: Props) {
       trackDonate: [],
       call: {
         allow: true,
-        minAmount: "12,000",
+        minAmount: "7,000",
       },
       generateKey: {
         idString: "",
