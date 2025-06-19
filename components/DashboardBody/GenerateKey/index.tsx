@@ -23,7 +23,6 @@ import { useData } from "@/contexts/useData";
 import { useMessage } from "@/contexts/useMessage";
 import { useHeader } from "@/contexts/useHeader";
 import { createNewHub } from "@/firebase/services/Users";
-import axios from "axios";
 
 export default function GenerateKey() {
   const { data, updateData, destroyHub } = useData();
@@ -174,7 +173,7 @@ export default function GenerateKey() {
         trackDonate: [],
         call: {
           allow: true,
-          minAmount: "12000",
+          minAmount: "7000",
         },
         generateKey: {
           idString: handle,
