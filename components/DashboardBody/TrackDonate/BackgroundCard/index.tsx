@@ -17,7 +17,7 @@ export default function BackgroundCard({
  }:Props) {
     return (
         <WrapperDonationCard className="flex fd" {...rest}>
-            <CardSurveyTitle>{name} trocou seu background</CardSurveyTitle>
+            <CardSurveyTitle>{"@"+name} trocou seu background com {amount} satoshis</CardSurveyTitle>
         </WrapperDonationCard>
     );
 }

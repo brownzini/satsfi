@@ -26,7 +26,7 @@ export default function Start() {
   const { campaign } = useCampaign();
   const { btcPrice } = useMessage();
 
-  const [minAmount, setMinAmount] = useState<string>("1");
+  const [minAmount, setMinAmount] = useState<string>("100");
 
   useEffect(() => {
     const hasSessionInSocket = sessionStorage.getItem("ws");

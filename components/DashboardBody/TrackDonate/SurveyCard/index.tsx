@@ -17,7 +17,7 @@ export default function SurveyCard({
  }:Props) {
     return (
         <WrapperDonationCard className="flex fd" {...rest}>
-            <CardSurveyTitle>{name} criou uma enquete</CardSurveyTitle>
+            <CardSurveyTitle>{"@"+name} criou uma enquete com {amount} satoshis</CardSurveyTitle>
         </WrapperDonationCard>
     );
 }
