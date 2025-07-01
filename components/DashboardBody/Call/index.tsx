@@ -18,7 +18,7 @@ export default function Call() {
   const [minAmount, setMinAmount] = useState<string>(data.call.minAmount);
   const [haveError, setHaveError] = useState<boolean>(false);
 
-  const link = process.env.NEXT_PUBLIC_WIDGET_URL + "chamada/"+data.generateKey.idString;
+  const link = process.env.NEXT_PUBLIC_VIEWER_URL + "chamada/"+data.generateKey.idString;
 
   const { dispatchMessage } = useMessage();
 
