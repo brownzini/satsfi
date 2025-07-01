@@ -87,7 +87,7 @@ export default function ChromaKey() {
 
   return (
     <Container className="flex">
-      <ChromaContent className="flex fd">
+      {/* <ChromaContent className="flex fd">
         <Field
           type="title"
           text="Permitir Chroma Key:"
@@ -333,18 +333,18 @@ export default function ChromaKey() {
                         `}
           onClick={handleSave}
         />
-      </ChromaContent>
+      </ChromaContent> */}
       <DownloadContent className="flex fd">
         <TutorialContainer>
-          <Link id="link-initial-button-style" href="/">
+          <Link id="link-initial-button-style" href={process.env.NEXT_PUBLIC_TUTORIAL_URL??""}>
             <Field
               type="button"
               center={`
-                            width: 100%;
+                            width: 70%;
                             height: 100%;
-                            justify-content: flex-start;
+                            justify-content: center;
                             align-items: center;
-                            padding-right: 11.1%;
+                           
                             user-select: none;
 
                             @media only screen and (min-width: 2560px) {
@@ -399,7 +399,7 @@ export default function ChromaKey() {
             />
           </Link>
         </TutorialContainer>
-        <NodeObsContainer className="flex">
+        {/* <NodeObsContainer className="flex"> */}
           {/* <Link
                         id="link-initial-button-style"
                         href="/"
@@ -456,8 +456,8 @@ export default function ChromaKey() {
                             </GithubSvgArea>
                         </GithubArea>
                     </Link> */}
-          <Link id="link-initial-button-style" href="/">
-            <NodeArea className="flex fd">
+          {/* <Link id="link-initial-button-style" href="/"> */}
+            {/* <NodeArea className="flex fd"> */}
               <br />
               {/* <Field
                                 type="title"
@@ -507,9 +507,9 @@ export default function ChromaKey() {
                                     />
                                 </NodeSvgContent>
                             </NodeSvgArea> */}
-            </NodeArea>
-          </Link>
-        </NodeObsContainer>
+            {/* </NodeArea> */}
+          {/* </Link> */}
+        {/* </NodeObsContainer> */}
         <br />
         {/* <InitializerContainer className="flex fd">
                     <Field
