@@ -336,7 +336,7 @@ export default function ChromaKey() {
       </ChromaContent> */}
       <DownloadContent className="flex fd">
         <TutorialContainer>
-          <Link id="link-initial-button-style" href={process.env.NEXT_PUBLIC_TUTORIAL_URL??""}>
+          <Link id="link-initial-button-style" href={process.env.NEXT_PUBLIC_TUTORIAL_URL??"https://www.youtube.com/watch?v=ZPdk5GaIDjo"}>
             <Field
               type="button"
               center={`
